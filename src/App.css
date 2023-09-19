@@ -1,38 +1,185 @@
-.App {
-  text-align: center;
+:root {
+  --color-primary: #257cff;
+  --color-secondary: #69a2f8;
+  --color-text: #121212;
+
 }
 
-.App-logo {
-  height: 40vmin;
+.App {
+  text-align: center;
+  background-color:#ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+
+h1 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 20px;
+  margin: auto;
+}
+
+
+.button {
+  font-family: 'Roboto', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #ffffff;
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin: auto;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 5px 5px rgba(0,0,0,0.15);
+  text-decoration: none;
+  min-width: 150px;
+  background-image: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+thead {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  /* make thead sticky */
+  position: sticky;
+  top: 0;
+}
+
+tbody {
+  background-color: #ffffff;
+  color: var(--color-text);
+}
+
+td {
+  text-align: center;
+  padding: 8px;
+  padding-inline: 20px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  /* wrap text */
+  max-width: 250px;
+}
+
+th {
+  text-align: center;
+  padding: 8px;
+}
+
+
+.card {
+  background-color: #fdfdfd;
+  border-radius: 20px;
+  margin: auto;
+  margin-top: 180px;
+  position: relative;
+  box-shadow: 0 5px 5px rgba(0,0,0,0.15);
+  transition: all 0.3s ease-in-out;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  height: fit-content;
+  padding: 20px;
+  
+}
+
+.table_elements {
+  padding: 5px;
+  border-radius: 5px;
+  margin: 5px;
+  background-color: #ebf1fd;
+  font-weight: 600;
+  margin-top: 15px;
+}
+
+
+.date {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text);
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #ebeefd;
+}
+
+
+.form__group {
+  position: relative;
+  padding: 20px 0 0;
+  width: 220px;
+}
+
+.form__field {
+  font-family: inherit;
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid #9b9b9b;
+  outline: 0;
+  font-size: 17px;
+  color: var(--color-text);
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s;
+  margin: auto;
+}
+
+.form__field::placeholder {
+  color: transparent;
+}
+
+.form__field:placeholder-shown ~ .form__label {
+  font-size: 17px;
+  cursor: text;
+  top: 20px;
+}
+
+.form__label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 17px;
+  color: #9b9b9b;
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.form__field:focus {
+  padding-bottom: 6px;
+  font-weight: normal;
+  border-width: 3px;
+  border-image: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+  border-image-slice: 1;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.form__field:focus ~ .form__label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 17px;
+  color: var(--color-primary);
+  font-weight: 700;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* reset input */
+.form__field:required, .form__field:invalid {
+  box-shadow: none;
 }

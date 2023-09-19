@@ -15,21 +15,23 @@ const Login = () => {
     const login = (e) => {
         e.preventDefault();
         console.log("Login successful");
-        fetch("http://localhost:3001/login", {
+        fetch("https://backend.rapportini.rainierihomecollection.it/login", {
             method: "POST",
             headers: {
             "Content-Type": "application/json",
             },
             credentials: "include",
             body: JSON.stringify({
-            email,
-            password,
+            email: email,
+            password: password,
             }),
         })
             .then((res) => res.json())
             .then((data) => {
             console.log(data);
+            if (data.status === "ok"){
             navigate("/home");
+            }
             });
     }
 

@@ -21,7 +21,7 @@ const Home = () => {
                 if (res.status === 200) {
                     res.json().then((data) => {
                         console.log(data);
-                        setPageCount(Math.floor(data.works / 10) + 1);
+                        setPageCount(Math.ceil(data.works / 10));
                     });
                 }
             })
@@ -65,7 +65,7 @@ const Home = () => {
                 </thead>
                 <tbody>
                     {reports.map((report) => (
-                        <tr>
+                        <tr style={selectedReport === report ? { height: 500, transition: "height 0.5s ease-in-out" } : { height: 50,transition: "height 0.5s ease-in-out" }}>
                             <td><p className="date">{
                                 // turn sql date into dd/mm/yyyy
                                 new Date(report.completionTime).toLocaleString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' })
@@ -88,7 +88,8 @@ const Home = () => {
                                     <div className="date" style={{ backgroundColor: "#f4d4d4", color: "#331313" }}>In lavorazione</div>}
                             </td>
                             <td>
-                                <button className="button">Espandi</button>
+                                <button className="button" onClick={() => setSelectedReport(selectedReport === report ? null : report)
+                                }>{selectedReport === report ? "Riduci" : "Espandi"}</button>
                             </td>
                         </tr>
                     ))}

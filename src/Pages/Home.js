@@ -4,7 +4,7 @@ import { IoPerson, IoCalendar, IoClipboard, IoBulb, IoPeople } from "react-icons
 
 
 const Home = () => {
-
+ console.log("Home");
     const reports = [
         {
             date: "01/01/2021",

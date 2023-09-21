@@ -32,7 +32,6 @@ const Login = () => {
                 if (res.status === 200) {
                     console.log("Login successful");
                     res.json().then((data) => {
-                        console.log(data);
                         setAuth(data);
                         console.log(auth);
 

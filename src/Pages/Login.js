@@ -1,14 +1,16 @@
 import React from "react";
-import { Router } from "react-router-dom";
 import Electricity from "../Images/Electricity.jpg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import  {useAuth}  from "../useAuth";
 
 
 const Login = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const { auth, setAuth } = useAuth();
 
     const navigate = useNavigate();
 
@@ -22,16 +24,24 @@ const Login = () => {
             },
             credentials: "include",
             body: JSON.stringify({
-            email: email,
+            username: email,
             password: password,
             }),
         })
-            .then((res) => res.json())
-            .then((data) => {
-            console.log(data);
-            if (data.status === "ok"){
-            navigate("/home");
-            }
+            .then((res) => {
+                if (res.status === 200) {
+                    console.log("Login successful");
+                    res.json().then((data) => {
+                        console.log(data);
+                        setAuth(data);
+                        console.log(auth);
+
+                        navigate("/home");
+                    });
+                }
+            })
+            .catch((err) => {
+                console.log("Error: ", err);
             });
     }
 

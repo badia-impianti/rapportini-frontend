@@ -11,9 +11,9 @@ const RequireAuth = ({ allowedRole, children }) => {
         return <Navigate to="/login" />;
     }
 
-    if (allowedRole === "admin" && auth.isAdmin !== 1) {
+    /*if (allowedRole === "admin" && auth.isAdmin !== 1) {
         return <div>Accesso negato</div>;
-    }
+    }*/
 
     return <Outlet />;
 }

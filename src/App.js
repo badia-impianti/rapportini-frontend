@@ -6,6 +6,7 @@ import Login from './Pages/Login';
 import Splash from './Pages/Splash';
 import RequireAuth from './RequireAuth';
 import AuthProvider from './useAuth';
+import Add from './Pages/Add';
 function App() {
   return (
     <div className="App">
@@ -13,8 +14,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Splash />} />
           <Route path="/login" element={<Login />} />
-          <Route element={<RequireAuth allowedRole={"admin"} />}>
-          <Route path="/home" element={<Home />} />
+          <Route element={<RequireAuth />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/add" element={<Add />} />
           </Route>
         </Routes>
       </AuthProvider>

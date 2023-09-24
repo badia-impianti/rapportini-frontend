@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { IoPerson, IoCalendar, IoClipboard, IoBulb, IoPeople, IoCheckmark, IoChevronForward, IoChevronBack } from "react-icons/io5";
-
+import { IoPerson, IoCalendar, IoClipboard, IoBulb, IoPeople, IoCheckmark, IoChevronForward, IoChevronBack, IoChevronDown, IoTrashBin, IoPencil, } from "react-icons/io5";
+import { MdEdit, MdOutlineDeleteForever } from "react-icons/md";
 
 const Home = () => {
 
@@ -10,7 +10,8 @@ const Home = () => {
 
     const [reports, setReports] = useState([]);
 
-    const [selectedReport, setSelectedReport] = useState(reports[0]);
+    const [selectedReport, setSelectedReport] = useState({});
+
 
     useEffect(() => {
         fetch("https://backend.rapportini.rainierihomecollection.it/works/count", {
@@ -65,31 +66,83 @@ const Home = () => {
                 </thead>
                 <tbody>
                     {reports.map((report) => (
-                        <tr style={selectedReport === report ? { height: 500, transition: "height 0.5s ease-in-out" } : { height: 50,transition: "height 0.5s ease-in-out" }}>
+                        <tr style={selectedReport === report ? { height: 500, transition: "height 0.5s ease-in-out" } : { height: 50, transition: "height 0.5s ease-in-out" }}>
                             <td><p className="date">{
                                 // turn sql date into dd/mm/yyyy
                                 new Date(report.completionTime).toLocaleString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' })
                             }</p></td>
-                            <td>{report.customer}</td>
-                            <td>{report.description}</td>
-                            <td>{report.labour.map
+                            <td hidden={selectedReport === report}>{report.customer}</td>
+                            <td colSpan={selectedReport == report ? 5 : 1} >{selectedReport === report ? <div>
+                                <div style={{ position: "relative" }}>
+                                    {report.completed ? <div className="date" style={{ backgroundColor: "#d4f4cd", color: "#133213", position: "absolute", right: 50 }}>Completato</div>
+                                        :
+                                        <div className="date" style={{ backgroundColor: "#f4d4d4", color: "#331313", position: "absolute", right: 50 }}>In lavorazione</div>
+                                    }
+                                    <h2 style={{ marginTop: 10, marginBottom: 20 }}>{report.customer}</h2>
+                                </div>
+                                <p>{report.description}</p>
+                                <table style={{ width: "100%" }}>
+                                    <tbody>
+                                        <tr>
+                                            <td style={{ borderBottom: "0px", fontWeight: "bold" }}>Materiali</td>
+                                            {report.materials.map((material) => (
+                                                <td style={{ borderBottom: "0px" }}><p className="table_elements">{material.quantity} {material.unit === "n" ? "x" : material.unit} {material.name}</p></td>
+                                            ))}
+                                        </tr>
+                                        <tr>
+                                            <td style={{ borderBottom: "0px", fontWeight: "bold" }}>Operatori</td>
+                                            {report.labour.map((worker) => (
+                                                <td style={{ borderBottom: "0px" }}><p className="table_elements">{worker.name} {worker.surname}</p></td>
+                                            ))}
+                                        </tr>
+                                        <tr>
+                                            <td style={{ borderBottom: "0px", fontWeight: "bold" }}>Mezzi</td>
+                                            {report.vehicle.map((vehicle) => (
+                                                <td style={{ borderBottom: "0px" }}><p className="table_elements">{vehicle.name}-{vehicle.plate}</p></td>
+                                            ))}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <p>{report.note}</p>
+                            </div>
+                                : report.description}</td>
+                            <td hidden={selectedReport === report}>{report.labour.map
                                 ((worker) => (
                                     <p className="table_elements">{worker.name} {worker.surname}</p>
                                 ))}
                             </td>
-                            <td>{report.materials.map
+                            <td hidden={selectedReport === report}>{report.materials.map
                                 ((material) => (
                                     <p className="table_elements">{material.name}</p>
                                 ))}
                             </td>
-                            <td>
+                            <td hidden={selectedReport === report}>
                                 {report.completed ? <div className="date" style={{ backgroundColor: "#d4f4cd", color: "#133213" }}>Completato</div>
                                     :
                                     <div className="date" style={{ backgroundColor: "#f4d4d4", color: "#331313" }}>In lavorazione</div>}
                             </td>
                             <td>
-                                <button className="button" onClick={() => setSelectedReport(selectedReport === report ? null : report)
-                                }>{selectedReport === report ? "Riduci" : "Espandi"}</button>
+                                <IoChevronDown color={"grey"} size={24} style={selectedReport === report ? {
+                                    transform: "rotate(180deg)",
+                                    transition: "transform 0.5s ease-in-out",
+                                    cursor: "pointer"
+                                } : {
+                                    transform: "rotate(0deg)",
+                                    transition: "transform 0.5s ease-in-out",
+                                    cursor: "pointer"
+                                }} 
+                                onClick={() => {
+                                    if (selectedReport === report) {
+                                        setSelectedReport({});
+                                    } else {
+                                        setSelectedReport(report);
+                                    }
+                                }
+                                } />
+
+                                <MdEdit color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer" }} onClick={() => { console.log("edit") }} />
+                                <MdOutlineDeleteForever color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer" }} onClick={() => { console.log("delete") }} />
+
                             </td>
                         </tr>
                     ))}

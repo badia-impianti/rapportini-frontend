@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Splash = () => {
 
@@ -21,9 +22,19 @@ const Splash = () => {
         .catch((err) => {
             console.log("Error: ", err);
         });
+
     return (
-        <div>
-        <h1>Splash</h1>
+        <div style={
+            // center the div
+            {
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+            }
+        }>
+            <h1>Caricamento in corso</h1>
+            <LoadingSpinner />
         </div>
     );
     }

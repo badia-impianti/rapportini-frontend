@@ -1,15 +1,67 @@
 import React, { useEffect } from "react";
 import { IoClose } from "react-icons/io5";
+import LoadingError from "../components/LoadingError";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Add = () => {
 
+    //Page state
+    const [loadingError, setLoadingError] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(true);
+
+    //Page data
     const [date, setDate] = React.useState("");
     const [customer, setCustomer] = React.useState("");
     const [description, setDescription] = React.useState("");
     const [notes, setNotes] = React.useState("");
-
     const [materials, setMaterials] = React.useState([{ name: "", quantity: "", unit: "n" }]);
+    const [users, setUsers] = React.useState([]);
+    const [vehicles, setVehicles] = React.useState([]);
 
+
+    //retriever useEffects
+    useEffect( () => {
+        fetch("https://backend.rapportini.rainierihomecollection.it/users", {
+            method: "GET",
+            credentials: "include",
+        })
+            .then((res) => {
+                if (res.status === 200) {
+                    res.json().then((data) => {
+                        setUsers(data);
+                    });
+                }
+            })
+            .catch((err) => {
+                setLoadingError(true);
+            });
+
+    }, []);
+
+    useEffect(() => {
+        fetch("https://backend.rapportini.rainierihomecollection.it/vehicles", {
+            method: "GET",
+            credentials: "include",
+        })
+            .then((res) => {
+                if (res.status === 200) {
+                    res.json().then((data) => {
+                        setVehicles(data);
+                    });
+                }
+            })
+            .catch((err) => {
+                setLoadingError(true);
+            })
+    }, []);
+
+
+    //Disable Loading useEffects
+    useEffect(() => {
+        if (users.length !== 0 && vehicles.length !== 0) {
+            setIsLoading(false);
+        }
+    }, [users, vehicles]);
 
     useEffect(() => {
         //if last material is filled, add a new empty material
@@ -18,7 +70,10 @@ const Add = () => {
         }
     }, [materials]);
 
+
     return (
+        loadingError ? <LoadingError /> :
+            isLoading ? <LoadingSpinner /> :
         <div style={{ alignContent: "center", textAlign: "center", width: "100%" }}>
             <h1>Nuovo Rapporto</h1>
             <form style={{ textAlign: "-moz-center", width: "100%" }}>
@@ -115,7 +170,6 @@ const Add = () => {
                         }
                 </tbody>
             </table>
-
 
 
         </div>

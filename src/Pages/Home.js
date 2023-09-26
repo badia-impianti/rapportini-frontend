@@ -97,7 +97,7 @@ const Home = () => {
                                         </tr>
                                         <tr>
                                             <td style={{ borderBottom: "0px", fontWeight: "bold" }}>Mezzi</td>
-                                            {report.vehicle.map((vehicle) => (
+                                            {report.vehicles.map((vehicle) => (
                                                 <td style={{ borderBottom: "0px" }}><p className="table_elements">{vehicle.name}-{vehicle.plate}</p></td>
                                             ))}
                                         </tr>

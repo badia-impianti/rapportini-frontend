@@ -2,9 +2,11 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { IoPerson, IoCalendar, IoClipboard, IoBulb, IoPeople, IoCheckmark, IoChevronForward, IoChevronBack, IoChevronDown, IoTrashBin, IoPencil, } from "react-icons/io5";
 import { MdEdit, MdOutlineDeleteForever } from "react-icons/md";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Home = () => {
 
+    const [isLoading, setIsLoading] = useState(true);
     const [pageNumber, setPageNumber] = useState(0);
     const [pageCount, setPageCount] = useState(1);
 
@@ -41,6 +43,7 @@ const Home = () => {
                     res.json().then((data) => {
                         console.log(data);
                         setReports(data);
+                        setIsLoading(false);
                     });
                 }
             })
@@ -64,6 +67,8 @@ const Home = () => {
                         <th />
                     </tr>
                 </thead>
+
+                {isLoading && <LoadingSpinner />}
                 <tbody>
                     {reports.map((report) => (
                         <tr style={selectedReport === report ? { height: 500, transition: "height 0.5s ease-in-out" } : { height: 50, transition: "height 0.5s ease-in-out" }}>
@@ -130,7 +135,7 @@ const Home = () => {
                                     transform: "rotate(0deg)",
                                     transition: "transform 0.5s ease-in-out",
                                     cursor: "pointer"
-                                }} 
+                                }}
                                 onClick={() => {
                                     if (selectedReport === report) {
                                         setSelectedReport({});

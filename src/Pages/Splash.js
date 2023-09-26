@@ -24,18 +24,7 @@ const Splash = () => {
         });
 
     return (
-        <div style={
-            // center the div
-            {
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-            }
-        }>
-            <h1>Caricamento in corso</h1>
-            <LoadingSpinner />
-        </div>
+        <LoadingSpinner />
     );
     }
 

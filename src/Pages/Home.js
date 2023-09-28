@@ -1,9 +1,15 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { IoPerson, IoCalendar, IoClipboard, IoBulb, IoPeople, IoCheckmark, IoChevronForward, IoChevronBack, IoChevronDown, IoTrashBin, IoPencil, } from "react-icons/io5";
+import { IoPerson, IoCalendar, IoClipboard, IoBulb, IoPeople, IoCheckmark, IoChevronForward, IoChevronBack, IoChevronDown, } from "react-icons/io5";
 import { MdEdit, MdOutlineDeleteForever } from "react-icons/md";
+import LoadingSpinner from "../components/LoadingSpinner";
+import LoadingError from "../components/LoadingError";
 
 const Home = () => {
+
+    //Page state
+    const [isLoading, setIsLoading] = useState(true);
+    const [loadingError, setLoadingError] = useState(false);
 
     const [pageNumber, setPageNumber] = useState(0);
     const [pageCount, setPageCount] = useState(1);
@@ -21,13 +27,12 @@ const Home = () => {
             .then((res) => {
                 if (res.status === 200) {
                     res.json().then((data) => {
-                        console.log(data);
                         setPageCount(Math.ceil(data.works / 10));
                     });
                 }
             })
             .catch((err) => {
-                console.log("Error: ", err);
+                setLoadingError(true);
             });
     }, []);
 
@@ -39,13 +44,13 @@ const Home = () => {
             .then((res) => {
                 if (res.status === 200) {
                     res.json().then((data) => {
-                        console.log(data);
                         setReports(data);
+                        setIsLoading(false);
                     });
                 }
             })
             .catch((err) => {
-                console.log("Error: ", err);
+                setLoadingError(true);
             });
     }, [pageNumber]);
 
@@ -64,6 +69,9 @@ const Home = () => {
                         <th />
                     </tr>
                 </thead>
+
+                { isLoading && <LoadingSpinner /> }
+                { loadingError && <LoadingError />}
                 <tbody>
                     {reports.map((report) => (
                         <tr style={selectedReport === report ? { height: 500, transition: "height 0.5s ease-in-out" } : { height: 50, transition: "height 0.5s ease-in-out" }}>
@@ -130,7 +138,7 @@ const Home = () => {
                                     transform: "rotate(0deg)",
                                     transition: "transform 0.5s ease-in-out",
                                     cursor: "pointer"
-                                }} 
+                                }}
                                 onClick={() => {
                                     if (selectedReport === report) {
                                         setSelectedReport({});

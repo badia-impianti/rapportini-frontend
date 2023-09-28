@@ -1,9 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
+import LoadingError from "../components/LoadingError";
 
 const Splash = () => {
 
+    const [loadingError, setLoadingError] = useState(false);
     const navigate = useNavigate();
 
     fetch('https://backend.rapportini.rainierihomecollection.it/whoami', {
@@ -20,22 +22,11 @@ const Splash = () => {
             }
         })
         .catch((err) => {
-            console.log("Error: ", err);
+            setLoadingError(true);
         });
 
     return (
-        <div style={
-            // center the div
-            {
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-            }
-        }>
-            <h1>Caricamento in corso</h1>
-            <LoadingSpinner />
-        </div>
+        loadingError ? <LoadingError /> : <LoadingSpinner />
     );
     }
 

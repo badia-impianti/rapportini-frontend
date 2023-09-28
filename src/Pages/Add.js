@@ -3,6 +3,11 @@ import { IoClose, IoAdd } from "react-icons/io5";
 
 const Add = () => {
 
+    //Page state
+    const [loadingError, setLoadingError] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(true);
+
+    //Page data
     const [date, setDate] = React.useState("");
     const [customer, setCustomer] = React.useState("");
     const [description, setDescription] = React.useState("");
@@ -77,6 +82,8 @@ const Add = () => {
     }, [labour]);
 
     return (
+        loadingError ? <LoadingError /> :
+            isLoading ? <LoadingSpinner /> :
         <div style={{ alignContent: "center", textAlign: "center", width: "100%" }}>
             <h1>Nuovo Rapporto</h1>
             <form style={{ textAlign: "-moz-center", width: "100%" }}>

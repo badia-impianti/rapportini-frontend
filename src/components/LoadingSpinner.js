@@ -1,8 +1,6 @@
 import React from "react";
 import "./LoadingSpinner.css";
 
-//set css attributes
-
 
 export default function LoadingSpinner() {
 

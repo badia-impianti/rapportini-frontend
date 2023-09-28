@@ -1,7 +1,30 @@
 .mainContainer {
-
+  margin: 5%;
 }
 
-h2{
-
+.infoAndPhotosContainer{
+    display: flex;
+    width: 100%;
+    gap: 50px;
 }
+
+.infoContainer{
+    flex: 2;
+    text-align: justify;
+}
+
+.photosContainer{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.mainImage {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+

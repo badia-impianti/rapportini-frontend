@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { IoPerson, IoCalendar, IoClipboard, IoBulb, IoPeople, IoCheckmark, IoChevronForward, IoChevronBack, IoChevronDown, IoAdd } from "react-icons/io5";
+import { IoPerson, IoCalendar, IoClipboard, IoBulb, IoPeople, IoCheckmark, IoChevronForward, IoChevronBack, IoResize, IoAdd } from "react-icons/io5";
 import { MdEdit, MdOutlineDeleteForever } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -11,6 +11,8 @@ const Home = () => {
     // Set navigatation bar title
     const navigate = useNavigate();
 
+    const isMobile = window.innerWidth < 768;
+
     //Page state
     const [isLoading, setIsLoading] = useState(true);
     const [loadingError, setLoadingError] = useState(false);
@@ -19,8 +21,6 @@ const Home = () => {
     const [pageCount, setPageCount] = useState(1);
 
     const [reports, setReports] = useState([]);
-
-    const [selectedReport, setSelectedReport] = useState({});
 
 
     useEffect(() => {
@@ -61,10 +61,13 @@ const Home = () => {
     return (
         <div>
             <h1 style={{ margin: 20 }}>Rapportini</h1>
-            <button className="button" style={{ position: "absolute", top: 10, right: 20 }} onClick={() => { navigate("/add") }}>Aggiungi Nuovo
+            <button hidden={isMobile}className="button" style={{ position: "absolute", top: 10, right: 20 }} onClick={() => { navigate("/add") }}>Aggiungi Nuovo
                 <IoAdd size={24} style={{ marginLeft: 10, verticalAlign: "middle" }} />
             </button>
-            <table>
+            <button hidden={!isMobile} className="button" style={{ position: "absolute", top: 10, right: 10, width: "fit-content", minWidth: "unset" }} onClick={() => { navigate("/add") }}>
+                <IoAdd size={30} style={{verticalAlign: "middle" }} />
+            </button>
+            <table hidden={isMobile}>
                 <thead>
                     <tr>
                         <th><IoCalendar size={20} style={{ verticalAlign: "bottom", marginRight: "4px" }} /> Data</th>
@@ -81,50 +84,18 @@ const Home = () => {
                 {loadingError && <LoadingError />}
                 <tbody>
                     {reports.map((report) => (
-                        <tr style={selectedReport === report ? { height: 500, transition: "height 0.5s ease-in-out" } : { height: 50, transition: "height 0.5s ease-in-out" }}>
+                        <tr>
                             <td><p className="date">{
                                 // turn sql date into dd/mm/yyyy
-                                new Date(report.completionTime).toLocaleString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                                report.labour[0] && new Date(report.labour[0].date).toLocaleString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' })
                             }</p></td>
-                            <td hidden={selectedReport === report}>{report.customer}</td>
-                            <td colSpan={selectedReport == report ? 5 : 1} >{selectedReport === report ? <div>
-                                <div style={{ position: "relative" }}>
-                                    {report.completed ? <div className="date" style={{ backgroundColor: "#d4f4cd", color: "#133213", position: "absolute", right: 50 }}>Completato</div>
-                                        :
-                                        <div className="date" style={{ backgroundColor: "#f4d4d4", color: "#331313", position: "absolute", right: 50 }}>In lavorazione</div>
-                                    }
-                                    <h2 style={{ marginTop: 10, marginBottom: 20 }}>{report.customer}</h2>
-                                </div>
-                                <p>{report.description}</p>
-                                <table style={{ width: "100%" }}>
-                                    <tbody>
-                                        <tr>
-                                            <td style={{ borderBottom: "0px", fontWeight: "bold" }}>Materiali</td>
-                                            {report.materials.map((material) => (
-                                                <td style={{ borderBottom: "0px" }}><p className="table_elements">{material.quantity} {material.unit === "n" ? "x" : material.unit} {material.name}</p></td>
-                                            ))}
-                                        </tr>
-                                        <tr>
-                                            <td style={{ borderBottom: "0px", fontWeight: "bold" }}>Operatori</td>
-                                            {report.labour.map((worker) => (
-                                                <td style={{ borderBottom: "0px" }}><p className="table_elements">{worker.name} {worker.surname}</p></td>
-                                            ))}
-                                        </tr>
-                                        <tr>
-                                            <td style={{ borderBottom: "0px", fontWeight: "bold" }}>Mezzi</td>
-                                            {report.vehicles.map((vehicle) => (
-                                                <td style={{ borderBottom: "0px" }}><p className="table_elements">{vehicle.name}-{vehicle.plate}</p></td>
-                                            ))}
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <p>{report.note}</p>
-                            </div>
-                                :
+                            <td>{report.customer}</td>
+                            <td >{
+                                
                                 //if description is too long, show only the first 150 characters and then a "..."
                                 report.description.length > 150 ? <p>{report.description.substring(0, 150)}...</p> : <p>{report.description}</p>
                             }</td>
-                            <td hidden={selectedReport === report}>{
+                            <td>{
                                 report.labour.forEach(day => {
                                     day.users.map((user) => {
                                         return <p className="table_elements">{user.name} {user.surname}</p>
@@ -132,7 +103,7 @@ const Home = () => {
                                     )
                                 })
                             }</td>
-                            <td hidden={selectedReport === report}>{report.materials.map
+                            <td>{report.materials.map
                                 ((material) => {
                                     // if there are more than 3 materials, show only the first 3 and then a "..."
                                     if (report.materials.indexOf(material) < 3) {
@@ -142,32 +113,50 @@ const Home = () => {
                                     }
                                 })}
                             </td>
-                            <td hidden={selectedReport === report}>
+                            <td>
                                 {report.completed ? <div className="date" style={{ backgroundColor: "#d4f4cd", color: "#133213" }}>Completato</div>
                                     :
                                     <div className="date" style={{ backgroundColor: "#f4d4d4", color: "#331313" }}>In lavorazione</div>}
                             </td>
                             <td>
-                                <IoChevronDown color={"grey"} size={24} style={selectedReport === report ? {
-                                    transform: "rotate(180deg)",
-                                    transition: "transform 0.5s ease-in-out",
-                                    cursor: "pointer"
-                                } : {
-                                    transform: "rotate(0deg)",
-                                    transition: "transform 0.5s ease-in-out",
-                                    cursor: "pointer"
-                                }}
-                                    onClick={() => {
-                                        if (selectedReport === report) {
-                                            setSelectedReport({});
-                                        } else {
-                                            setSelectedReport(report);
-                                        }
-                                    }
-                                    } />
-
+                                <IoResize color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer" }} onClick={() => { navigate("/work/" + report.id) }} />
                                 <MdEdit color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer" }} onClick={() => { console.log("edit") }} />
                                 <MdOutlineDeleteForever color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer" }} onClick={() => { console.log("delete") }} />
+
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <table hidden={!isMobile} style={{ paddingInline: 5}}>
+                <thead>
+                    <tr>
+                        <th><IoCalendar size={20} style={{ verticalAlign: "bottom", marginRight: "4px" }} /> Data</th>
+                        <th><IoPerson size={20} style={{ verticalAlign: "bottom", marginRight: "4px" }} /> Cliente</th>
+                        <th><IoCheckmark size={20} style={{ verticalAlign: "bottom", marginRight: "4px" }} /> Stato</th>
+                        <th />
+                    </tr>
+                </thead>
+
+                {isLoading && <LoadingSpinner />}
+                {loadingError && <LoadingError />}
+                <tbody>
+                    {reports.map((report) => (
+                        <tr>
+                            <td style={{ paddingInline: 0}}><p className="date">{
+                                // turn sql date into dd/mm/yyyy
+                                report.labour[0] && new Date(report.labour[0].date).toLocaleString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                            }</p></td>
+                            <td style={{ paddingInline: 3}}>{report.customer}</td>
+                            <td style={{ paddingInline: 0}}>
+                                {report.completed ? <div className="date" style={{ backgroundColor: "#d4f4cd", color: "#133213" }}>Completato</div>
+                                    :
+                                    <div className="date" style={{ backgroundColor: "#f4d4d4", color: "#331313" }}>In lavorazione</div>}
+                            </td>
+                            <td style={{ paddingInline: 0, paddingRight: 5}}>
+                                <IoResize color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer", margin: 5 }} onClick={() => { navigate("/work/" + report.id) }} />
+                                <MdEdit color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer", margin: 5 }} onClick={() => { console.log("edit") }} />
+                                <MdOutlineDeleteForever color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer", margin: 5 }} onClick={() => { console.log("delete") }} />
 
                             </td>
                         </tr>

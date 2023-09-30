@@ -1,8 +1,8 @@
-import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
-import {IoPerson, IoTime, IoBookmark} from "react-icons/io5";
+import { IoPerson, IoTime, IoBookmark } from "react-icons/io5";
 
 import "./Work.css"
 
@@ -13,7 +13,7 @@ const Work = () => {
     //Page state
     const [isLoading, setIsLoading] = useState(true);
     const [loadingError, setLoadingError] = useState(false)
-    const [imagesUrls, setImagesUrls] = useState([{url:"zurl", icon:"zurl"}]); //Array of strings [url1, url2, ...
+    const [imagesUrls, setImagesUrls] = useState([{ url: "zurl", icon: "zurl" }]); //Array of strings [url1, url2, ...
 
     //Page data
     const [work, setWork] = useState({});
@@ -76,82 +76,82 @@ const Work = () => {
     }, []);
 
     return (
-        loadingError ? <LoadingError/> :
-        isLoading ? <LoadingSpinner /> :
-            <div className="mainContainer">
-                <h1>Riepilogo per il lavoro n°{work.id}</h1>
-                <div className="infoAndPhotosContainer">
-                    <div className="infoContainer">
-                        <p><IoPerson /> <b>{ work.customer } </b></p>
-                        <p><IoTime/> <b>Iniziato:</b> { new Date(work.labour[0].date).toLocaleDateString() } -  <IoTime /> <b>Terminato:</b> { new Date(work.labour[work.labour.length - 1].date).toLocaleDateString() }</p>
-                        <p>{ work.description }</p>
-                        <p><IoBookmark /> { work.note } </p>
+        loadingError ? <LoadingError /> :
+            isLoading ? <LoadingSpinner /> :
+                <div className="mainContainer">
+                    <h1>Riepilogo per il lavoro n°{work.id}</h1>
+                    <div className="infoAndPhotosContainer">
+                        <div className="infoContainer">
+                            <p><IoPerson /> <b>{work.customer} </b></p>
+                            <p><IoTime /> <b>Iniziato:</b> {new Date(work.labour[0].date).toLocaleDateString()} -  <IoTime /> <b>Terminato:</b> {new Date(work.labour[work.labour.length - 1].date).toLocaleDateString()}</p>
+                            <p>{work.description}</p>
+                            <p><IoBookmark /> {work.note} </p>
+                        </div>
+                        <div className="photosContainer">
+                            <img src={imagesUrls[0].url} alt="No Image" className="mainImage" />
+                            <p>qui mettere foto piccole e selezionabili  (tipo amazon)</p>
+                        </div>
                     </div>
-                    <div className="photosContainer">
-                        <img src={ imagesUrls[0].url } alt={"No Image"} className="mainImage"/>
-                        <p>qui mettere foto piccole e selezionabili  (tipo amazon)</p>
+
+                    <div className="materialsContainer">
+                        <h2>Materiali utilizzati</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Unità</th>
+                                    <th>Quantità</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {work.materials.map((material) => (
+                                    <tr key={material.id}>
+                                        <td>{material.name}</td>
+                                        <td>{material.unit}</td>
+                                        <td>{material.quantity}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div className={"materialsContainer"}>
+                        <h2>Manodopera</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Lavoratore</th>
+                                    <th>Ore</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {work.labour.map((labour) => (
+                                    <tr >
+                                        <td>
+                                            <div className="date">{new Date(labour.date).toLocaleDateString()}</div>
+                                        </td>
+                                        <td>{labour.users.map((user) =>
+                                            <p>{user.name} {user.surname} </p>
+                                        )}
+                                            <b>Totale Giornaliero:</b>
+                                        </td>
+                                        <td>{labour.users.map((user) =>
+                                            <p>{user.hours}:{user.minutes} </p>
+                                        )}
+                                            <b>{labour.totalHours}:{labour.totalMinutes}</b>
+                                        </td>
+                                    </tr>
+                                ))}
+                                <tr>
+                                    <td></td>
+                                    <td><b>Totale:</b></td>
+                                    <td><b>{work.totalHours}:{work.totalMinutes}</b></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-
-                <div className="materialsContainer">
-                    <h2>Materiali utilizzati</h2>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Unità</th>
-                            <th>Quantità</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {work.materials.map((material) => (
-                            <tr key={material.id}>
-                                <td>{material.name}</td>
-                                <td>{material.unit}</td>
-                                <td>{material.quantity}</td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                </div>
-
-                <div className={"materialsContainer"}>
-                    <h2>Manodopera</h2>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>Lavoratore</th>
-                            <th>Ore</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {work.labour.map((labour) => (
-                            <tr >
-                                <td>
-                                    <div className="date">{new Date(labour.date).toLocaleDateString()}</div>
-                                    </td>
-                                <td>{labour.users.map((user) =>
-                                    <p>{user.name} {user.surname} </p>
-                                )}
-                                    <b>Totale Giornaliero:</b>
-                                </td>
-                                <td>{labour.users.map((user) =>
-                                    <p>{user.hours}:{user.minutes} </p>
-                                )}
-                                    <b>{labour.totalHours}:{labour.totalMinutes}</b>
-                                </td>
-                            </tr>
-                        ))}
-                        <tr>
-                            <td></td>
-                            <td><b>Totale:</b></td>
-                            <td><b>{work.totalHours}:{work.totalMinutes}</b></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
     );
 }
 

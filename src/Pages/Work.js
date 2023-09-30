@@ -83,12 +83,12 @@ const Work = () => {
                 <div className="infoAndPhotosContainer">
                     <div className="infoContainer">
                         <p><IoPerson /> <b>{ work.customer } </b></p>
-                        <p><IoTime/> <b>Iniziato:</b> { work.labour[0].date } -  <IoTime /> <b>Terminato:</b> { work.labour[work.labour.length - 1].date }</p>
+                        <p><IoTime/> <b>Iniziato:</b> { new Date(work.labour[0].date).toLocaleDateString() } -  <IoTime /> <b>Terminato:</b> { new Date(work.labour[work.labour.length - 1].date).toLocaleDateString() }</p>
                         <p>{ work.description }</p>
                         <p><IoBookmark /> { work.note } </p>
                     </div>
                     <div className="photosContainer">
-                        <img src={ imagesUrls[0].url } alt={"No Imageì"} className="mainImage"/>
+                        <img src={ imagesUrls[0].url } alt={"No Image"} className="mainImage"/>
                         <p>qui mettere foto piccole e selezionabili  (tipo amazon)</p>
                     </div>
                 </div>
@@ -128,7 +128,9 @@ const Work = () => {
                         <tbody>
                         {work.labour.map((labour) => (
                             <tr >
-                                <td>{labour.date}</td>
+                                <td>
+                                    <div className="date">{new Date(labour.date).toLocaleDateString()}</div>
+                                    </td>
                                 <td>{labour.users.map((user) =>
                                     <p>{user.name} {user.surname} </p>
                                 )}

@@ -1,8 +1,13 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoClose, IoAdd } from "react-icons/io5";
+<<<<<<< HEAD
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
+=======
+import LoadingError from "../components/LoadingError";
+import LoadingSpinner from "../components/LoadingSpinner";
+>>>>>>> 3e88c025c29e64a141c1a4b2d4f00ec274974aa6
 
 const Add = () => {
 
@@ -21,10 +26,10 @@ const Add = () => {
     const [completed, setCompleted] = React.useState(false);
     const [users, setUsers] = React.useState([]);
     const [vehicles, setVehicles] = React.useState([]);
-
     const [materials, setMaterials] = React.useState([{ name: "", quantity: "", unit: "n" }]);
     const [labour, setLabour] = React.useState([{ date: "", laborers: [{ id: "", name: "", surname: "", hours: "", minutes: "" }], vehicles: [{ id: "", name: "", plate: "" }] }]);
 
+    //Fetching useEffect
     useEffect(() => {
         fetch("https://backend.rapportini.rainierihomecollection.it/users", {
             method: "GET",
@@ -33,14 +38,13 @@ const Add = () => {
             .then((response) => {
                 if (response.status === 200) {
                     response.json().then((data) => {
-                        console.log(data);
                         setUsers(data.users);
                         setIsLoading(false);
                     });
                 }
             })
             .catch((err) => {
-                console.log("Error: ", err);
+                setLoadingError(true);
             });
 
         fetch("https://backend.rapportini.rainierihomecollection.it/vehicles", {
@@ -50,15 +54,20 @@ const Add = () => {
             .then((response) => {
                 if (response.status === 200) {
                     response.json().then((data) => {
-                        console.log(data);
                         setVehicles(data.vehicles);
                     });
                 }
             })
             .catch((err) => {
-                console.log("Error: ", err);
+               setLoadingError(true);
             });
     }, []);
+
+    useEffect(() => {
+        if (users.length > 0 && vehicles.length > 0) {
+            setIsLoading(false);
+        }
+    }, [users, vehicles]);
 
     useEffect(() => {
         //if last material is filled, add a new empty material

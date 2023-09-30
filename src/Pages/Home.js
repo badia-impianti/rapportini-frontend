@@ -1,11 +1,15 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { IoPerson, IoCalendar, IoClipboard, IoBulb, IoPeople, IoCheckmark, IoChevronForward, IoChevronBack, IoChevronDown, } from "react-icons/io5";
+import { IoPerson, IoCalendar, IoClipboard, IoBulb, IoPeople, IoCheckmark, IoChevronForward, IoChevronBack, IoChevronDown, IoAdd } from "react-icons/io5";
 import { MdEdit, MdOutlineDeleteForever } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
 
 const Home = () => {
+
+    // Set navigatation bar title
+    const navigate = useNavigate();
 
     //Page state
     const [isLoading, setIsLoading] = useState(true);
@@ -56,7 +60,10 @@ const Home = () => {
 
     return (
         <div>
-            <h1>Home</h1>
+            <h1 style={{ margin: 20 }}>Rapportini</h1>
+            <button className="button" style={{ position: "absolute", top: 10, right: 20 }} onClick={() => { navigate("/add") }}>Aggiungi Nuovo
+                <IoAdd size={24} style={{ marginLeft: 10, verticalAlign: "middle" }} />
+            </button>
             <table>
                 <thead>
                     <tr>
@@ -70,8 +77,8 @@ const Home = () => {
                     </tr>
                 </thead>
 
-                { isLoading && <LoadingSpinner /> }
-                { loadingError && <LoadingError />}
+                {isLoading && <LoadingSpinner />}
+                {loadingError && <LoadingError />}
                 <tbody>
                     {reports.map((report) => (
                         <tr style={selectedReport === report ? { height: 500, transition: "height 0.5s ease-in-out" } : { height: 50, transition: "height 0.5s ease-in-out" }}>
@@ -113,16 +120,27 @@ const Home = () => {
                                 </table>
                                 <p>{report.note}</p>
                             </div>
-                                : report.description}</td>
-                            <td hidden={selectedReport === report}>{report.labour.map
-                                ((worker) => (
-                                    <p className="table_elements">{worker.name} {worker.surname}</p>
-                                ))}
-                            </td>
+                                :
+                                //if description is too long, show only the first 150 characters and then a "..."
+                                report.description.length > 150 ? <p>{report.description.substring(0, 150)}...</p> : <p>{report.description}</p>
+                            }</td>
+                            <td hidden={selectedReport === report}>{
+                                report.labour.forEach(day => {
+                                    day.users.map((user) => {
+                                        return <p className="table_elements">{user.name} {user.surname}</p>
+                                    }
+                                    )
+                                })
+                            }</td>
                             <td hidden={selectedReport === report}>{report.materials.map
-                                ((material) => (
-                                    <p className="table_elements">{material.name}</p>
-                                ))}
+                                ((material) => {
+                                    // if there are more than 3 materials, show only the first 3 and then a "..."
+                                    if (report.materials.indexOf(material) < 3) {
+                                        return <p className="table_elements">{material.quantity} {material.unit === "n" ? "x" : material.unit} {material.name}</p>
+                                    } else if (report.materials.indexOf(material) === 3) {
+                                        return <p className="table_elements">...</p>
+                                    }
+                                })}
                             </td>
                             <td hidden={selectedReport === report}>
                                 {report.completed ? <div className="date" style={{ backgroundColor: "#d4f4cd", color: "#133213" }}>Completato</div>
@@ -139,14 +157,14 @@ const Home = () => {
                                     transition: "transform 0.5s ease-in-out",
                                     cursor: "pointer"
                                 }}
-                                onClick={() => {
-                                    if (selectedReport === report) {
-                                        setSelectedReport({});
-                                    } else {
-                                        setSelectedReport(report);
+                                    onClick={() => {
+                                        if (selectedReport === report) {
+                                            setSelectedReport({});
+                                        } else {
+                                            setSelectedReport(report);
+                                        }
                                     }
-                                }
-                                } />
+                                    } />
 
                                 <MdEdit color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer" }} onClick={() => { console.log("edit") }} />
                                 <MdOutlineDeleteForever color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer" }} onClick={() => { console.log("delete") }} />

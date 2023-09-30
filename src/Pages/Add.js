@@ -1,13 +1,8 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoClose, IoAdd } from "react-icons/io5";
-<<<<<<< HEAD
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
-=======
-import LoadingError from "../components/LoadingError";
-import LoadingSpinner from "../components/LoadingSpinner";
->>>>>>> 3e88c025c29e64a141c1a4b2d4f00ec274974aa6
 
 const Add = () => {
 

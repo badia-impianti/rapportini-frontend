@@ -5,6 +5,10 @@
 
 }
 
+.mainContainer {
+  margin: 5%;
+}
+
 .App {
   text-align: center;
   background-color:#ffffff;

@@ -3,6 +3,8 @@
 }
 
 .infoAndPhotosContainer{
+    margin-top: 80px;
+    margin-bottom: 80px;
     display: flex;
     width: 100%;
     gap: 50px;
@@ -26,5 +28,11 @@
     object-fit: cover;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 767px) {
+    .infoAndPhotosContainer {
+        flex-direction: column;
+    }
 }
 

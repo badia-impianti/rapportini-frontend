@@ -3,6 +3,8 @@ import Electricity from "../Images/Electricity.jpg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import  {useAuth}  from "../useAuth";
+import LoadingError from "../components/LoadingError";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 
 const Login = () => {
@@ -10,13 +12,17 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [loadingError, setLoadingError] = useState(false);
+    const [wrongCredentials, setWrongCredentials] = useState(false);
+
     const { auth, setAuth } = useAuth();
 
     const navigate = useNavigate();
 
     const login = (e) => {
         e.preventDefault();
-        console.log("Login successful");
+        setIsLoading(true)
         fetch("https://backend.rapportini.rainierihomecollection.it/login", {
             method: "POST",
             headers: {
@@ -33,19 +39,29 @@ const Login = () => {
                     console.log("Login successful");
                     res.json().then((data) => {
                         setAuth(data);
-                        console.log(auth);
-
+                        setIsLoading()
                         navigate("/home");
                     });
                 }
+                else if (res.status === 401) {
+                    setIsLoading(false)
+                    setWrongCredentials(true)
+                }
+                else {
+                    setLoadingError(true)
+                }
             })
             .catch((err) => {
-                console.log("Error: ", err);
+                setLoadingError(true)
             });
     }
 
 
     return (
+
+        (loadingError) ? <LoadingError /> :
+        (isLoading) ? <LoadingSpinner /> :
+
         (window.innerWidth > 1000) ?
         <div style={{ display: "flex", flexDirection: "row", width: "100%", height: window.innerHeight + 1}}>
             <div style={{ position: "absolute", height: window.innerHeight + 1, width: 100, right: window.innerWidth / 100 * 30 - 50, borderRadius: "50%", backgroundColor: "#ffffff"}}/>
@@ -82,6 +98,7 @@ const Login = () => {
                         <input type="submit" value="Login" className="button" style={{marginTop: 35}} />
                     </form>
                 </div>
+                {wrongCredentials && <p style={{color: "red", textAlign: "center", marginTop: 20}}>Credenziali errate</p>}
                 <p style={{color: "grey", position: "absolute", bottom: 10, right: 10}} > {new Date().toLocaleString()} </p>
             </div>
         </div>

@@ -5,6 +5,7 @@ import { MdEdit, MdOutlineDeleteForever } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
+import {type} from "@testing-library/user-event/dist/type";
 
 const Home = () => {
 
@@ -58,6 +59,24 @@ const Home = () => {
             });
     }, [pageNumber]);
 
+    const userRetriver = (labour) => {
+        let users = []
+
+        labour.forEach((labour) => {
+            labour.users.forEach((user) => {
+                if (!users.some(e => e.name === user.name && e.surname === user.surname)) {
+                    users.push({name: user.name, surname: user.surname})
+                }
+            })
+        })
+        if (users.length > 3) {
+            const returnUsers = users.splice(0, 3)
+            returnUsers.push({name: "...", surname: ""})
+            return returnUsers
+        }
+        return users
+    }
+
     return (
         <div>
             <h1 style={{ margin: 20 }}>Rapportini</h1>
@@ -96,13 +115,12 @@ const Home = () => {
                                 report.description.length > 150 ? <p>{report.description.substring(0, 150)}...</p> : <p>{report.description}</p>
                             }</td>
                             <td>{
-                                report.labour.forEach(day => {
-                                    day.users.map((user) => {
-                                        return <p className="table_elements">{user.name} {user.surname}</p>
-                                    }
-                                    )
+                                // if there are more than 3 users, show only the first 3 and then a "..."
+                                userRetriver(report.labour).map((user) => {
+                                    return <p className="table_elements">{user.name} {user.surname}</p>
                                 })
-                            }</td>
+                            }
+                            </td>
                             <td>{report.materials.map
                                 ((material) => {
                                     // if there are more than 3 materials, show only the first 3 and then a "..."

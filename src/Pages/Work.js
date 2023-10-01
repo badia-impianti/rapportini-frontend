@@ -75,6 +75,30 @@ const Work = () => {
             })
     }, []);
 
+    const deleteWork = () => {
+        const confirm = window.confirm("Sei sicuro di voler eliminare il rapportino?");
+        if (!confirm) return;
+
+        fetch("https://backend.rapportini.rainierihomecollection.it/works/" + id, {
+            method: "DELETE",
+            credentials: "include",
+        })
+            .then((res) => {
+                if (res.status === 200) {
+                    window.location.href = "/works";
+                }
+                else if (res.status === 401) {
+                    window.alert("Non sei atorizzato ad eliminare questo rapportino; Sono necessari i privilegi di amministratore")
+                }
+                else {
+                    setLoadingError(true)
+                }
+            })
+            .catch((err) => {
+                setLoadingError(true)
+            });
+    }
+
     return (
         loadingError ? <LoadingError /> :
             isLoading ? <LoadingSpinner /> :
@@ -151,6 +175,7 @@ const Work = () => {
                             </tbody>
                         </table>
                     </div>
+                    <button className="deleteButton" style={{marginTop: "100px"}} onClick={deleteWork}>Elimina</button>
                 </div>
     );
 }

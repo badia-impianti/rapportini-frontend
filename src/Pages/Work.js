@@ -13,7 +13,7 @@ const Work = () => {
     //Page state
     const [isLoading, setIsLoading] = useState(true);
     const [loadingError, setLoadingError] = useState(false)
-    const [imagesUrls, setImagesUrls] = useState([{ url: "zurl", icon: "zurl" }]); //Array of strings [url1, url2, ...
+    const [imagesUrls, setImagesUrls] = useState([]); //Array of strings [url1, url2, ...
 
     //Page data
     const [work, setWork] = useState({});
@@ -112,8 +112,9 @@ const Work = () => {
                             <p><IoBookmark /> {work.note} </p>
                         </div>
                         <div className="photosContainer">
-                            <img src={imagesUrls[0].url} alt="No Image" className="mainImage" />
-                            <p>qui mettere foto piccole e selezionabili  (tipo amazon)</p>
+                            {imagesUrls.map((image) => (
+                                <img src={image.url} alt="Nessuna Immagine" className="images" />
+                                ))}
                         </div>
                     </div>
 

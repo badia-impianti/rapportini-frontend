@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { IoClose, IoAdd } from "react-icons/io5";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
+import { upload } from "@testing-library/user-event/dist/upload";
 
 const Add = () => {
 
@@ -12,19 +13,18 @@ const Add = () => {
     //Page state
     const [loadingError, setLoadingError] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(true);
-
     //Page data
-    const [date, setDate] = React.useState("");
     const [customer, setCustomer] = React.useState("");
     const [description, setDescription] = React.useState("");
     const [notes, setNotes] = React.useState("");
     const [completed, setCompleted] = React.useState(false);
+    const [images, setImages] = React.useState([]);
     const [users, setUsers] = React.useState([]);
     const [vehicles, setVehicles] = React.useState([]);
     const [materials, setMaterials] = React.useState([{ name: "", quantity: "", unit: "n" }]);
     const [labour, setLabour] = React.useState([{ date: "", laborers: [{ id: "", name: "", surname: "", hours: "", minutes: "" }], vehicles: [{ id: "", name: "", plate: "" }] }]);
 
-    //Fetching useEffect
+
     useEffect(() => {
         fetch("https://backend.rapportini.rainierihomecollection.it/users", {
             method: "GET",
@@ -93,18 +93,85 @@ const Add = () => {
         })
     }, [labour]);
 
+
+    const uploadImages = (id) => {
+        let formData = new FormData();
+        images.forEach((image) => {
+            formData.append("images", image);
+        })
+        fetch("https://backend.rapportini.rainierihomecollection.it/works/" + id + "/images", {
+            method: "POST",
+            credentials: "include",
+            body: formData
+        })
+            .then((response) => {
+                if (response.status === 200) {
+                    response.json().then((data) => {
+                        console.log(data);
+                    });
+                }
+            })
+            .catch((err) => {
+                console.log("Error: ", err);
+            });
+    }
+
+    const save = (e) => {
+        e.preventDefault();
+        let newMaterials = [...materials]
+        newMaterials.pop()
+        let newLabour = []
+        labour.forEach((val) => {
+            let newUsers = []
+            val.laborers.forEach((laborer) => {
+                if (laborer.id !== "") {
+                    newUsers.push(laborer)
+                }
+            })
+            let newVehicles = []
+            val.vehicles.forEach((vehicle) => {
+                if (vehicle.id !== "") {
+                    newVehicles.push(vehicle)
+                }
+            })
+            newLabour.push({ date: val.date, users: newUsers, vehicles: newVehicles })
+        })
+        let data = {
+            customer: customer,
+            description: description,
+            notes: notes,
+            completed: completed,
+            materials: newMaterials,
+            labour: newLabour
+        }
+        console.log(data)
+        fetch("https://backend.rapportini.rainierihomecollection.it/works", {
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify(data),
+        })
+            .then((response) => {
+                if (response.status === 200) {
+                    response.json().then((data) => {
+                        console.log(data);
+                        uploadImages();
+                        window.alert("Rapporto salvato con successo");
+                        navigate("/home");
+                    });
+                }
+            })
+            .catch((err) => {
+                console.log("Error: ", err);
+            });
+    }
+
+
     return (
         loadingError ? <LoadingError /> :
             isLoading ? <LoadingSpinner /> :
                 <div style={{ alignContent: "center", textAlign: "center", width: "100%" }}>
                     <h1>Nuovo Rapporto</h1>
                     <form style={{ textAlign: "-moz-center", width: "100%" }}>
-                        <div className="form__group field" >
-                            <input type="date" className="form__field" placeholder="Data" name="date" id='date' required
-                                onChange={e => setDate(e.target.value)}
-                            />
-                            <label for="date" className="form__label">Data</label>
-                        </div>
                         <div className="form__group field" >
                             <input type="text" className="form__field" placeholder="Cliente" name="customer" id='customer' required
                                 onChange={e => setCustomer(e.target.value)}
@@ -128,6 +195,18 @@ const Add = () => {
                         <p>
                             <label for="completed">Lavoro completato</label>
                         </p>
+                        </div>
+                        <div>
+                            <h2>Immagini</h2>
+                            <input type="file" id="images" name="images" accept="image/*" multiple 
+                            onChange={(e) => {
+                                let newImages = [...images]
+                                for (let i = 0; i < e.target.files.length; i++) {
+                                    newImages.push(e.target.files[i])
+                                }
+                                setImages(newImages)
+                            } 
+                            }/>
                         </div>
                     </form>
                     <h2>Materiali</h2>
@@ -366,37 +445,8 @@ const Add = () => {
                         setLabour([...labour, { date: "", laborers: [{ name: "", surname: "", hours: "", minutes: "" }], vehicles: [{ name: "", plate: "" }] }])
                     }} />
                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "100%" }}>
-                        <button className="button" style={{ width: "80%", maxWidth: 200, margin: 20 }} onClick={(e) => {
-                            e.preventDefault()
-                            let data = {
-                                date: date,
-                                customer: customer,
-                                description: description,
-                                notes: notes,
-                                materials: materials,
-                                labour: labour
-                            }
-                            console.log(data)
-                            fetch("https://backend.rapportini.rainierihomecollection.it/works", {
-                                method: "POST",
-                                credentials: "include",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify(data),
-                            })
-                                .then((response) => {
-                                    if (response.status === 200) {
-                                        response.json().then((data) => {
-                                            console.log(data);
-                                            navigate("/home");
-                                        });
-                                    }
-                                })
-                                .catch((err) => {
-                                    console.log("Error: ", err);
-                                });
-                        }}>Salva</button>
+                        <button className="button" style={{ width: "80%", maxWidth: 200, margin: 20 }} onClick={save}
+                        >Salva</button>
                     </div>
                 </div>
     )

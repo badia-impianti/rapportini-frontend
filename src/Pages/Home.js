@@ -5,7 +5,6 @@ import { MdEdit, MdOutlineDeleteForever } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
-import {type} from "@testing-library/user-event/dist/type";
 
 const Home = () => {
 
@@ -42,21 +41,7 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
-        fetch("https://backend.rapportini.rainierihomecollection.it/works/" + pageNumber, {
-            method: "GET",
-            credentials: "include",
-        })
-            .then((res) => {
-                if (res.status === 200) {
-                    res.json().then((data) => {
-                        setReports(data);
-                        setIsLoading(false);
-                    });
-                }
-            })
-            .catch((err) => {
-                setLoadingError(true);
-            });
+        loadReports();
     }, [pageNumber]);
 
     const userRetriver = (labour) => {
@@ -75,6 +60,48 @@ const Home = () => {
             return returnUsers
         }
         return users
+    }
+
+    const loadReports = () => {
+        setIsLoading(true);
+        fetch("https://backend.rapportini.rainierihomecollection.it/works/" + pageNumber, {
+            method: "GET",
+            credentials: "include",
+        })
+            .then((res) => {
+                if (res.status === 200) {
+                    res.json().then((data) => {
+                        setReports(data);
+                        setIsLoading(false);
+                    });
+                }
+            })
+            .catch((err) => {
+                setLoadingError(true);
+            }
+            );
+    }
+
+    const deleteReport = (report) => {
+        if (window.confirm("Sei sicuro di voler eliminare il rapportino?")) {
+            fetch("https://backend.rapportini.rainierihomecollection.it/works/" + report.id, {
+                method: "DELETE",
+                credentials: "include",
+            })
+                .then((res) => {
+                    if (res.status === 200) {
+                        res.json().then((data) => {
+                            loadReports();
+                        });
+                    }
+                    else if (res.status === 401) {
+                        window.alert("Non sei atorizzato ad eliminare questo rapportino; Sono necessari i privilegi di amministratore")
+                    }
+                })
+                .catch((err) => {
+                    setLoadingError(true);
+                });
+        }
     }
 
     return (
@@ -139,7 +166,7 @@ const Home = () => {
                             <td>
                                 <IoResize color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer" }} onClick={() => { navigate("/work/" + report.id) }} />
                                 <MdEdit color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer" }} onClick={() => { console.log("edit") }} />
-                                <MdOutlineDeleteForever color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer" }} onClick={() => { console.log("delete") }} />
+                                <MdOutlineDeleteForever color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer" }} onClick={() => { deleteReport(report) }} />
 
                             </td>
                         </tr>
@@ -175,7 +202,6 @@ const Home = () => {
                                 <IoResize color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer", margin: 5 }} onClick={() => { navigate("/work/" + report.id) }} />
                                 <MdEdit color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer", margin: 5 }} onClick={() => { console.log("edit") }} />
                                 <MdOutlineDeleteForever color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer", margin: 5 }} onClick={() => { console.log("delete") }} />
-
                             </td>
                         </tr>
                     ))}

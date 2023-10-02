@@ -15,7 +15,7 @@ export default function NavBar() {
             <div className="navbarLinks">
                 <a className="links" href="/home"><IoHomeOutline size={24} /></a>
                 <a className="links" href="/add"><IoAdd size={24} /></a>
-                <a className="links" href="/home"><IoSettingsOutline size={24} /></a>
+                <a className="links" href="/settings"><IoSettingsOutline size={24} /></a>
             </div>
         </div>
     );

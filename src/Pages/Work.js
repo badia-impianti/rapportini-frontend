@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { IoPerson, IoTime, IoBookmark } from "react-icons/io5";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
-import { IoPerson, IoTime, IoBookmark } from "react-icons/io5";
+
 
 import "./Work.css"
 
@@ -85,7 +86,7 @@ const Work = () => {
         })
             .then((res) => {
                 if (res.status === 200) {
-                    window.location.href = "/works";
+                    window.location.href = "/";
                 }
                 else if (res.status === 401) {
                     window.alert("Non sei atorizzato ad eliminare questo rapportino; Sono necessari i privilegi di amministratore")
@@ -102,10 +103,14 @@ const Work = () => {
     return (
         loadingError ? <LoadingError /> :
             isLoading ? <LoadingSpinner /> :
+
                 <div className="mainContainer">
                     <h1>Riepilogo per il lavoro n°{work.id}</h1>
                     <div className="infoAndPhotosContainer">
                         <div className="infoContainer">
+                            {work.completed ? <div className="date" style={{ backgroundColor: "#d4f4cd", color: "#133213", maxWidth: "100px", textAlign: "center" }}>Completato</div>
+                                :
+                                <div className="date" style={{ backgroundColor: "#f4d4d4", color: "#331313" }}>In lavorazione</div>}
                             <p><IoPerson /> <b>{work.customer} </b></p>
                             <p><IoTime /> <b>Iniziato:</b> {new Date(work.labour[0].date).toLocaleDateString()} -  <IoTime /> <b>Terminato:</b> {new Date(work.labour[work.labour.length - 1].date).toLocaleDateString()}</p>
                             <p>{work.description}</p>

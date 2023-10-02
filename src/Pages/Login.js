@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Electricity from "../Images/Electricity.jpg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +15,15 @@ const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [loadingError, setLoadingError] = useState(false);
     const [wrongCredentials, setWrongCredentials] = useState(false);
+    const [isDesktop, setIsDesktop] = useState(true);
+
+    useEffect(() => {
+        if (window.innerWidth > 763) {
+            setIsDesktop(true)
+            return;
+        }
+        setIsDesktop(false)
+    }, [window.innerWidth]);
 
     const { auth, setAuth } = useAuth();
 
@@ -62,7 +71,7 @@ const Login = () => {
         (loadingError) ? <LoadingError /> :
         (isLoading) ? <LoadingSpinner /> :
 
-        (window.innerWidth > 1000) ?
+        (isDesktop) ?
         <div style={{ display: "flex", flexDirection: "row", width: "100%", height: window.innerHeight + 1}}>
             <div style={{ position: "absolute", height: window.innerHeight + 1, width: 100, right: window.innerWidth / 100 * 30 - 50, borderRadius: "50%", backgroundColor: "#ffffff"}}/>
             <div style={{ width: "70%", backgroundImage: `url(${Electricity})`, backgroundSize: "cover", backgroundPosition: "center" }}/>

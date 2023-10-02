@@ -7,6 +7,7 @@ import RequireAuth from './RequireAuth';
 import AuthProvider from './useAuth';
 import Add from './Pages/Add';
 import Work from './Pages/Work';
+import Settings from './Pages/Settings';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/add" element={<Add />} />
             <Route path="/work/:id" element={<Work />} />
+            <Route path="/settings" element={<Settings />} />
           </Route>
         </Routes>
       </AuthProvider>

@@ -84,12 +84,6 @@ const Home = () => {
         <div className="mainContainer">
             <NavBar />
             <h1 style={{ margin: 20 }}>Rapportini</h1>
-            <button hidden={isMobile}className="button" style={{ position: "absolute", top: 10, right: 20 }} onClick={() => { navigate("/add") }}>Aggiungi Nuovo
-                <IoAdd size={24} style={{ marginLeft: 10, verticalAlign: "middle" }} />
-            </button>
-            <button hidden={!isMobile} className="button" style={{ position: "absolute", top: 10, right: 10, width: "fit-content", minWidth: "unset" }} onClick={() => { navigate("/add") }}>
-                <IoAdd size={30} style={{verticalAlign: "middle" }} />
-            </button>
             <table hidden={isMobile}>
                 <thead>
                     <tr>

@@ -1,0 +1,26 @@
+.navbarContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    height: 80px;
+    width: 100%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    border-radius: 25px;
+}
+
+.navbarLinks {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 30%;
+    margin-right: 50px;
+}
+
+.navbarLogo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 30%;
+    margin-left: 50px;
+}

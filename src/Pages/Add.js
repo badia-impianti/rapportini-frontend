@@ -144,6 +144,7 @@ const Add = () => {
             materials: newMaterials,
             labour: newLabour
         }
+        console.log(JSON.stringify(data))
         console.log(data)
         fetch("https://backend.rapportini.rainierihomecollection.it/works", {
             method: "POST",
@@ -154,7 +155,7 @@ const Add = () => {
                 if (response.status === 200) {
                     response.json().then((data) => {
                         console.log(data);
-                        uploadImages();
+                        uploadImages(data.workId);
                         window.alert("Rapporto salvato con successo");
                         navigate("/home");
                     });

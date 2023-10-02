@@ -1,7 +1,7 @@
 import React from "react";
 import "./NavBar.css";
 import { IoAdd, IoHomeOutline, IoSettingsOutline } from "react-icons/io5";
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 
 export default function NavBar() {
 
@@ -13,9 +13,9 @@ export default function NavBar() {
                <p>Rapportini</p>
             </div>
             <div className="navbarLinks">
-                <a className="links" href="/home"><IoHomeOutline size={24} /></a>
-                <a className="links" href="/add"><IoAdd size={24} /></a>
-                <a className="links" href="/settings"><IoSettingsOutline size={24} /></a>
+                <Link to={"/home"} className="links"><IoHomeOutline size={24} /></Link>
+                <Link to={"/add"} className="links"><IoAdd size={24} /></Link>
+                <Link to={"/settings"} className="links"><IoSettingsOutline size={24} /></Link>
             </div>
         </div>
     );

@@ -4,6 +4,7 @@ import { IoClose, IoAdd } from "react-icons/io5";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
 import { upload } from "@testing-library/user-event/dist/upload";
+import NavBar from "../components/NavBar";
 
 const Add = () => {
 
@@ -136,11 +137,11 @@ const Add = () => {
             })
             newLabour.push({ date: val.date, users: newUsers, vehicles: newVehicles })
         })
-        let data = {
+        const data = {
             customer: customer,
             description: description,
             notes: notes,
-            completed: completed,
+            completed: completed ? 1 : 0,
             materials: newMaterials,
             labour: newLabour
         }
@@ -149,6 +150,9 @@ const Add = () => {
         fetch("https://backend.rapportini.rainierihomecollection.it/works", {
             method: "POST",
             credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
             body: JSON.stringify(data),
         })
             .then((response) => {
@@ -170,7 +174,8 @@ const Add = () => {
     return (
         loadingError ? <LoadingError /> :
             isLoading ? <LoadingSpinner /> :
-                <div style={{ alignContent: "center", textAlign: "center", width: "100%" }}>
+                <div className="mainContainer">
+                    <NavBar />
                     <h1>Nuovo Rapporto</h1>
                     <form style={{ textAlign: "-moz-center", width: "100%" }}>
                         <div className="form__group field" >

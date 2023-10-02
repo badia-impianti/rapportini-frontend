@@ -6,6 +6,7 @@ import LoadingError from "../components/LoadingError";
 
 
 import "./Work.css"
+import NavBar from "../components/NavBar";
 
 const Work = () => {
 
@@ -103,8 +104,8 @@ const Work = () => {
     return (
         loadingError ? <LoadingError /> :
             isLoading ? <LoadingSpinner /> :
-
                 <div className="mainContainer">
+                    <NavBar />
                     <h1>Riepilogo per il lavoro n°{work.id}</h1>
                     <div className="infoAndPhotosContainer">
                         <div className="infoContainer">
@@ -123,7 +124,7 @@ const Work = () => {
                         </div>
                     </div>
 
-                    <div className="materialsContainer">
+                    <div className="tableContainer">
                         <h2>Materiali utilizzati</h2>
                         <table>
                             <thead>
@@ -145,7 +146,40 @@ const Work = () => {
                         </table>
                     </div>
 
-                    <div className={"materialsContainer"}>
+                    <div className="tableContainer">
+                        <h2>Veicoli utilizzati</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Nome</th>
+                                    <th>Targa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {work.labour.map((labour) => (
+                                    (labour.vehicles.length > 0) ?
+                                    <tr >
+                                        <td>
+                                            <div className="date">{new Date(labour.date).toLocaleDateString()}</div>
+                                        </td>
+                                        <td>{labour.vehicles.map((vehicle) =>
+                                            <p>{vehicle.name} </p>
+                                        )}
+                                        </td>
+                                        <td>{labour.vehicles.map((vehicle) =>
+                                            <p>{vehicle.plate} </p>
+                                        )}
+                                        </td>
+                                    </tr>
+                                        :
+                                        ""
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div className={"tableContainer"}>
                         <h2>Manodopera</h2>
                         <table>
                             <thead>

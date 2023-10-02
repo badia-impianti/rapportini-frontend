@@ -18,10 +18,10 @@ const Settings = () => {
     }
 
     return (
-        <div className="mainContainer">
+        <div className="mainContainer" style={{ width: "100%" }}>
             <NavBar />
             <h1>Settings</h1>
-            <button className="deleteButton" style={{marginTop: "100px"}} onClick={logout}>
+            <button className="deleteButton" style={{marginTop: "100px"}}  onClick={logout}>
                 <div style={{display: "flex",
                     alignItems: "center",
                     justifyContent: "center"

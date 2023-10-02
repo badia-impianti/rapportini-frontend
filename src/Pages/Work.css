@@ -27,6 +27,15 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
+.tableContainer {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
 
 @media (max-width: 767px) {
     .infoAndPhotosContainer {

@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.6638bc50.css",
-    "main.js": "/static/js/main.edacd009.js",
-    "static/js/787.05dd5848.chunk.js": "/static/js/787.05dd5848.chunk.js",
-    "static/media/Electricity.jpg": "/static/media/Electricity.66bed0a00351127aa114.jpg",
-    "index.html": "/index.html",
-    "main.6638bc50.css.map": "/static/css/main.6638bc50.css.map",
-    "main.edacd009.js.map": "/static/js/main.edacd009.js.map",
-    "787.05dd5848.chunk.js.map": "/static/js/787.05dd5848.chunk.js.map"
+    "main.css": "/rapportini-frontend/static/css/main.6638bc50.css",
+    "main.js": "/rapportini-frontend/static/js/main.0fda2dd2.js",
+    "static/js/787.05dd5848.chunk.js": "/rapportini-frontend/static/js/787.05dd5848.chunk.js",
+    "static/media/Electricity.jpg": "/rapportini-frontend/static/media/Electricity.66bed0a00351127aa114.jpg",
+    "index.html": "/rapportini-frontend/index.html",
+    "main.6638bc50.css.map": "/rapportini-frontend/static/css/main.6638bc50.css.map",
+    "main.0fda2dd2.js.map": "/rapportini-frontend/static/js/main.0fda2dd2.js.map",
+    "787.05dd5848.chunk.js.map": "/rapportini-frontend/static/js/787.05dd5848.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.6638bc50.css",
-    "static/js/main.edacd009.js"
+    "static/js/main.0fda2dd2.js"
   ]
 }

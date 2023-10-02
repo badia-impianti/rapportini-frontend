@@ -105,7 +105,10 @@ const Home = () => {
     }
 
     return (
+        (loadingError) ? <LoadingError /> :
+        (isLoading) ? <LoadingSpinner /> :
         <div className="mainContainer">
+            <NavBar />
             <h1 style={{ margin: 20 }}>Rapportini</h1>
             <button hidden={isMobile}className="button" style={{ position: "absolute", top: 10, right: 20 }} onClick={() => { navigate("/add") }}>Aggiungi Nuovo
                 <IoAdd size={24} style={{ marginLeft: 10, verticalAlign: "middle" }} />
@@ -125,9 +128,6 @@ const Home = () => {
                         <th />
                     </tr>
                 </thead>
-
-                {isLoading && <LoadingSpinner />}
-                {loadingError && <LoadingError />}
                 <tbody>
                     {reports.map((report) => (
                         <tr>

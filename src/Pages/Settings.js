@@ -1,7 +1,10 @@
 import NavBar from "../components/NavBar";
 import { IoLogOutOutline } from "react-icons/io5";
+import {useNavigate} from "react-router-dom";
 
 const Settings = () => {
+
+    const navigate = useNavigate();
 
     const logout = () => {
         fetch("https://backend.rapportini.rainierihomecollection.it/logout", {
@@ -9,7 +12,7 @@ const Settings = () => {
             credentials: "include",
         }).then((res) => {
             if (res.status === 200) {
-                window.location.href = "/login"
+                navigate("/")
             }
             else {
                 window.alert("Errore durante il logout")

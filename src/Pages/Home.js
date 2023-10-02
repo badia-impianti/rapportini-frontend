@@ -5,6 +5,7 @@ import { MdEdit, MdOutlineDeleteForever } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
+import NavBar from "../components/NavBar";
 
 const Home = () => {
 

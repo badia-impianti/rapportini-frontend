@@ -214,7 +214,7 @@ const Add = () => {
                             }/>
                         </div>
                     </form>
-                    <h2>Materiali</h2>
+                    <h2 style={{marginTop: "100px"}}>Materiali</h2>
                     <table style={{ width: "80%" }}>
                         <thead>
                             <tr>
@@ -283,7 +283,7 @@ const Add = () => {
                         </tbody>
                     </table>
 
-                    <h2>Giornate</h2>
+                    <h2 style={{marginTop: "100px"}}>Giornate</h2>
                     {
                         labour.map((val, index) => {
                             return (
@@ -446,11 +446,13 @@ const Add = () => {
                             )
                         })
                     }
-                    <IoAdd color={"grey"} size={30} style={{ cursor: "pointer" }} onClick={() => {
+                    <button className="button" onClick={() => {
                         setLabour([...labour, { date: "", laborers: [{ name: "", surname: "", hours: "", minutes: "" }], vehicles: [{ name: "", plate: "" }] }])
-                    }} />
+                    }}>
+                        Aggiungi Ulteriore Giornata
+                    </button>
                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "100%" }}>
-                        <button className="button" style={{ width: "80%", maxWidth: 200, margin: 20 }} onClick={save}
+                        <button className="button" style={{ width: "80%", maxWidth: 200, marginTop:"100px" }} onClick={save}
                         >Salva</button>
                     </div>
                 </div>

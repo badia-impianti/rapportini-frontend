@@ -18,7 +18,7 @@ export default function NavBar() {
             </div>
             <div className="navbarLinks">
                 <Link to="/home" className="links"><IoHomeOutline size={24} color="#257cff" /></Link>
-                <Link to="/work" className="links"><IoAddOutline size={24} color="#257cff" /></Link>
+                <Link to="/add" className="links"><IoAddOutline size={24} color="#257cff" /></Link>
                 <Link to="/settings" className="links"><IoSettingsOutline size={24} color="#257cff" /></Link>
             </div>
         </div>

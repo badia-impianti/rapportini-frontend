@@ -67,9 +67,7 @@ const Work = () => {
             .then((res) => {
                 if (res.status === 200) {
                     res.json().then((data) => {
-                        console.log(imagesUrls)
                         setImagesUrls(data.images);
-                        console.log(data)
                     });
                 }
                 else if (res.status !== 404) {

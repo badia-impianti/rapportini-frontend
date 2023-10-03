@@ -200,16 +200,16 @@ const Work = () => {
                                             <b>Totale Giornaliero:</b>
                                         </td>
                                         <td>{labour.users.map((user) =>
-                                            <p>{user.hours}:{user.minutes} </p>
+                                            <p>{user.hours}:{(user.minutes < 10) ? "0"+user.minutes : user.minutes} </p>
                                         )}
-                                            <b>{labour.totalHours}:{labour.totalMinutes}</b>
+                                            <b>{labour.totalHours}:{(labour.totalHours < 10) ? "0"+labour.totalMinutes:labour.totalMinutes}</b>
                                         </td>
                                     </tr>
                                 ))}
                                 <tr>
                                     <td></td>
                                     <td><b>Totale:</b></td>
-                                    <td><b>{work.totalHours}:{work.totalMinutes}</b></td>
+                                    <td><b>{work.totalHours}:{(work.totalMinutes < 10) ? "0"+work.totalMinutes:work.totalMinutes}</b></td>
                                 </tr>
                             </tbody>
                         </table>

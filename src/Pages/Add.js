@@ -37,6 +37,9 @@ const Add = () => {
                         setIsLoading(false);
                     });
                 }
+                else{
+                    setLoadingError(true);
+                }
             })
             .catch((err) => {
                 setLoadingError(true);
@@ -51,6 +54,9 @@ const Add = () => {
                     response.json().then((data) => {
                         setVehicles(data.vehicles);
                     });
+                }
+                else{
+                    setLoadingError(true);
                 }
             })
             .catch((err) => {
@@ -203,11 +209,11 @@ const Add = () => {
 
     return (
         loadingError ? <LoadingError /> :
-            isLoading ? <LoadingSpinner /> :
-                <div className="mainContainer">
-                    <NavBar />
-                    <h1>Nuovo Rapporto</h1>
-                    <form style={{width: "100%", marginTop: "50px" }}>
+        isLoading ? <LoadingSpinner /> :
+            <div className="mainContainer">
+                <NavBar />
+                <h1>Nuovo Rapporto</h1>
+                <form style={{width: "100%", marginTop: "50px" }}>
                         <div className="form__group field" >
                             <input type="text" className="form__field" placeholder="Cliente" name="customer" id='customer' required
                                 onChange={e => setCustomer(e.target.value)}

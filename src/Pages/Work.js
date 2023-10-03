@@ -112,7 +112,7 @@ const Work = () => {
                                 :
                                 <div className="date" style={{ backgroundColor: "#f4d4d4", color: "#331313" }}>In lavorazione</div>}
                             <p><IoPerson /> <b>{work.customer} </b></p>
-                            <p><IoTime /> <b>Iniziato:</b> {new Date(work.labour[0].date).toLocaleDateString()} -  <IoTime /> <b>Terminato:</b> {new Date(work.labour[work.labour.length - 1].date).toLocaleDateString()}</p>
+                            <p><IoTime /> <b>Iniziato:</b> {work.labour[0] && new Date(work.labour[0].date).toLocaleDateString()} -  <IoTime /> <b>Terminato:</b> {work.labour[0] && new Date(work.labour[work.labour.length - 1].date).toLocaleDateString()}</p>
                             <p>{work.description}</p>
                             <p><IoBookmark /> {work.note} </p>
                         </div>

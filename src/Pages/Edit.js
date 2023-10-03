@@ -241,7 +241,7 @@ const Edit = () => {
                 <div className="mainContainer">
                     <NavBar />
                     <h1>Rapporto N. {id}</h1>
-                    <form style={{width: "100%" }}>
+                    <form style={{ textAlign: "-moz-center", width: "100%" }}>
                         <div className="form__group field" >
                             <input type="text" className="form__field" placeholder="Cliente" name="customer" id='customer' required
                                 onChange={e => setCustomer(e.target.value)}

@@ -22,9 +22,10 @@ const Add = () => {
     const [users, setUsers] = React.useState([]);
     const [vehicles, setVehicles] = React.useState([]);
     const [materials, setMaterials] = React.useState([{ name: "", quantity: "", unit: "n" }]);
-    const [labour, setLabour] = React.useState([{ date: "", laborers: [{ id: "", name: "", surname: "", hours: "", minutes: "" }], vehicles: [{ id: "", name: "", plate: "" }] }]);
+    const [labour, setLabour] = React.useState([{ date: "", laborers: [{ id: "", name: "", surname: "", hours: "0", minutes: "0" }], vehicles: [{ id: "", name: "", plate: "" }] }]);
 
 
+    //Loading needed data
     useEffect(() => {
         fetch("https://backend.rapportini.badiasilvano.it/users", {
             method: "GET",
@@ -69,7 +70,10 @@ const Add = () => {
             setIsLoading(false);
         }
     }, [users, vehicles]);
+    //End of loading needed data
 
+
+    //Add a new empty line to the materials/worker/vehicle table
     useEffect(() => {
         //if last material is filled, add a new empty material
         if (materials[materials.length - 1].name !== "" && materials[materials.length - 1].quantity !== "" && materials[materials.length - 1].unit !== "") {
@@ -82,7 +86,7 @@ const Add = () => {
         labour.forEach((val, idx) => {
             if (val.laborers[val.laborers.length - 1].id !== "" && val.laborers[val.laborers.length - 1].hours !== "" && val.laborers[val.laborers.length - 1].minutes !== "") {
                 let newLabour = [...labour]
-                newLabour[idx].laborers.push({ id: "", name: "", surname: "", hours: "", minutes: "" })
+                newLabour[idx].laborers.push({ id: "", name: "", surname: "", hours: "0", minutes: "0" })
                 setLabour(newLabour)
             }
         })
@@ -98,6 +102,7 @@ const Add = () => {
             }
         })
     }, [labour]);
+    //End of adding new empty material/worker/vehicle
 
 
     const uploadImages = (id) => {
@@ -123,6 +128,8 @@ const Add = () => {
             });
     }
 
+
+    //Upload the work to the backend
     const save = (e) => {
         e.preventDefault();
         let newMaterials = [...materials]
@@ -132,6 +139,9 @@ const Add = () => {
         labour.forEach((val) => {
             let newUsers = []
             val.laborers.forEach((laborer) => {
+
+                //Tali if sono necessari a seguito del fatto che la "onchange" viene chiamato solo al cambio di valore, e se si vuole inserire
+                //per esempio 30 minuti al server arriva stringa vuota nelle ore
                 if (laborer.id !== "") {
                     newUsers.push(laborer)
                 }
@@ -148,15 +158,6 @@ const Add = () => {
                 errorType = "date"
                 alert("Inserire una data valida")
                 return
-            }
-
-            //Tali if sono necessari a seguito del fatto che la "onchange" viene chiamato solo al cambio di valore, e se si vuole inserire
-            //per esempio 30 minuti al server arriva stringa vuota nelle ore
-            if (val.hours === "" || val.hours === null) {
-                val.hours = 0
-            }
-            if (val.minutes === "" || val.minutes === null) {
-                val.minutes = 0
             }
 
             newLabour.push({ date: val.date, users: newUsers, vehicles: newVehicles })
@@ -198,15 +199,6 @@ const Add = () => {
             });
     }
 
-    const getToday = () => {
-        const today = new Date();
-        const month = (today.getMonth() + 1).toString().padStart(2, '0');
-        const day = today.getDate().toString().padStart(2, '0');
-        const year = today.getFullYear();
-
-        return `${year}-${month}-${day}`;
-    };
-
     return (
         loadingError ? <LoadingError /> :
         isLoading ? <LoadingSpinner /> :
@@ -240,17 +232,17 @@ const Add = () => {
                         </div>
                         <div>
                             <h2>Immagini</h2>
-                            <input type="file" id="images" name="images" accept="image/*" multiple 
+                            <input type="file" id="images" name="images" accept="image/*" multiple
                             onChange={(e) => {
                                 let newImages = [...images]
                                 for (let i = 0; i < e.target.files.length; i++) {
                                     newImages.push(e.target.files[i])
                                 }
                                 setImages(newImages)
-                            } 
+                            }
                             }/>
                         </div>
-                    </form>
+                </form>
                     <h2 style={{marginTop: "100px"}}>Materiali</h2>
                     <table style={{ width: "80%" }}>
                         <thead>
@@ -361,8 +353,7 @@ const Add = () => {
                                                     return (
                                                         <tr key={idx} >
                                                             <td style={{ paddingInline: "10px" }} >
-                                                                <select name="id" data-id={idx} id={`id-${idx}`} className="form__field" placeholder="Operatore" style={{ minWidth: 150 }}
-                                                                    defaultValue={""}
+                                                                <select name="id" data-id={idx} id={`id-${idx}`} className="form__field" style={{ minWidth: 150 }}
                                                                     value={laborer.id}
                                                                     onChange={(e) => {
                                                                         let newLabour = [...labour]
@@ -381,11 +372,12 @@ const Add = () => {
                                                                 </select>
                                                             </td>
                                                             <td style={{ paddingInline: "10px" }} >
-                                                                <select onChange={(e) => {
-                                                                    let newLabour = [...labour]
-                                                                    newLabour[index].laborers[idx].hours = e.target.value
-                                                                    setLabour(newLabour)
-                                                                }}>
+                                                                <select
+                                                                    onChange={(e) => {
+                                                                        let newLabour = [...labour]
+                                                                        newLabour[index].laborers[idx].hours = e.target.value
+                                                                        setLabour(newLabour)
+                                                                    }}>
                                                                     <option value="0">0</option>
                                                                     <option value="1">1</option>
                                                                     <option value="2">2</option>
@@ -423,7 +415,6 @@ const Add = () => {
                                                                     let newLabour = [...labour]
                                                                     // remove current row
                                                                     newLabour[index].laborers.splice(idx, 1)
-                                                                    console.log(newLabour)
                                                                     setLabour(newLabour)
                                                                 }} />
                                                             </td>

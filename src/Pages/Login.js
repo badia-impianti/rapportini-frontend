@@ -32,7 +32,7 @@ const Login = () => {
     const login = (e) => {
         e.preventDefault();
         setIsLoading(true)
-        fetch("https://backend.rapportini.badiasilvano.it/login", {
+        fetch("https://backend.rapportini.badiasilvano.it/login-aruba", {
             method: "POST",
             headers: {
             "Content-Type": "application/json",
@@ -44,21 +44,26 @@ const Login = () => {
             }),
         })
             .then((res) => {
-                if (res.status === 200) {
-                    console.log("Login successful");
-                    res.json().then((data) => {
+                res.json().then((data) => {
+                    console.log(data.message)
+                    if (res.status === 200) {
                         setAuth(data);
-                        setIsLoading()
+                        if (data.name === "" || data.surname === "" || data.name == null || data.surname == null){
+                            navigate("/setname");
+                            return;
+                        }
+                        setIsLoading(false)
                         navigate("/home");
-                    });
-                }
-                else if (res.status === 401) {
-                    setIsLoading(false)
-                    setWrongCredentials(true)
-                }
-                else {
-                    setLoadingError(true)
-                }
+                    }
+                    else if (data.message === "Unauthorized") {
+                        setIsLoading(false)
+                        setWrongCredentials(true)
+                    }
+                    else {
+                        setLoadingError(true)
+                    }
+
+                });
             })
             .catch((err) => {
                 setLoadingError(true)
@@ -78,6 +83,7 @@ const Login = () => {
             <div style={{ width: "30%", margin: "auto" }}>
                 <div style={{ width: "85%", margin: "auto", backgroundColor: "white", padding: "20px", display: "flex", flexDirection: "column", alignItems: "center" }}>
                     <h1 style={{fontWeight: "bold", color: "#257cff", fontSize: 40, marginBottom: 40}}>Bentornato!</h1>
+                    <p>Accedi con @badiasilvano.it</p>
                     <form onSubmit={login} >
                         <div class="form__group field" >
                             <input
@@ -117,10 +123,12 @@ const Login = () => {
             <div style={{ width: "100%", margin: "auto" }}>
                 <div style={{ width: "90%", margin: 0, backgroundColor: "white", padding: "20px", display: "flex", flexDirection: "column", alignItems: "center" }}>
                     <h1 style={{fontWeight: "bold", color: "#257cff", fontSize: 40, marginBottom: 40}}>Bentornato!</h1>
+                    <p>Accedi con @badiasilvano.it</p>
                     <form onSubmit={login}>
                         <div class="form__group field" >
                             <input
                                 type="text"
+                                autoCapitalize='none'
                                 id="email"
                                 className="form__field"
                                 placeholder="Email"
@@ -144,6 +152,7 @@ const Login = () => {
                             <label for="password" class="form__label">Password</label>
                         </div>
                         <input type="submit" value="Login" className="button" style={{marginTop: 35}} />
+                        {wrongCredentials && <p style={{color: "red", textAlign: "center", marginTop: 20}}>Credenziali errate</p>}
                     </form>
                 </div>
                 <p style={{color: "grey", position: "absolute", bottom: 10, right: 10}} > {new Date().toLocaleString()} </p>

@@ -8,6 +8,7 @@ import AuthProvider from './useAuth';
 import Add from './Pages/Add';
 import Work from './Pages/Work';
 import Settings from './Pages/Settings';
+import SetName from './Pages/SetName';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<Splash />} />
           <Route path="/login" element={<Login />} />
           <Route element={<RequireAuth />}>
+            <Route path="/setname" element={<SetName />} />
             <Route path="/home" element={<Home />} />
             <Route path="/add" element={<Add />} />
             <Route path="/work/:id" element={<Work />} />

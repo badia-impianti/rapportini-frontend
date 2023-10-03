@@ -144,6 +144,15 @@ const Add = () => {
                 return
             }
 
+            //Tali if sono necessari a seguito del fatto che la "onchange" viene chiamato solo al cambio di valore, e se si vuole inserire
+            //per esempio 30 minuti al server arriva stringa vuota nelle ore
+            if (val.hours === "" || val.hours === null) {
+                val.hours = 0
+            }
+            if (val.minutes === "" || val.minutes === null) {
+                val.minutes = 0
+            }
+
             newLabour.push({ date: val.date, users: newUsers, vehicles: newVehicles })
         })
 

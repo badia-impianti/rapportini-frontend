@@ -8,6 +8,7 @@ import AuthProvider from './useAuth';
 import Add from './Pages/Add';
 import Work from './Pages/Work';
 import Settings from './Pages/Settings';
+import Edit from './Pages/Edit';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route element={<RequireAuth />}>
             <Route path="/home" element={<Home />} />
             <Route path="/add" element={<Add />} />
+            <Route path="/edit/:id" element={<Edit />} />
             <Route path="/work/:id" element={<Work />} />
             <Route path="/settings" element={<Settings />} />
           </Route>

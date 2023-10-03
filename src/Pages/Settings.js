@@ -7,7 +7,7 @@ const Settings = () => {
     const navigate = useNavigate();
 
     const logout = () => {
-        fetch("https://backend.rapportini.rainierihomecollection.it/logout", {
+        fetch("https://backend.rapportini.badiasilvano.it/logout", {
             method: "GET",
             credentials: "include",
         }).then((res) => {

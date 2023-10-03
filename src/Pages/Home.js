@@ -25,7 +25,7 @@ const Home = () => {
 
 
     useEffect(() => {
-        fetch("https://backend.rapportini.rainierihomecollection.it/works/count", {
+        fetch("https://backend.rapportini.badiasilvano.it/works/count", {
             method: "GET",
             credentials: "include",
         })
@@ -65,7 +65,7 @@ const Home = () => {
 
     const loadReports = () => {
         setIsLoading(true);
-        fetch("https://backend.rapportini.rainierihomecollection.it/works/" + pageNumber, {
+        fetch("https://backend.rapportini.badiasilvano.it/works/" + pageNumber, {
             method: "GET",
             credentials: "include",
         })
@@ -85,7 +85,7 @@ const Home = () => {
 
     const deleteReport = (report) => {
         if (window.confirm("Sei sicuro di voler eliminare il rapportino?")) {
-            fetch("https://backend.rapportini.rainierihomecollection.it/works/" + report.id, {
+            fetch("https://backend.rapportini.badiasilvano.it/works/" + report.id, {
                 method: "DELETE",
                 credentials: "include",
             })

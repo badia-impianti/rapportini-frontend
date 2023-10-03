@@ -32,7 +32,7 @@ const Login = () => {
     const login = (e) => {
         e.preventDefault();
         setIsLoading(true)
-        fetch("https://backend.rapportini.rainierihomecollection.it/login", {
+        fetch("https://backend.rapportini.badiasilvano.it/login", {
             method: "POST",
             headers: {
             "Content-Type": "application/json",

@@ -8,7 +8,7 @@ const Splash = () => {
     const [loadingError, setLoadingError] = useState(false);
     const navigate = useNavigate();
 
-    fetch('https://backend.rapportini.rainierihomecollection.it/whoami', {
+    fetch('https://backend.rapportini.badiasilvano.it/whoami', {
         method: 'GET',
         credentials: 'include',
     })

@@ -27,7 +27,7 @@ const Add = () => {
 
 
     useEffect(() => {
-        fetch("https://backend.rapportini.rainierihomecollection.it/users", {
+        fetch("https://backend.rapportini.badiasilvano.it/users", {
             method: "GET",
             credentials: "include",
         })
@@ -43,7 +43,7 @@ const Add = () => {
                 setLoadingError(true);
             });
 
-        fetch("https://backend.rapportini.rainierihomecollection.it/vehicles", {
+        fetch("https://backend.rapportini.badiasilvano.it/vehicles", {
             method: "GET",
             credentials: "include",
         })
@@ -100,7 +100,7 @@ const Add = () => {
         images.forEach((image) => {
             formData.append("images", image);
         })
-        fetch("https://backend.rapportini.rainierihomecollection.it/works/" + id + "/images", {
+        fetch("https://backend.rapportini.badiasilvano.it/works/" + id + "/images", {
             method: "POST",
             credentials: "include",
             body: formData
@@ -147,7 +147,7 @@ const Add = () => {
         }
         console.log(JSON.stringify(data))
         console.log(data)
-        fetch("https://backend.rapportini.rainierihomecollection.it/works", {
+        fetch("https://backend.rapportini.badiasilvano.it/works", {
             method: "POST",
             credentials: "include",
             headers: {

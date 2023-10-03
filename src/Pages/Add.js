@@ -176,7 +176,7 @@ const Add = () => {
                 <div className="mainContainer">
                     <NavBar />
                     <h1>Nuovo Rapporto</h1>
-                    <form style={{ textAlign: "-moz-center", width: "100%" }}>
+                    <form style={{width: "100%", marginTop: "50px" }}>
                         <div className="form__group field" >
                             <input type="text" className="form__field" placeholder="Cliente" name="customer" id='customer' required
                                 onChange={e => setCustomer(e.target.value)}

@@ -143,8 +143,8 @@ th {
 
 .form__group {
   position: relative;
-  padding: 20px 0 0;
-  width: 220px;
+  padding: 60px 0 0;
+  width: 100%;
 }
 
 .form__field {

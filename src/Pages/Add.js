@@ -67,7 +67,7 @@ const Add = () => {
     useEffect(() => {
         //if last material is filled, add a new empty material
         if (materials[materials.length - 1].name !== "" && materials[materials.length - 1].quantity !== "" && materials[materials.length - 1].unit !== "") {
-            setMaterials([...materials, { name: "", quantity: "", unit: "n" }]);
+            setMaterials([...materials, { name: "", quantity: "0", unit: "n" }]);
         }
     }, [materials]);
 
@@ -110,6 +110,7 @@ const Add = () => {
                         console.log(data);
                     });
                 }
+
             })
             .catch((err) => {
                 console.log("Error: ", err);
@@ -121,6 +122,7 @@ const Add = () => {
         let newMaterials = [...materials]
         newMaterials.pop()
         let newLabour = []
+        let errorType = ""
         labour.forEach((val) => {
             let newUsers = []
             val.laborers.forEach((laborer) => {
@@ -134,8 +136,21 @@ const Add = () => {
                     newVehicles.push(vehicle)
                 }
             })
+
+            //Check that the date is not null, or the work cannot be accepted
+            if (val.date === ""  || val.date === null) {
+                errorType = "date"
+                alert("Inserire una data valida")
+                return
+            }
+
             newLabour.push({ date: val.date, users: newUsers, vehicles: newVehicles })
         })
+
+        if (errorType !== "") {
+            return
+        }
+
         const data = {
             customer: customer,
             description: description,
@@ -144,8 +159,6 @@ const Add = () => {
             materials: newMaterials,
             labour: newLabour
         }
-        console.log(JSON.stringify(data))
-        console.log(data)
         fetch("https://backend.rapportini.badiasilvano.it/works", {
             method: "POST",
             credentials: "include",
@@ -157,18 +170,27 @@ const Add = () => {
             .then((response) => {
                 if (response.status === 200) {
                     response.json().then((data) => {
-                        console.log(data);
                         uploadImages(data.workId);
-                        window.alert("Rapporto salvato con successo");
                         navigate("/home");
                     });
                 }
+                else {
+                    setLoadingError(true)
+                }
             })
             .catch((err) => {
-                console.log("Error: ", err);
+                setLoadingError(true);
             });
     }
 
+    const getToday = () => {
+        const today = new Date();
+        const month = (today.getMonth() + 1).toString().padStart(2, '0');
+        const day = today.getDate().toString().padStart(2, '0');
+        const year = today.getFullYear();
+
+        return `${year}-${month}-${day}`;
+    };
 
     return (
         loadingError ? <LoadingError /> :
@@ -290,7 +312,7 @@ const Add = () => {
                                 <div key={index} style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
                                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "80%", maxWidth: 200 }}>
                                         <input type="date" name="date" data-id={index} id={`date-${index}`} className="form__field" placeholder="Data"
-                                            value={labour[index].date}
+                                            value={val.date}
                                             onChange={(e) => {
                                                 let newLabour = [...labour]
                                                 newLabour[index].date = e.target.value
@@ -344,24 +366,36 @@ const Add = () => {
                                                                 </select>
                                                             </td>
                                                             <td style={{ paddingInline: "10px" }} >
-                                                                <input type="number" name="hours" data-id={idx} id={`hours-${idx}`} className="form__field" placeholder="Ore" style={window.innerWidth < 600 ? { maxWidth: 80, minWidth: 60 } : { maxWidth: 120 }}
-                                                                    value={laborer.hours}
-                                                                    onChange={(e) => {
-                                                                        let newLabour = [...labour]
-                                                                        newLabour[index].laborers[idx].hours = e.target.value
-                                                                        setLabour(newLabour)
-                                                                    }}
-                                                                />
+                                                                <select onChange={(e) => {
+                                                                    let newLabour = [...labour]
+                                                                    newLabour[index].laborers[idx].hours = e.target.value
+                                                                    setLabour(newLabour)
+                                                                }}>
+                                                                    <option value="0">0</option>
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="5">5</option>
+                                                                    <option value="6">6</option>
+                                                                    <option value="7">7</option>
+                                                                    <option value="8">8</option>
+                                                                    <option value="9">9</option>
+                                                                    <option value="10">10</option>
+                                                                    <option value="11">11</option>
+                                                                    <option value="12">12</option>
+                                                                </select>
                                                             </td>
-                                                            <td style={{ paddingInline: "10px" }} >
-                                                                <input type="number" name="minutes" data-id={idx} id={`minutes-${idx}`} className="form__field" placeholder="Minuti" style={window.innerWidth < 600 ? { maxWidth: 80 } : { maxWidth: 120 }}
-                                                                    value={laborer.minutes}
-                                                                    onChange={(e) => {
-                                                                        let newLabour = [...labour]
-                                                                        newLabour[index].laborers[idx].minutes = e.target.value
-                                                                        setLabour(newLabour)
-                                                                    }}
-                                                                />
+
+                                                            <td style={{ paddingInline: "10px"}}>
+                                                                <select onChange={(e) => {
+                                                                    let newLabour = [...labour]
+                                                                    newLabour[index].laborers[idx].minutes = e.target.value
+                                                                    setLabour(newLabour)
+                                                                }}>
+                                                                    <option value="0">0</option>
+                                                                    <option value="30">30</option>
+                                                                </select>
                                                             </td>
                                                             <td style={{ paddingInline: "0px" }} >
                                                                 <IoClose color={"grey"} size={24} style={{ cursor: "pointer" }} onClick={() => {

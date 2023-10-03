@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { IoPerson, IoCalendar, IoClipboard, IoBulb, IoPeople, IoCheckmark, IoChevronForward, IoChevronBack, IoResize, IoAdd } from "react-icons/io5";
+import { IoPerson, IoCalendar, IoClipboard, IoBulb, IoPeople, IoCheckmark, IoChevronForward, IoChevronBack, IoResize } from "react-icons/io5";
 import { MdEdit, MdOutlineDeleteForever } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -110,7 +110,6 @@ const Home = () => {
         (isLoading) ? <LoadingSpinner /> :
         <div className="mainContainer">
             <NavBar />
-            <h1 style={{ margin: 20 }}>Rapportini</h1>
             <table hidden={isMobile}>
                 <thead>
                     <tr>

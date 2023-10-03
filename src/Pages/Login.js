@@ -82,6 +82,7 @@ const Login = () => {
                         <div class="form__group field" >
                             <input
                                 type="text"
+                                autoCapitalize='none'
                                 id="email"
                                 className="form__field"
                                 placeholder="Email"

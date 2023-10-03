@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import { IoPerson, IoTime, IoBookmark } from "react-icons/io5";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
@@ -16,6 +16,7 @@ const Work = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [loadingError, setLoadingError] = useState(false)
     const [imagesUrls, setImagesUrls] = useState([]); //Array of strings [url1, url2, ...
+    const navigate = useNavigate();
 
     //Page data
     const [work, setWork] = useState({});
@@ -87,7 +88,7 @@ const Work = () => {
         })
             .then((res) => {
                 if (res.status === 200) {
-                    window.location.href = "/";
+                    navigate("/")
                 }
                 else if (res.status === 401) {
                     window.alert("Non sei atorizzato ad eliminare questo rapportino; Sono necessari i privilegi di amministratore")

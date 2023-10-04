@@ -209,7 +209,7 @@ const Work = () => {
                                         <td>{labour.users.map((user) =>
                                             <p>{user.hours}:{(user.minutes < 10) ? "0"+user.minutes : user.minutes} </p>
                                         )}
-                                            <b>{labour.totalHours}:{(labour.totalHours < 10) ? "0"+labour.totalMinutes:labour.totalMinutes}</b>
+                                            <b>{labour.totalHours}:{(labour.totalMinutes < 10) ? "0"+labour.totalMinutes:labour.totalMinutes}</b>
                                         </td>
                                     </tr>
                                 ))}

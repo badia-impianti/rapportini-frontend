@@ -23,11 +23,13 @@ const Edit = () => {
     const [description, setDescription] = React.useState("");
     const [notes, setNotes] = React.useState("");
     const [completed, setCompleted] = React.useState(false);
+    const [onCall, setOnCall] = React.useState(false);
+    const [loadedImages, setLoadedImages] = React.useState([]);
     const [images, setImages] = React.useState([]);
     const [users, setUsers] = React.useState([]);
     const [vehicles, setVehicles] = React.useState([]);
     const [materials, setMaterials] = React.useState([{ name: "", quantity: "", unit: "n" }]);
-    const [labour, setLabour] = React.useState([{ date: "", users: [{ id: "", name: "", surname: "", hours: "", minutes: "" }], vehicles: [{ id: "", name: "", plate: "" }] }]);
+    const [labour, setLabour] = React.useState([{ date: "", users: [{ id: "", name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ id: "", name: "", plate: "" }] }]);
 
 
     useEffect(() => {
@@ -92,21 +94,21 @@ const Edit = () => {
                 setLoadingError(true);
             });
 
-            fetch("https://backend.rapportini.badiasilvano.it/work/" + id + "/images", {
-                method: "GET",
-                credentials: "include",
+        fetch("https://backend.rapportini.badiasilvano.it/works/" + id + "/images", {
+            method: "GET",
+            credentials: "include",
+        })
+            .then((response) => {
+                if (response.status === 200) {
+                    response.json().then((data) => {
+                        console.log(data)
+                        setLoadedImages(data.images);
+                    });
+                }
             })
-                .then((response) => {
-                    if (response.status === 200) {
-                        response.json().then((data) => {
-                            console.log(data)
-                            setImages(data.images);
-                        });
-                    }
-                })
-                .catch((err) => {
-                    setLoadingError(true);
-                });
+            .catch((err) => {
+                setLoadingError(true);
+            });
 
     }, []);
 
@@ -119,19 +121,19 @@ const Edit = () => {
     useEffect(() => {
         //if labour is empty, add a new empty labour
         if (labour.length === 0) {
-            setLabour([{ date: "", users: [{ id: "", name: "", surname: "", hours: "", minutes: "" }], vehicles: [{ id: "", name: "", plate: "" }] }]);
+            setLabour([{ date: "", users: [{ id: "", name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ id: "", name: "", plate: "", hours: 0, minutes: 0 }] }]);
         }
 
         // if last worker of any labour is filled, add a new empty worker
         labour.forEach((val, idx) => {
             if (val.users.length === 0) {
                 let newLabour = [...labour]
-                newLabour[idx].users.push({ id: "", name: "", surname: "", hours: "", minutes: "" })
+                newLabour[idx].users.push({ id: "", name: "", surname: "", hours: 0, minutes: 0 })
                 setLabour(newLabour)
             }
             else if (val.users[val.users.length - 1].id !== "" && val.users[val.users.length - 1].hours !== "" && val.users[val.users.length - 1].minutes !== "") {
                 let newLabour = [...labour]
-                newLabour[idx].users.push({ id: "", name: "", surname: "", hours: "", minutes: "" })
+                newLabour[idx].users.push({ id: "", name: "", surname: "", hours: 0, minutes: 0 })
                 setLabour(newLabour)
             }
         })
@@ -139,12 +141,12 @@ const Edit = () => {
         labour.forEach((val, idx) => {
             if (val.vehicles.length === 0) {
                 let newLabour = [...labour]
-                newLabour[idx].vehicles.push({ id: "", name: "", plate: "" })
+                newLabour[idx].vehicles.push({ id: "", name: "", plate: "", hours: 0, minutes: 0 })
                 setLabour(newLabour)
             }
             else if (val.vehicles[val.vehicles.length - 1].id !== "") {
                 let newLabour = [...labour]
-                newLabour[idx].vehicles.push({ id: "", name: "", plate: "" })
+                newLabour[idx].vehicles.push({ id: "", name: "", plate: "", hours: 0, minutes: 0 })
                 setLabour(newLabour)
             }
         })
@@ -166,6 +168,10 @@ const Edit = () => {
         newMaterials.pop()
         let newLabour = []
         labour.forEach((val) => {
+            if (val.date == "" || val.date == null) {
+                window.alert("Inserire una data valida")
+                return
+            }
             let newUsers = []
             val.users.forEach((laborer) => {
                 if (laborer.id !== "") {
@@ -185,6 +191,7 @@ const Edit = () => {
             description: description,
             note: notes,
             completed: completed ? 1 : 0,
+            oncall: onCall ? 1 : 0,
             materials: newMaterials,
             labour: newLabour
         }
@@ -214,19 +221,45 @@ const Edit = () => {
     }
 
     const uploadImages = (id) => {
-        let formData = new FormData();
         images.forEach((image) => {
-            formData.append("images", image);
-        })
-        fetch("https://backend.rapportini.badiasilvano.it/works/" + id + "/images", {
-            method: "POST",
+            let formData = new FormData();
+            formData.append("photo", image);
+            fetch("https://backend.rapportini.badiasilvano.it/works/" + id + "/images", {
+                method: "POST",
+                credentials: "include",
+                body: formData
+            })
+                .then((response) => {
+                    if (response.status === 200) {
+                        response.json().then((data) => {
+                            console.log(data);
+                        });
+                    }
+
+                })
+                .catch((err) => {
+                    console.log("Error: ", err);
+                });
+
+        });
+    }
+
+    const deleteImage = (image) => {
+        // Take the name from the url, removing the .format
+        let name = image.url.split("/").pop().split(".")[0]
+        fetch("https://backend.rapportini.badiasilvano.it/works/" + id + "/images/" + name, {
+            method: "DELETE",
             credentials: "include",
-            body: formData
         })
             .then((response) => {
                 if (response.status === 200) {
                     response.json().then((data) => {
                         console.log(data);
+                        let newImages = [...loadedImages]
+                        // Remove current row
+                        newImages.splice(newImages.indexOf(image), 1)
+                        console.log(newImages)
+                        setLoadedImages(newImages)
                     });
                 }
             })
@@ -240,8 +273,10 @@ const Edit = () => {
             isLoading ? <LoadingSpinner /> :
                 <div className="mainContainer">
                     <NavBar />
-                    <h1>Rapporto N. {id}</h1>
-                    <form style={{ textAlign: "-moz-center", width: "100%" }}>
+                    <h1>Rapporto N° {id}</h1>
+                    <form style={
+                        //check if browser is mozilla firefox
+                        typeof InstallTrigger !== 'undefined' ? { textAlign: "-moz-center", width: "100%" } : { textAlign: "center", width: "100%" }}>
                         <div className="form__group field" >
                             <input type="text" className="form__field" placeholder="Cliente" name="customer" id='customer' required
                                 onChange={e => setCustomer(e.target.value)}
@@ -263,8 +298,14 @@ const Edit = () => {
                             />
                             <label for="notes" className="form__label">Note</label>
                         </div>
+                        <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "80%", maxWidth: 200 }} >
+                            <input type="checkbox" id="onCall" name="onCall" onChange={e => setOnCall(e.target.checked)} value={onCall} />
+                            <p>
+                                <label for="onCall">Reperibilità</label>
+                            </p>
+                        </div>
                         <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "80%", maxWidth: 200 }}>
-                            <input type="checkbox" id="completed" name="completed" onChange={e => setCompleted(e.target.checked)} value={completed}/>
+                            <input type="checkbox" id="completed" name="completed" onChange={e => setCompleted(e.target.checked)} value={completed} />
                             <p>
                                 <label for="completed">Lavoro completato</label>
                             </p>
@@ -272,6 +313,16 @@ const Edit = () => {
                         <div>
                             <h2>Immagini</h2>
                             <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center" }}>
+                                {
+                                    loadedImages.map((image, idx) => {
+                                        return (
+                                            <div key={idx} style={{ display: "flex", flexDirection: "column", alignItems: "center", margin: 10 }}>
+                                                <img src={image.url} style={{ maxWidth: 200, maxHeight: 200 }} />
+                                                <IoClose color={"grey"} size={24} style={{ cursor: "pointer" }} onClick={() => { deleteImage(image) }} />
+                                            </div>
+                                        )
+                                    })
+                                }
                                 {
                                     images.map((image, idx) => {
                                         return (
@@ -387,7 +438,7 @@ const Edit = () => {
                                         />
                                         <IoClose color={"grey"} size={30} style={{ cursor: "pointer", marginLeft: 20 }} onClick={() => {
                                             if (labour.length === 1) {
-                                                setLabour([{ date: "", users: [{ name: "", surname: "", hours: "", minutes: "" }], vehicles: [{ name: "", plate: "" }] }])
+                                                setLabour([{ date: "", users: [{ name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ name: "", plate: "", hours: 0, minutes: 0 }] }])
                                                 return
                                             }
                                             let newLabour = [...labour]
@@ -432,30 +483,47 @@ const Edit = () => {
                                                                 </select>
                                                             </td>
                                                             <td style={{ paddingInline: "10px" }} >
-                                                                <input type="number" name="hours" data-id={idx} id={`hours-${idx}`} className="form__field" placeholder="Ore" style={window.innerWidth < 600 ? { maxWidth: 80, minWidth: 60 } : { maxWidth: 120 }}
+                                                                <select type="number" name="hours" data-id={idx} id={`hours-${idx}`} className="form__field" placeholder="Ore" style={window.innerWidth < 600 ? { maxWidth: 80, minWidth: 60 } : { maxWidth: 120 }}
                                                                     value={laborer.hours}
                                                                     onChange={(e) => {
                                                                         let newLabour = [...labour]
                                                                         newLabour[index].users[idx].hours = e.target.value
                                                                         setLabour(newLabour)
                                                                     }}
-                                                                />
+                                                                >
+                                                                    <option value={0}>0</option>
+                                                                    <option value={1}>1</option>
+                                                                    <option value={2}>2</option>
+                                                                    <option value={3}>3</option>
+                                                                    <option value={4}>4</option>
+                                                                    <option value={5}>5</option>
+                                                                    <option value={6}>6</option>
+                                                                    <option value={7}>7</option>
+                                                                    <option value={8}>8</option>
+                                                                    <option value={9}>9</option>
+                                                                    <option value={10}>10</option>
+                                                                    <option value={11}>11</option>
+                                                                    <option value={12}>12</option>
+                                                                </select>
                                                             </td>
                                                             <td style={{ paddingInline: "10px" }} >
-                                                                <input type="number" name="minutes" data-id={idx} id={`minutes-${idx}`} className="form__field" placeholder="Minuti" style={window.innerWidth < 600 ? { maxWidth: 80 } : { maxWidth: 120 }}
+                                                                <select type="number" name="minutes" data-id={idx} id={`minutes-${idx}`} className="form__field" placeholder="Minuti" style={window.innerWidth < 600 ? { maxWidth: 80 } : { maxWidth: 120 }}
                                                                     value={laborer.minutes}
                                                                     onChange={(e) => {
                                                                         let newLabour = [...labour]
                                                                         newLabour[index].users[idx].minutes = e.target.value
                                                                         setLabour(newLabour)
                                                                     }}
-                                                                />
+                                                                >
+                                                                    <option value={0}>0</option>
+                                                                    <option value={30}>30</option>
+                                                                </select>
                                                             </td>
                                                             <td style={{ paddingInline: "0px" }} >
                                                                 <IoClose color={"grey"} size={24} style={{ cursor: "pointer" }} onClick={() => {
                                                                     if (val.users.length === 1) {
                                                                         let newLabour = [...labour]
-                                                                        newLabour[index].users = [{ name: "", surname: "", hours: "", minutes: "" }]
+                                                                        newLabour[index].users = [{ name: "", surname: "", hours: 0, minutes: 0 }]
                                                                         setLabour(newLabour)
                                                                         return
                                                                     }
@@ -478,6 +546,8 @@ const Edit = () => {
                                         <thead>
                                             <tr>
                                                 <th>Veicolo</th>
+                                                <th>Ore</th>
+                                                <th>Minuti</th>
                                                 <th />
                                             </tr>
                                         </thead>
@@ -507,11 +577,48 @@ const Edit = () => {
                                                                     }
                                                                 </select>
                                                             </td>
+                                                            <td style={{ paddingInline: "10px" }} >
+                                                                <select type="number" name="hours" data-id={idx} id={`hours-${idx}`} className="form__field" placeholder="Ore" style={window.innerWidth < 600 ? { maxWidth: 80, minWidth: 60 } : { maxWidth: 120 }}
+                                                                    value={vehicle.hours}
+                                                                    onChange={(e) => {
+                                                                        let newLabour = [...labour]
+                                                                        newLabour[index].vehicles[idx].hours = e.target.value
+                                                                        setLabour(newLabour)
+                                                                    }}
+                                                                >
+                                                                    <option value={0}>0</option>
+                                                                    <option value={1}>1</option>
+                                                                    <option value={2}>2</option>
+                                                                    <option value={3}>3</option>
+                                                                    <option value={4}>4</option>
+                                                                    <option value={5}>5</option>
+                                                                    <option value={6}>6</option>
+                                                                    <option value={7}>7</option>
+                                                                    <option value={8}>8</option>
+                                                                    <option value={9}>9</option>
+                                                                    <option value={10}>10</option>
+                                                                    <option value={11}>11</option>
+                                                                    <option value={12}>12</option>
+                                                                </select>
+                                                            </td>
+                                                            <td style={{ paddingInline: "10px" }} >
+                                                                <select type="number" name="minutes" data-id={idx} id={`minutes-${idx}`} className="form__field" placeholder="Minuti" style={window.innerWidth < 600 ? { maxWidth: 80 } : { maxWidth: 120 }}
+                                                                    value={vehicle.minutes}
+                                                                    onChange={(e) => {
+                                                                        let newLabour = [...labour]
+                                                                        newLabour[index].vehicles[idx].minutes = e.target.value
+                                                                        setLabour(newLabour)
+                                                                    }}
+                                                                >
+                                                                    <option value={0}>0</option>
+                                                                    <option value={30}>30</option>
+                                                                </select>
+                                                            </td>
                                                             <td style={{ paddingInline: "0px" }} >
                                                                 <IoClose color={"grey"} size={24} style={{ cursor: "pointer" }} onClick={() => {
                                                                     if (val.vehicles.length === 1) {
                                                                         let newLabour = [...labour]
-                                                                        newLabour[index].vehicles = [{ id: "", name: "", plate: "" }]
+                                                                        newLabour[index].vehicles = [{ id: "", name: "", plate: "", hours: 0, minutes: 0 }]
                                                                         setLabour(newLabour)
                                                                         return
                                                                     }
@@ -534,9 +641,11 @@ const Edit = () => {
                             )
                         })
                     }
-                    <IoAdd color={"grey"} size={30} style={{ cursor: "pointer" }} onClick={() => {
-                        setLabour([...labour, { date: "", users: [{ name: "", surname: "", hours: "", minutes: "" }], vehicles: [{ name: "", plate: "" }] }])
-                    }} />
+                    <button className="button" onClick={() => {
+                        setLabour([...labour, { date: "", users: [{ name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ name: "", plate: "", hours: 0, minutes: 0 }] }])
+                    }} >
+                        Aggiungi ulteriore giornata
+                    </button>
                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "100%" }}>
                         <button className="button" style={{ width: "80%", maxWidth: 200, margin: 20 }} onClick={save}
                         >Salva</button>

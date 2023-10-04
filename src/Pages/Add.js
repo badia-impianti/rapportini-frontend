@@ -18,11 +18,13 @@ const Add = () => {
     const [description, setDescription] = React.useState("");
     const [notes, setNotes] = React.useState("");
     const [completed, setCompleted] = React.useState(false);
+    const [onCall, setOnCall] = React.useState(false);
+    // Add images as an array of files
     const [images, setImages] = React.useState([]);
     const [users, setUsers] = React.useState([]);
     const [vehicles, setVehicles] = React.useState([]);
     const [materials, setMaterials] = React.useState([{ name: "", quantity: "", unit: "n" }]);
-    const [labour, setLabour] = React.useState([{ date: "", laborers: [{ id: "", name: "", surname: "", hours: "0", minutes: "0" }], vehicles: [{ id: "", name: "", plate: "" }] }]);
+    const [labour, setLabour] = React.useState([{ date: "", laborers: [{ id: "", name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ id: "", name: "", plate: "", hours: 0, minutes: 0 }] }]);
 
 
     //Loading needed data
@@ -38,7 +40,7 @@ const Add = () => {
                         setIsLoading(false);
                     });
                 }
-                else{
+                else {
                     setLoadingError(true);
                 }
             })
@@ -56,12 +58,12 @@ const Add = () => {
                         setVehicles(data.vehicles);
                     });
                 }
-                else{
+                else {
                     setLoadingError(true);
                 }
             })
             .catch((err) => {
-               setLoadingError(true);
+                setLoadingError(true);
             });
     }, []);
 
@@ -77,7 +79,7 @@ const Add = () => {
     useEffect(() => {
         //if last material is filled, add a new empty material
         if (materials[materials.length - 1].name !== "" && materials[materials.length - 1].quantity !== "" && materials[materials.length - 1].unit !== "") {
-            setMaterials([...materials, { name: "", quantity: "0", unit: "n" }]);
+            setMaterials([...materials, { name: "", quantity: 0, unit: "n" }]);
         }
     }, [materials]);
 
@@ -86,7 +88,7 @@ const Add = () => {
         labour.forEach((val, idx) => {
             if (val.laborers[val.laborers.length - 1].id !== "" && val.laborers[val.laborers.length - 1].hours !== "" && val.laborers[val.laborers.length - 1].minutes !== "") {
                 let newLabour = [...labour]
-                newLabour[idx].laborers.push({ id: "", name: "", surname: "", hours: "0", minutes: "0" })
+                newLabour[idx].laborers.push({ id: "", name: "", surname: "", hours: 0, minutes: 0 })
                 setLabour(newLabour)
             }
         })
@@ -97,7 +99,7 @@ const Add = () => {
         labour.forEach((val, idx) => {
             if (val.vehicles[val.vehicles.length - 1].id !== "") {
                 let newLabour = [...labour]
-                newLabour[idx].vehicles.push({ id: "", name: "", plate: "" })
+                newLabour[idx].vehicles.push({ id: "", name: "", plate: "", hours: 0, minutes: 0 })
                 setLabour(newLabour)
             }
         })
@@ -106,26 +108,27 @@ const Add = () => {
 
 
     const uploadImages = (id) => {
-        let formData = new FormData();
         images.forEach((image) => {
-            formData.append("images", image);
-        })
-        fetch("https://backend.rapportini.badiasilvano.it/works/" + id + "/images", {
-            method: "POST",
-            credentials: "include",
-            body: formData
-        })
-            .then((response) => {
-                if (response.status === 200) {
-                    response.json().then((data) => {
-                        console.log(data);
-                    });
-                }
-
+            let formData = new FormData();
+            formData.append("photo", image);
+            fetch("https://backend.rapportini.badiasilvano.it/works/" + id + "/images", {
+                method: "POST",
+                credentials: "include",
+                body: formData
             })
-            .catch((err) => {
-                console.log("Error: ", err);
-            });
+                .then((response) => {
+                    if (response.status === 200) {
+                        response.json().then((data) => {
+                            console.log(data);
+                        });
+                    }
+
+                })
+                .catch((err) => {
+                    console.log("Error: ", err);
+                });
+
+        });
     }
 
 
@@ -154,7 +157,7 @@ const Add = () => {
             })
 
             //Check that the date is not null, or the work cannot be accepted
-            if (val.date === ""  || val.date === null) {
+            if (val.date === "" || val.date === null) {
                 errorType = "date"
                 alert("Inserire una data valida")
                 return
@@ -172,6 +175,7 @@ const Add = () => {
             description: description,
             notes: notes,
             completed: completed ? 1 : 0,
+            oncall: onCall ? 1 : 0,
             materials: newMaterials,
             labour: newLabour
         }
@@ -201,11 +205,13 @@ const Add = () => {
 
     return (
         loadingError ? <LoadingError /> :
-        isLoading ? <LoadingSpinner /> :
-            <div className="mainContainer">
-                <NavBar />
-                <h1>Nuovo Rapporto</h1>
-                <form style={{width: "100%", marginTop: "50px" }}>
+            isLoading ? <LoadingSpinner /> :
+                <div className="mainContainer">
+                    <NavBar />
+                    <h1>Nuovo Rapporto</h1>
+                    <form style={
+                        //check if browser is mozilla firefox
+                        typeof InstallTrigger !== 'undefined' ? { textAlign: "-moz-center", width: "100%" } : { textAlign: "center", width: "100%" }}>
                         <div className="form__group field" >
                             <input type="text" className="form__field" placeholder="Cliente" name="customer" id='customer' required
                                 onChange={e => setCustomer(e.target.value)}
@@ -224,26 +230,50 @@ const Add = () => {
                             />
                             <label for="notes" className="form__label">Note</label>
                         </div>
-                        <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "80%", maxWidth: 200 }}>
-                        <input type="checkbox" id="completed" name="completed" onChange={e => setCompleted(e.target.checked)} />
-                        <p>
-                            <label for="completed">Lavoro completato</label>
-                        </p>
+                        <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center" }} >
+                            <input type="checkbox" id="onCall" name="onCall" onChange={e => setOnCall(e.target.checked)} />
+                            <p>
+                                <label for="onCall">Reperibilità</label>
+                            </p>
+                        </div>
+                        <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center", padding: 20 }}>
+                            <input type="checkbox" id="completed" name="completed" onChange={e => setCompleted(e.target.checked)} />
+                            <p>
+                                <label for="completed">Lavoro completato</label>
+                            </p>
                         </div>
                         <div>
                             <h2>Immagini</h2>
-                            <input type="file" id="images" name="images" accept="image/*" multiple
-                            onChange={(e) => {
-                                let newImages = [...images]
-                                for (let i = 0; i < e.target.files.length; i++) {
-                                    newImages.push(e.target.files[i])
+                            <div style={{ justifyContent: "center" }}>
+                                {
+                                    //Show the images that the user has selected
+                                    images.map((image) => {
+                                        return (
+                                            <div>
+                                                <img src={URL.createObjectURL(image)} style={{ width: 100, height: 100 }} />
+                                                <IoClose color={"grey"} size={24} style={{ cursor: "pointer" }} onClick={() => {
+                                                    let newImages = [...images]
+                                                    // remove current row
+                                                    newImages.splice(images.indexOf(image), 1)
+                                                    setImages(newImages)
+                                                }} />
+                                            </div>
+                                        )
+                                    })
                                 }
-                                setImages(newImages)
-                            }
-                            }/>
+                            </div>
+                            <input type="file" id="images" name="images" accept="image/*" multiple
+                                onChange={(e) => {
+                                    let newImages = [...images]
+                                    for (let i = 0; i < e.target.files.length; i++) {
+                                        newImages.push(e.target.files[i])
+                                    }
+                                    setImages(newImages)
+                                }
+                                } />
                         </div>
-                </form>
-                    <h2 style={{marginTop: "100px"}}>Materiali</h2>
+                    </form>
+                    <h2 style={{ marginTop: "100px" }}>Materiali</h2>
                     <table style={{ width: "80%" }}>
                         <thead>
                             <tr>
@@ -312,7 +342,7 @@ const Add = () => {
                         </tbody>
                     </table>
 
-                    <h2 style={{marginTop: "100px"}}>Giornate</h2>
+                    <h2 style={{ marginTop: "100px" }}>Giornate</h2>
                     {
                         labour.map((val, index) => {
                             return (
@@ -328,7 +358,7 @@ const Add = () => {
                                         />
                                         <IoClose color={"grey"} size={30} style={{ cursor: "pointer", marginLeft: 20 }} onClick={() => {
                                             if (labour.length === 1) {
-                                                setLabour([{ date: "", laborers: [{ name: "", surname: "", hours: "", minutes: "" }], vehicles: [{ name: "", plate: "" }] }])
+                                                setLabour([{ date: "", laborers: [{ name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ name: "", plate: "", hours: 0, minutes: 0 }] }])
                                                 return
                                             }
                                             let newLabour = [...labour]
@@ -371,44 +401,46 @@ const Add = () => {
                                                                     }
                                                                 </select>
                                                             </td>
-                                                            <td style={{ paddingInline: "10px" }} >
+                                                            <td style={{ paddingInline: "10px", minWidth: 40 }} >
                                                                 <select
+                                                                    className="form__field"
                                                                     onChange={(e) => {
                                                                         let newLabour = [...labour]
                                                                         newLabour[index].laborers[idx].hours = e.target.value
                                                                         setLabour(newLabour)
                                                                     }}>
-                                                                    <option value="0">0</option>
-                                                                    <option value="1">1</option>
-                                                                    <option value="2">2</option>
-                                                                    <option value="3">3</option>
-                                                                    <option value="4">4</option>
-                                                                    <option value="5">5</option>
-                                                                    <option value="6">6</option>
-                                                                    <option value="7">7</option>
-                                                                    <option value="8">8</option>
-                                                                    <option value="9">9</option>
-                                                                    <option value="10">10</option>
-                                                                    <option value="11">11</option>
-                                                                    <option value="12">12</option>
+                                                                    <option value={0}>0</option>
+                                                                    <option value={1}>1</option>
+                                                                    <option value={2}>2</option>
+                                                                    <option value={3}>3</option>
+                                                                    <option value={4}>4</option>
+                                                                    <option value={5}>5</option>
+                                                                    <option value={6}>6</option>
+                                                                    <option value={7}>7</option>
+                                                                    <option value={8}>8</option>
+                                                                    <option value={9}>9</option>
+                                                                    <option value={10}>10</option>
+                                                                    <option value={11}>11</option>
+                                                                    <option value={12}>12</option>
                                                                 </select>
                                                             </td>
 
-                                                            <td style={{ paddingInline: "10px"}}>
-                                                                <select onChange={(e) => {
-                                                                    let newLabour = [...labour]
-                                                                    newLabour[index].laborers[idx].minutes = e.target.value
-                                                                    setLabour(newLabour)
-                                                                }}>
-                                                                    <option value="0">0</option>
-                                                                    <option value="30">30</option>
+                                                            <td style={{ paddingInline: "10px" }}>
+                                                                <select className="form__field"
+                                                                    onChange={(e) => {
+                                                                        let newLabour = [...labour]
+                                                                        newLabour[index].laborers[idx].minutes = e.target.value
+                                                                        setLabour(newLabour)
+                                                                    }}>
+                                                                    <option value={0}>0</option>
+                                                                    <option value={30}>30</option>
                                                                 </select>
                                                             </td>
                                                             <td style={{ paddingInline: "0px" }} >
                                                                 <IoClose color={"grey"} size={24} style={{ cursor: "pointer" }} onClick={() => {
                                                                     if (val.laborers.length === 1) {
                                                                         let newLabour = [...labour]
-                                                                        newLabour[index].laborers = [{ name: "", surname: "", hours: "", minutes: "" }]
+                                                                        newLabour[index].laborers = [{ name: "", surname: "", hours: 0, minutes: 0 }]
                                                                         setLabour(newLabour)
                                                                         return
                                                                     }
@@ -430,6 +462,8 @@ const Add = () => {
                                         <thead>
                                             <tr>
                                                 <th>Veicolo</th>
+                                                <th>Ore</th>
+                                                <th>Minuti</th>
                                                 <th />
                                             </tr>
                                         </thead>
@@ -459,11 +493,45 @@ const Add = () => {
                                                                     }
                                                                 </select>
                                                             </td>
+                                                            <td style={{ paddingInline: "10px", minWidth: 40 }} >
+                                                                <select className="form__field"
+                                                                    onChange={(e) => {
+                                                                        let newLabour = [...labour]
+                                                                        newLabour[index].vehicles[idx].hours = e.target.value
+                                                                        setLabour(newLabour)
+                                                                    }}>
+                                                                    <option value={0}>0</option>
+                                                                    <option value={1}>1</option>
+                                                                    <option value={2}>2</option>
+                                                                    <option value={3}>3</option>
+                                                                    <option value={4}>4</option>
+                                                                    <option value={5}>5</option>
+                                                                    <option value={6}>6</option>
+                                                                    <option value={7}>7</option>
+                                                                    <option value={8}>8</option>
+                                                                    <option value={9}>9</option>
+                                                                    <option value={10}>10</option>
+                                                                    <option value={11}>11</option>
+                                                                    <option value={12}>12</option>
+                                                                </select>
+                                                            </td>
+                                                            <td style={{ paddingInline: "10px" }}>
+                                                                <select className="form__field"
+                                                                    onChange={(e) => {
+                                                                        let newLabour = [...labour]
+                                                                        newLabour[index].vehicles[idx].minutes = e.target.value
+                                                                        setLabour(newLabour)
+                                                                    }
+                                                                    }>
+                                                                    <option value={0}>0</option>
+                                                                    <option value={30}>30</option>
+                                                                </select>
+                                                            </td>
                                                             <td style={{ paddingInline: "0px" }} >
                                                                 <IoClose color={"grey"} size={24} style={{ cursor: "pointer" }} onClick={() => {
                                                                     if (val.vehicles.length === 1) {
                                                                         let newLabour = [...labour]
-                                                                        newLabour[index].vehicles = [{ id: "", name: "", plate: "" }]
+                                                                        newLabour[index].vehicles = [{ id: "", name: "", plate: "", hours: 0, minutes: 0 }]
                                                                         setLabour(newLabour)
                                                                         return
                                                                     }
@@ -487,12 +555,12 @@ const Add = () => {
                         })
                     }
                     <button className="button" onClick={() => {
-                        setLabour([...labour, { date: "", laborers: [{ name: "", surname: "", hours: "", minutes: "" }], vehicles: [{ name: "", plate: "" }] }])
+                        setLabour([...labour, { date: "", laborers: [{ name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ name: "", plate: "", hours: 0, minutes:0 }] }])
                     }}>
                         Aggiungi Ulteriore Giornata
                     </button>
                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "100%" }}>
-                        <button className="button" style={{ width: "80%", maxWidth: 200, marginTop:"100px" }} onClick={save}
+                        <button className="button" style={{ width: "80%", maxWidth: 200, marginTop: "100px" }} onClick={save}
                         >Salva</button>
                     </div>
                 </div>

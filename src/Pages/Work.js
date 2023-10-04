@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import { IoPerson, IoTime, IoBookmark } from "react-icons/io5";
+import {IoPerson, IoTime, IoBookmark, IoMoon} from "react-icons/io5";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
 
@@ -112,7 +112,9 @@ const Work = () => {
                                 :
                                 <div className="date" style={{ backgroundColor: "#f4d4d4", color: "#331313" }}>In lavorazione</div>}
                             <p><IoPerson /> <b>{work.customer} </b></p>
-                            <p><IoTime /> <b>Iniziato:</b> {work.labour[0] && new Date(work.labour[0].date).toLocaleDateString()} -  <IoTime /> <b>Terminato:</b> {work.labour[0] && new Date(work.labour[work.labour.length - 1].date).toLocaleDateString()}</p>
+                            <p><IoTime /> <b>Iniziato:</b> {work.labour[0] && new Date(work.labour[0].date).toLocaleDateString()} -
+                                &nbsp;<IoTime /> <b>Terminato:</b> {work.labour[0] && new Date(work.labour[work.labour.length - 1].date).toLocaleDateString()}</p>
+                            <p><IoMoon /> <b>Reperibile</b> {(work.oncall) ? "Si" : "No" }</p>
                             <p>{work.description}</p>
                             <p><IoBookmark /> {work.note} </p>
                         </div>
@@ -153,6 +155,7 @@ const Work = () => {
                                     <th>Data</th>
                                     <th>Nome</th>
                                     <th>Targa</th>
+                                    <th>Ore</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -168,6 +171,10 @@ const Work = () => {
                                         </td>
                                         <td>{labour.vehicles.map((vehicle) =>
                                             <p>{vehicle.plate} </p>
+                                        )}
+                                        </td>
+                                        <td>{labour.vehicles.map((vehicle) =>
+                                            <p>{vehicle.hours}:{(vehicle.minutes < 10) ? "0"+vehicle.minutes : vehicle.minutes} </p>
                                         )}
                                         </td>
                                     </tr>

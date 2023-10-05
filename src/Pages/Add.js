@@ -209,9 +209,7 @@ const Add = () => {
                 <div className="mainContainer">
                     <NavBar />
                     <h1>Nuovo Rapporto</h1>
-                    <form style={
-                        //check if browser is mozilla firefox
-                        typeof InstallTrigger !== 'undefined' ? { textAlign: "-moz-center", width: "100%" } : { textAlign: "center", width: "100%" }}>
+                    <form style={{ width: "100%" }}>
                         <div className="form__group field" >
                             <input type="text" className="form__field" placeholder="Cliente" name="customer" id='customer' required
                                 onChange={e => setCustomer(e.target.value)}
@@ -274,7 +272,7 @@ const Add = () => {
                         </div>
                     </form>
                     <h2 style={{ marginTop: "100px" }}>Materiali</h2>
-                    <table style={{ width: "80%" }}>
+                    <table style={{ width: "100%" }}>
                         <thead>
                             <tr>
                                 <th>Nome</th>
@@ -347,7 +345,7 @@ const Add = () => {
                         labour.map((val, index) => {
                             return (
                                 <div key={index} style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
-                                    <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "80%", maxWidth: 200 }}>
+                                    <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%", maxWidth: 200 }}>
                                         <input type="date" name="date" data-id={index} id={`date-${index}`} className="form__field" placeholder="Data"
                                             value={val.date}
                                             onChange={(e) => {
@@ -368,7 +366,7 @@ const Add = () => {
                                             setLabour(newLabour)
                                         }} />
                                     </div>
-                                    <table style={{ width: "80%" }}>
+                                    <table style={{ width: "100%" }}>
                                         <thead>
                                             <tr>
                                                 <th>Operatore</th>
@@ -458,7 +456,7 @@ const Add = () => {
                                             }
                                         </tbody>
                                     </table>
-                                    <table style={{ width: "80%" }}>
+                                    <table style={{ width: "100%" }}>
                                         <thead>
                                             <tr>
                                                 <th>Veicolo</th>
@@ -560,7 +558,7 @@ const Add = () => {
                         Aggiungi Ulteriore Giornata
                     </button>
                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "100%" }}>
-                        <button className="button" style={{ width: "80%", maxWidth: 200, marginTop: "100px" }} onClick={save}
+                        <button className="button" style={{ width: "100%", maxWidth: 200, marginTop: "100px" }} onClick={save}
                         >Salva</button>
                     </div>
                 </div>

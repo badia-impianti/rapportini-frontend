@@ -299,13 +299,13 @@ const Edit = () => {
                             <label for="notes" className="form__label">Note</label>
                         </div>
                         <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "80%", maxWidth: 200 }} >
-                            <input type="checkbox" id="onCall" name="onCall" onChange={e => setOnCall(e.target.checked)} value={onCall} />
+                            <input type="checkbox" id="onCall" name="onCall" onChange={e => setOnCall(e.target.checked)} value={onCall} checked={onCall} />
                             <p>
                                 <label for="onCall">Reperibilità</label>
                             </p>
                         </div>
                         <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "80%", maxWidth: 200 }}>
-                            <input type="checkbox" id="completed" name="completed" onChange={e => setCompleted(e.target.checked)} value={completed} />
+                            <input type="checkbox" id="completed" name="completed" onChange={e => setCompleted(e.target.checked)} value={completed} checked={completed} />
                             <p>
                                 <label for="completed">Lavoro completato</label>
                             </p>
@@ -354,7 +354,7 @@ const Edit = () => {
                         </div>
                     </form>
                     <h2>Materiali</h2>
-                    <table style={{ width: "80%" }}>
+                    <table style={{ width: "100%" }}>
                         <thead>
                             <tr>
                                 <th>Nome</th>
@@ -448,7 +448,7 @@ const Edit = () => {
                                             setLabour(newLabour)
                                         }} />
                                     </div>
-                                    <table style={{ width: "80%" }}>
+                                    <table style={{ width: "100%" }}>
                                         <thead>
                                             <tr>
                                                 <th>Operatore</th>
@@ -542,7 +542,7 @@ const Edit = () => {
                                             }
                                         </tbody>
                                     </table>
-                                    <table style={{ width: "80%" }}>
+                                    <table style={{ width: "100%" }}>
                                         <thead>
                                             <tr>
                                                 <th>Veicolo</th>

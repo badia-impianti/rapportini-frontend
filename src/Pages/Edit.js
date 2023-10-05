@@ -5,6 +5,7 @@ import { IoClose, IoAdd } from "react-icons/io5";
 import NavBar from "../components/NavBar";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
+import * as trace_events from "trace_events";
 
 
 
@@ -17,6 +18,7 @@ const Edit = () => {
 
     //Page state
     const [loadingError, setLoadingError] = React.useState(false);
+    const [errorType, setErrorType] = React.useState("");
     const [isLoading, setIsLoading] = React.useState(true);
     //Page data
     const [customer, setCustomer] = React.useState("");
@@ -230,15 +232,15 @@ const Edit = () => {
                 body: formData
             })
                 .then((response) => {
-                    if (response.status === 200) {
-                        response.json().then((data) => {
-                            console.log(data);
-                        });
+                    if (response.status !== 200) {
+                        setErrorType("Errore nel caricamento di una immagine")
+                        setLoadingError(true)
                     }
 
                 })
                 .catch((err) => {
-                    console.log("Error: ", err);
+                    setErrorType("Errore nel caricamento di una immagine. Nel dettaglio " + err.message)
+                    setLoadingError(true)
                 });
 
         });
@@ -269,7 +271,7 @@ const Edit = () => {
     }
 
     return (
-        loadingError ? <LoadingError /> :
+        loadingError ? <LoadingError errorDescription={errorType}/> :
             isLoading ? <LoadingSpinner /> :
                 <div className="mainContainer">
                     <NavBar />

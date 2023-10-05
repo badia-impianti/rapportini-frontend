@@ -106,128 +106,128 @@ const Work = () => {
 
     return (
         loadingError ? <LoadingError errorDescription={errorType} /> :
-            isLoading ? <LoadingSpinner /> :
-                <div className="mainContainer">
-                    <NavBar />
-                    <h1>Riepilogo per il lavoro n°{work.id}</h1>
-                    <div className="infoAndPhotosContainer">
-                        <div className="infoContainer">
-                            {work.completed ? <div className="date" style={{ backgroundColor: "#d4f4cd", color: "#133213", maxWidth: "100px", textAlign: "center" }}>Completato</div>
-                                :
-                                <div className="date" style={{ backgroundColor: "#f4d4d4", color: "#331313" }}>In lavorazione</div>}
-                            <p><IoPerson /> <b>{work.customer} </b></p>
-                            <p><IoTime /> <b>Iniziato:</b> {work.labour[0] && new Date(work.labour[0].date).toLocaleDateString()} -
-                                &nbsp;<IoTime /> <b>Terminato:</b> {work.labour[0] && new Date(work.labour[work.labour.length - 1].date).toLocaleDateString()}</p>
-                            <p><IoMoon /> <b>Reperibile</b> {(work.oncall) ? "Si" : "No" }</p>
-                            <p>{work.description}</p>
-                            <p><IoBookmark /> {work.note} </p>
-                        </div>
-                        {(imagesUrls.length > 0) &&
-                            <div className="photosContainer">
-                                {imagesUrls.map((image) => (
-                                    <img src={image.url} alt="Nessuna Immagine" className="images" />
-                                    ))}
-                            </div>}
+        isLoading ? <LoadingSpinner /> :
+            <div className="mainContainer">
+                <NavBar />
+                <h1>Riepilogo per il lavoro n°{work.id}</h1>
+                <div className="infoAndPhotosContainer">
+                    <div className="infoContainer">
+                        {work.completed ? <div className="date" style={{ backgroundColor: "#d4f4cd", color: "#133213", maxWidth: "100px", textAlign: "center" }}>Completato</div>
+                            :
+                            <div className="date" style={{ backgroundColor: "#f4d4d4", color: "#331313" }}>In lavorazione</div>}
+                        <p><IoPerson /> <b>{work.customer} </b></p>
+                        <p><IoTime /> <b>Iniziato:</b> {work.labour[0] && new Date(work.labour[0].date).toLocaleDateString()} -
+                            &nbsp;<IoTime /> <b>Terminato:</b> {work.labour[0] && new Date(work.labour[work.labour.length - 1].date).toLocaleDateString()}</p>
+                        <p><IoMoon /> <b>Reperibile</b> {(work.oncall) ? "Si" : "No" }</p>
+                        <p>{work.description}</p>
+                        <p><IoBookmark /> {work.note} </p>
                     </div>
-
-                    <div className="tableContainer">
-                        <h2>Materiali utilizzati</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>Unità</th>
-                                    <th>Quantità</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {work.materials.map((material) => (
-                                    <tr key={material.id}>
-                                        <td>{material.name}</td>
-                                        <td>{material.unit}</td>
-                                        <td>{material.quantity}</td>
-                                    </tr>
+                    {(imagesUrls.length > 0) &&
+                        <div className="photosContainer">
+                            {imagesUrls.map((image) => (
+                                <img src={image.url} alt="Nessuna Immagine" className="images" />
                                 ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div className="tableContainer">
-                        <h2>Veicoli utilizzati</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Data</th>
-                                    <th>Nome</th>
-                                    <th>Targa</th>
-                                    <th>Ore</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {work.labour.map((labour) => (
-                                    (labour.vehicles.length > 0) ?
-                                    <tr >
-                                        <td>
-                                            <div className="date">{new Date(labour.date).toLocaleDateString()}</div>
-                                        </td>
-                                        <td>{labour.vehicles.map((vehicle) =>
-                                            <p>{vehicle.name} </p>
-                                        )}
-                                        </td>
-                                        <td>{labour.vehicles.map((vehicle) =>
-                                            <p>{vehicle.plate} </p>
-                                        )}
-                                        </td>
-                                        <td>{labour.vehicles.map((vehicle) =>
-                                            <p>{vehicle.hours}:{(vehicle.minutes < 10) ? "0"+vehicle.minutes : vehicle.minutes} </p>
-                                        )}
-                                        </td>
-                                    </tr>
-                                        :
-                                        ""
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div className={"tableContainer"}>
-                        <h2>Manodopera</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Data</th>
-                                    <th>Lavoratore</th>
-                                    <th>Ore</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {work.labour.map((labour) => (
-                                    <tr >
-                                        <td>
-                                            <div className="date">{new Date(labour.date).toLocaleDateString()}</div>
-                                        </td>
-                                        <td>{labour.users.map((user) =>
-                                            <p>{user.name} {user.surname} </p>
-                                        )}
-                                            <b>Totale Giornaliero:</b>
-                                        </td>
-                                        <td>{labour.users.map((user) =>
-                                            <p>{user.hours}:{(user.minutes < 10) ? "0"+user.minutes : user.minutes} </p>
-                                        )}
-                                            <b>{labour.totalHours}:{(labour.totalMinutes < 10) ? "0"+labour.totalMinutes:labour.totalMinutes}</b>
-                                        </td>
-                                    </tr>
-                                ))}
-                                <tr>
-                                    <td></td>
-                                    <td><b>Totale:</b></td>
-                                    <td><b>{work.totalHours}:{(work.totalMinutes < 10) ? "0"+work.totalMinutes:work.totalMinutes}</b></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <button className="deleteButton" style={{marginTop: "100px"}} onClick={deleteWork}>Elimina</button>
+                        </div>}
                 </div>
+
+                <div className="tableContainer">
+                    <h2>Materiali utilizzati</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Unità</th>
+                                <th>Quantità</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {work.materials.map((material) => (
+                                <tr key={material.id}>
+                                    <td>{material.name}</td>
+                                    <td>{material.unit}</td>
+                                    <td>{material.quantity}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className="tableContainer">
+                    <h2>Veicoli utilizzati</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Nome</th>
+                                <th>Targa</th>
+                                <th>Ore</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {work.labour.map((labour) => (
+                                (labour.vehicles.length > 0) ?
+                                <tr >
+                                    <td>
+                                        <div className="date">{new Date(labour.date).toLocaleDateString()}</div>
+                                    </td>
+                                    <td>{labour.vehicles.map((vehicle) =>
+                                        <p>{vehicle.name} </p>
+                                    )}
+                                    </td>
+                                    <td>{labour.vehicles.map((vehicle) =>
+                                        <p>{vehicle.plate} </p>
+                                    )}
+                                    </td>
+                                    <td>{labour.vehicles.map((vehicle) =>
+                                        <p>{vehicle.hours}:{(vehicle.minutes < 10) ? "0"+vehicle.minutes : vehicle.minutes} </p>
+                                    )}
+                                    </td>
+                                </tr>
+                                    :
+                                    ""
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className={"tableContainer"}>
+                    <h2>Manodopera</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Lavoratore</th>
+                                <th>Ore</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {work.labour.map((labour) => (
+                                <tr >
+                                    <td>
+                                        <div className="date">{new Date(labour.date).toLocaleDateString()}</div>
+                                    </td>
+                                    <td>{labour.users.map((user) =>
+                                        <p>{user.name} {user.surname} </p>
+                                    )}
+                                        <b>Totale Giornaliero:</b>
+                                    </td>
+                                    <td>{labour.users.map((user) =>
+                                        <p>{user.hours}:{(user.minutes < 10) ? "0"+user.minutes : user.minutes} </p>
+                                    )}
+                                        <b>{labour.totalHours}:{(labour.totalMinutes < 10) ? "0"+labour.totalMinutes:labour.totalMinutes}</b>
+                                    </td>
+                                </tr>
+                            ))}
+                            <tr>
+                                <td></td>
+                                <td><b>Totale:</b></td>
+                                <td><b>{work.totalHours}:{(work.totalMinutes < 10) ? "0"+work.totalMinutes:work.totalMinutes}</b></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button className="deleteButton" style={{marginTop: "100px"}} onClick={deleteWork}>Elimina</button>
+            </div>
     );
 }
 

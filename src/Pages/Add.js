@@ -210,30 +210,30 @@ const Add = () => {
                     <NavBar />
                     <h1>Nuovo Rapporto</h1>
                     <form style={{ width: "100%" }}>
-                        <div className="form__group" id="customer" >
-                            <input type="text" className="form__field" id='customer'
+                        <div className="form__group" >
+                            <input type="text" className="form__field" id='customer' name="customer" placeholder="Cliente"
                                 onChange={e => setCustomer(e.target.value)}
                             />
                             <label for="customer" className="form__label">Cliente</label>
                         </div>
-                        <div className="form__group" id="description" >
-                            <textarea className="form__field" id="description"
+                        <div className="form__group" >
+                            <textarea className="form__field" id="description" placeholder="Descrizione"
                                 onChange={e => setDescription(e.target.value)}
                             />
                             <label for="description" className="form__label">Descrizione</label>
                         </div>
-                        <div className="form__group" id="notes">
-                            <textarea className="form__field" id='notes'
+                        <div className="form__group">
+                            <textarea className="form__field" id='notes' placeholder="Note"
                                 onChange={e => setNotes(e.target.value)}
                             />
                             <label for="notes" className="form__label">Note</label>
                         </div>
                         <div className="form__group" style={{ display: "flex", flexDirection: "row", justifyContent: "center" }} >
-                            <input type="checkbox" id="onCall" onChange={e => setOnCall(e.target.checked)} checked={onCall}/>
+                            <input type="checkbox" id="onCall" onChange={e => setOnCall(e.target.checked)} checked={onCall} />
                             &nbsp;<label for="onCall">Reperibilità</label>
                         </div>
                         <div className="form__group" style={{ display: "flex", flexDirection: "row", justifyContent: "center", padding: 20 }}>
-                            <input type="checkbox" id="completed" name="completed" onChange={e => setCompleted(e.target.checked)} checked={completed}/>
+                            <input type="checkbox" id="completed" name="completed" onChange={e => setCompleted(e.target.checked)} checked={completed} />
                             &nbsp;<label for="completed">Lavoro completato</label>
                         </div>
                         <div>
@@ -389,7 +389,12 @@ const Add = () => {
                                                                     {
                                                                         users && users.map((user) => {
                                                                             return (
-                                                                                <option value={user.id}>{user.name} {user.surname}</option>
+                                                                                <option 
+                                                                                hidden={
+                                                                                    // if the user is already selected, hide it from the options
+                                                                                    val.laborers.filter((val) => parseInt(val.id) === parseInt(user.id)).length > 0
+                                                                                }
+                                                                                value={user.id}>{user.name} {user.surname}</option>
                                                                             )
                                                                         })
                                                                     }
@@ -481,7 +486,12 @@ const Add = () => {
                                                                     {
                                                                         vehicles && vehicles.map((vehicle) => {
                                                                             return (
-                                                                                <option value={vehicle.id}>{vehicle.name} {vehicle.plate}</option>
+                                                                                <option hidden={
+                                                                                    // if the vehicle is already selected, hide it from the options
+                                                                                    val.vehicles.filter((val) => parseInt(val.id) === parseInt(vehicle.id)).length > 0
+                                                                                }
+                                                                                    value={vehicle.id}>{vehicle.name} {vehicle.plate}
+                                                                                </option>
                                                                             )
                                                                         })
                                                                     }
@@ -549,7 +559,7 @@ const Add = () => {
                         })
                     }
                     <button className="button" onClick={() => {
-                        setLabour([...labour, { date: "", laborers: [{ name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ name: "", plate: "", hours: 0, minutes:0 }] }])
+                        setLabour([...labour, { date: "", laborers: [{ id: "", name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ id: "", name: "", plate: "", hours: 0, minutes: 0 }] }])
                     }}>
                         Aggiungi Ulteriore Giornata
                     </button>

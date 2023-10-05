@@ -270,12 +270,12 @@ const Edit = () => {
     }
 
     return (
-        loadingError ? <LoadingError errorDescription={errorType}/> :
+        loadingError ? <LoadingError errorDescription={errorType} /> :
             isLoading ? <LoadingSpinner /> :
                 <div className="mainContainer">
                     <NavBar />
                     <h1>Rapporto N° {id}</h1>
-                    <form style={{width: "100%"}}>
+                    <form style={{ width: "100%" }}>
                         <div className="form__group field" >
                             <input type="text" className="form__field" placeholder="Cliente" name="customer" id='customer' required
                                 onChange={e => setCustomer(e.target.value)}
@@ -299,11 +299,11 @@ const Edit = () => {
                         </div>
                         <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "100%" }} >
                             <input type="checkbox" id="onCall" name="onCall" onChange={e => setOnCall(e.target.checked)} value={onCall} checked={onCall} />
-                                <label for="onCall">Reperibilità</label>
+                            <label for="onCall">Reperibilità</label>
                         </div>
                         <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "100%" }}>
                             <input type="checkbox" id="completed" name="completed" onChange={e => setCompleted(e.target.checked)} value={completed} checked={completed} />
-                                <label for="completed">Lavoro completato</label>
+                            <label for="completed">Lavoro completato</label>
                         </div>
                         <div>
                             <h2>Immagini</h2>
@@ -637,7 +637,7 @@ const Edit = () => {
                         })
                     }
                     <button className="button" onClick={() => {
-                        setLabour([...labour, { date: "", users: [{ name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ name: "", plate: "", hours: 0, minutes: 0 }] }])
+                        setLabour([...labour, { date: "", users: [{ id: "", name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ id: "", name: "", plate: "", hours: 0, minutes: 0 }] }])
                     }} >
                         Aggiungi ulteriore giornata
                     </button>

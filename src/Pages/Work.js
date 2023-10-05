@@ -15,6 +15,7 @@ const Work = () => {
     //Page state
     const [isLoading, setIsLoading] = useState(true);
     const [loadingError, setLoadingError] = useState(false)
+    const [errorType, setErrorType] = useState("");
     const [imagesUrls, setImagesUrls] = useState([]); //Array of strings [url1, url2, ...
     const navigate = useNavigate();
 
@@ -51,11 +52,13 @@ const Work = () => {
                     });
                 }
                 else if (res.status === 404) {
+                    setErrorType("Lavoro non trovato")
                     setLoadingError(true)
                 }
             })
             .catch((err) => {
-                console.log(err);
+                setErrorType(err.message)
+                setLoadingError(true)
             });
     }, []);
 
@@ -96,12 +99,13 @@ const Work = () => {
                 }
             })
             .catch((err) => {
+                setErrorType(err.message)
                 setLoadingError(true)
             });
     }
 
     return (
-        loadingError ? <LoadingError /> :
+        loadingError ? <LoadingError errorDescription={errorType} /> :
             isLoading ? <LoadingSpinner /> :
                 <div className="mainContainer">
                     <NavBar />

@@ -274,9 +274,7 @@ const Edit = () => {
                 <div className="mainContainer">
                     <NavBar />
                     <h1>Rapporto N° {id}</h1>
-                    <form style={
-                        //check if browser is mozilla firefox
-                        typeof InstallTrigger !== 'undefined' ? { textAlign: "-moz-center", width: "100%" } : { textAlign: "center", width: "100%" }}>
+                    <form style={{width: "100%"}}>
                         <div className="form__group field" >
                             <input type="text" className="form__field" placeholder="Cliente" name="customer" id='customer' required
                                 onChange={e => setCustomer(e.target.value)}
@@ -298,13 +296,13 @@ const Edit = () => {
                             />
                             <label for="notes" className="form__label">Note</label>
                         </div>
-                        <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "80%", maxWidth: 200 }} >
+                        <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "100%" }} >
                             <input type="checkbox" id="onCall" name="onCall" onChange={e => setOnCall(e.target.checked)} value={onCall} checked={onCall} />
                             <p>
                                 <label for="onCall">Reperibilità</label>
                             </p>
                         </div>
-                        <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "80%", maxWidth: 200 }}>
+                        <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "100%" }}>
                             <input type="checkbox" id="completed" name="completed" onChange={e => setCompleted(e.target.checked)} value={completed} checked={completed} />
                             <p>
                                 <label for="completed">Lavoro completato</label>
@@ -370,7 +368,7 @@ const Edit = () => {
                                     return (
                                         <tr key={val.index}>
                                             <td style={{ paddingInline: "10px" }} >
-                                                <input type="text" name="name" data-id={idx} id={materialName} className="form__field" placeholder="Nome"
+                                                <textarea type="text" name="name" data-id={idx} id={materialName} className="form__field" placeholder="Nome"
                                                     value={materials[idx].name}
                                                     onChange={(e) => {
                                                         let newMaterials = [...materials]

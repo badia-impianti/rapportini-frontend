@@ -210,31 +210,31 @@ const Add = () => {
                     <NavBar />
                     <h1>Nuovo Rapporto</h1>
                     <form style={{ width: "100%" }}>
-                        <div className="form__group field" >
-                            <input type="text" className="form__field" placeholder="Cliente" name="customer" id='customer' required
+                        <div className="form__group" id="customer" >
+                            <input type="text" className="form__field" id='customer'
                                 onChange={e => setCustomer(e.target.value)}
                             />
                             <label for="customer" className="form__label">Cliente</label>
                         </div>
-                        <div className="form__group field" >
-                            <textarea className="form__field" placeholder="Descrizione" name="description" id='description' required
+                        <div className="form__group" id="description" >
+                            <textarea className="form__field" id="description"
                                 onChange={e => setDescription(e.target.value)}
                             />
                             <label for="description" className="form__label">Descrizione</label>
                         </div>
-                        <div className="form__group field">
-                            <textarea className="form__field" placeholder="Note" name="notes" id='notes' required
+                        <div className="form__group" id="notes">
+                            <textarea className="form__field" id='notes'
                                 onChange={e => setNotes(e.target.value)}
                             />
                             <label for="notes" className="form__label">Note</label>
                         </div>
-                        <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center" }} >
-                            <input type="checkbox" id="onCall" name="onCall" onChange={e => setOnCall(e.target.checked)} checked={onCall}/>
-                                <label for="onCall">Reperibilità</label>
+                        <div className="form__group" style={{ display: "flex", flexDirection: "row", justifyContent: "center" }} >
+                            <input type="checkbox" id="onCall" onChange={e => setOnCall(e.target.checked)} checked={onCall}/>
+                            &nbsp;<label for="onCall">Reperibilità</label>
                         </div>
-                        <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center", padding: 20 }}>
+                        <div className="form__group" style={{ display: "flex", flexDirection: "row", justifyContent: "center", padding: 20 }}>
                             <input type="checkbox" id="completed" name="completed" onChange={e => setCompleted(e.target.checked)} checked={completed}/>
-                                <label for="completed">Lavoro completato</label>
+                            &nbsp;<label for="completed">Lavoro completato</label>
                         </div>
                         <div>
                             <h2>Immagini</h2>

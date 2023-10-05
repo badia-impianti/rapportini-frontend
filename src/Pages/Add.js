@@ -229,16 +229,12 @@ const Add = () => {
                             <label for="notes" className="form__label">Note</label>
                         </div>
                         <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center" }} >
-                            <input type="checkbox" id="onCall" name="onCall" onChange={e => setOnCall(e.target.checked)} />
-                            <p>
+                            <input type="checkbox" id="onCall" name="onCall" onChange={e => setOnCall(e.target.checked)} checked={onCall}/>
                                 <label for="onCall">Reperibilità</label>
-                            </p>
                         </div>
                         <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center", padding: 20 }}>
-                            <input type="checkbox" id="completed" name="completed" onChange={e => setCompleted(e.target.checked)} />
-                            <p>
+                            <input type="checkbox" id="completed" name="completed" onChange={e => setCompleted(e.target.checked)} checked={completed}/>
                                 <label for="completed">Lavoro completato</label>
-                            </p>
                         </div>
                         <div>
                             <h2>Immagini</h2>

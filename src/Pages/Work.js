@@ -118,11 +118,12 @@ const Work = () => {
                             <p>{work.description}</p>
                             <p><IoBookmark /> {work.note} </p>
                         </div>
-                        <div className="photosContainer">
-                            {imagesUrls.map((image) => (
-                                <img src={image.url} alt="Nessuna Immagine" className="images" />
-                                ))}
-                        </div>
+                        {(imagesUrls.length > 0) &&
+                            <div className="photosContainer">
+                                {imagesUrls.map((image) => (
+                                    <img src={image.url} alt="Nessuna Immagine" className="images" />
+                                    ))}
+                            </div>}
                     </div>
 
                     <div className="tableContainer">

@@ -5,7 +5,6 @@ import { IoClose, IoAdd } from "react-icons/io5";
 import NavBar from "../components/NavBar";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
-import * as trace_events from "trace_events";
 
 
 
@@ -27,7 +26,7 @@ const Edit = () => {
     const [completed, setCompleted] = React.useState(false);
     const [onCall, setOnCall] = React.useState(false);
     const [loadedImages, setLoadedImages] = React.useState([]);
-    const [images, setImages] = React.useState([]);
+    const [newImages, setNewImages] = React.useState([]);
     const [users, setUsers] = React.useState([]);
     const [vehicles, setVehicles] = React.useState([]);
     const [materials, setMaterials] = React.useState([{ name: "", quantity: "", unit: "n" }]);
@@ -223,7 +222,7 @@ const Edit = () => {
     }
 
     const uploadImages = (id) => {
-        images.forEach((image) => {
+        newImages.forEach((image) => {
             let formData = new FormData();
             formData.append("photo", image);
             fetch("https://backend.rapportini.badiasilvano.it/works/" + id + "/images", {
@@ -320,16 +319,16 @@ const Edit = () => {
                                     })
                                 }
                                 {
-                                    images.map((image, idx) => {
+                                    newImages.map((image, idx) => {
                                         return (
                                             <div key={idx} style={{ display: "flex", flexDirection: "column", alignItems: "center", margin: 10 }}>
                                                 <img src={URL.createObjectURL(image)} style={{ maxWidth: 200, maxHeight: 200 }} />
                                                 <IoClose color={"grey"} size={24} style={{ cursor: "pointer" }} onClick={() => {
-                                                    let newImages = [...images]
+                                                    let newImages = [...newImages]
                                                     // remove current row
                                                     newImages.splice(idx, 1)
                                                     console.log(newImages)
-                                                    setImages(newImages)
+                                                    setNewImages(newImages)
                                                 }} />
                                             </div>
                                         )
@@ -340,11 +339,11 @@ const Edit = () => {
                             </div>
                             <input type="file" id="images" name="images" accept="image/*" multiple
                                 onChange={(e) => {
-                                    let newImages = [...images]
+                                    let newImages = [...newImages]
                                     for (let i = 0; i < e.target.files.length; i++) {
                                         newImages.push(e.target.files[i])
                                     }
-                                    setImages(newImages)
+                                    setNewImages(newImages)
                                 }
                                 } />
                         </div>

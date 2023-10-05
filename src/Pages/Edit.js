@@ -298,15 +298,11 @@ const Edit = () => {
                         </div>
                         <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "100%" }} >
                             <input type="checkbox" id="onCall" name="onCall" onChange={e => setOnCall(e.target.checked)} value={onCall} checked={onCall} />
-                            <p>
                                 <label for="onCall">Reperibilità</label>
-                            </p>
                         </div>
                         <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "100%" }}>
                             <input type="checkbox" id="completed" name="completed" onChange={e => setCompleted(e.target.checked)} value={completed} checked={completed} />
-                            <p>
                                 <label for="completed">Lavoro completato</label>
-                            </p>
                         </div>
                         <div>
                             <h2>Immagini</h2>

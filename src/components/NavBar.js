@@ -6,6 +6,7 @@ import { useNavigate, Link } from "react-router-dom"
 export default function NavBar() {
 
     const navigate = useNavigate();
+    const isMobile = window.innerWidth < 500;
 
     return (
         <div className="navbarContainer">
@@ -16,10 +17,10 @@ export default function NavBar() {
                 onClick={() => navigate("/home")
             }>Rapportini</h1>
             </div>
-            <div className="navbarLinks">
+            <div className="navbarLinks" style={isMobile ? {marginRight: 30, width: "40%"} : null}>
                 <Link to="/home" className="links"><IoHomeOutline size={24} color="#257cff" /></Link>
-                <Link to="/add" className="links"><IoAddOutline size={24} color="#257cff" /></Link>
                 <Link to="/settings" className="links"><IoSettingsOutline size={24} color="#257cff" /></Link>
+                <Link to="/add" className="button links" style={{ minWidth: 0, margin: "unset", padding: "10px 15px"}}><IoAddOutline size={24} color="#ffff" /></Link>
             </div>
         </div>
     );

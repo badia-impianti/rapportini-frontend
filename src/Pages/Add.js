@@ -287,7 +287,7 @@ const Add = () => {
                                     return (
                                         <tr key={val.index}>
                                             <td style={{ paddingInline: "10px" }} >
-                                                <input type="text" name="name" data-id={idx} id={materialName} className="form__field" placeholder="Nome"
+                                                <textarea type="text" name="name" data-id={idx} id={materialName} className="form__field" placeholder="Nome"
                                                     value={materials[idx].name}
                                                     onChange={(e) => {
                                                         let newMaterials = [...materials]

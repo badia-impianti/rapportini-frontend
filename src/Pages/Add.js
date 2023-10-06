@@ -12,6 +12,7 @@ const Add = () => {
 
     //Page state
     const [loadingError, setLoadingError] = React.useState(false);
+    const [errorType, setErrorType] = React.useState("");
     const [isLoading, setIsLoading] = React.useState(true);
     //Page data
     const [customer, setCustomer] = React.useState("");
@@ -188,23 +189,25 @@ const Add = () => {
             body: JSON.stringify(data),
         })
             .then((response) => {
-                if (response.status === 200) {
-                    response.json().then((data) => {
+                response.json().then((data) => {
+                    if (response.status === 200) {
                         uploadImages(data.workId);
                         navigate("/home");
-                    });
-                }
-                else {
-                    setLoadingError(true)
-                }
+                    }
+                    else {
+                        setErrorType(data.message)
+                        setLoadingError(true)
+                    }
+                })
             })
             .catch((err) => {
+                setErrorType("Network error")
                 setLoadingError(true);
             });
     }
 
     return (
-        loadingError ? <LoadingError /> :
+        loadingError ? <LoadingError errorDescription={errorType}/> :
             isLoading ? <LoadingSpinner /> :
                 <div className="mainContainer">
                     <NavBar />

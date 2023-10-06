@@ -59,6 +59,7 @@ const Edit = () => {
                 }
             })
             .catch((err) => {
+                setErrorType("Network error")
                 setLoadingError(true)
             });
 
@@ -77,6 +78,7 @@ const Edit = () => {
                 }
             })
             .catch((err) => {
+                setErrorType("Network error")
                 setLoadingError(true);
             });
 
@@ -92,6 +94,7 @@ const Edit = () => {
                 }
             })
             .catch((err) => {
+                setErrorType("Network error")
                 setLoadingError(true);
             });
 
@@ -108,6 +111,7 @@ const Edit = () => {
                 }
             })
             .catch((err) => {
+                setErrorType("Network error")
                 setLoadingError(true);
             });
 
@@ -207,17 +211,23 @@ const Edit = () => {
             body: JSON.stringify(data),
         })
             .then((response) => {
-                if (response.status === 200) {
-                    response.json().then((data) => {
-                        console.log(data);
-                        uploadImages(id);
-                        window.alert("Rapporto salvato con successo");
-                        navigate("/home");
-                    });
-                }
+                response.json().then((data) => {
+                    if (response.status === 200) {
+                            console.log(data);
+                            uploadImages(id);
+                            window.alert("Rapporto salvato con successo");
+                            navigate("/home");
+                    }
+                    else {
+                        setErrorType(data.message)
+                        setLoadingError(true)
+                    }
+                })
+
             })
             .catch((err) => {
-                console.log("Error: ", err);
+                setErrorType("Network error")
+                setLoadingError(true)
             });
     }
 
@@ -265,7 +275,8 @@ const Edit = () => {
                 }
             })
             .catch((err) => {
-                console.log("Error: ", err);
+                setErrorType("Network error")
+                setLoadingError(true)
             });
     }
 

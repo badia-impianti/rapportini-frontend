@@ -63,6 +63,11 @@ h1 {
   box-shadow: 0 5px 5px rgba(0,0,0,0.15);
   text-decoration: none;
   min-width: 150px;
+
+  /* Show element centred inside */
+  display: flex;
+  justify-content: center; /* horizontal alignment */
+  align-items: center; /* vertical alignment */
 }
 
 table {
@@ -202,4 +207,16 @@ th {
 /* reset input */
 .form__field:required, .form__field:invalid {
   box-shadow: none;
+}
+
+footer {
+  position: fixed;
+    left: 0;
+    bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center; /* horizontal alignment */
+  align-items: center; /* vertical alignment */
+  font-size: 15px;
+  font-weight: 700;
 }

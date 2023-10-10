@@ -209,14 +209,19 @@ th {
   box-shadow: none;
 }
 
-footer {
+.customFooter {
   position: fixed;
-    left: 0;
-    bottom: 0;
+  left: 0;
+  bottom: 0;
   width: 100%;
   display: flex;
   justify-content: center; /* horizontal alignment */
   align-items: center; /* vertical alignment */
   font-size: 15px;
   font-weight: 700;
+}
+@media (max-width: 767px) {
+  .customFooter {
+    flex-direction: column;
+  }
 }

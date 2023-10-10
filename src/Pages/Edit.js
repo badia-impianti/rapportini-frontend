@@ -482,7 +482,12 @@ const Edit = () => {
                                                                     {
                                                                         users && users.map((user) => {
                                                                             return (
-                                                                                <option value={user.id}>{user.name} {user.surname}</option>
+                                                                                <option 
+                                                                                hidden={
+                                                                                    // if the user is already selected, hide it from the options
+                                                                                    val.users.filter((val) => parseInt(val.id) === parseInt(user.id)).length > 0
+                                                                                }
+                                                                                value={user.id}>{user.name} {user.surname}</option>
                                                                             )
                                                                         })
                                                                     }
@@ -577,7 +582,12 @@ const Edit = () => {
                                                                     {
                                                                         vehicles && vehicles.map((vehicle) => {
                                                                             return (
-                                                                                <option value={vehicle.id}>{vehicle.name} {vehicle.plate}</option>
+                                                                                <option hidden={
+                                                                                    // if the vehicle is already selected, hide it from the options
+                                                                                    val.vehicles.filter((val) => parseInt(val.id) === parseInt(vehicle.id)).length > 0
+                                                                                }
+                                                                                    value={vehicle.id}>{vehicle.name} {vehicle.plate}
+                                                                                </option>
                                                                             )
                                                                         })
                                                                     }

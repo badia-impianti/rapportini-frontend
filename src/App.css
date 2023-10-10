@@ -209,7 +209,7 @@ th {
   box-shadow: none;
 }
 
-.customFooter {
+.footer{
   position: fixed;
   left: 0;
   bottom: 0;
@@ -221,7 +221,7 @@ th {
   font-weight: 700;
 }
 @media (max-width: 767px) {
-  .customFooter {
+  footer {
     flex-direction: column;
   }
 }

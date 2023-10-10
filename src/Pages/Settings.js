@@ -47,11 +47,11 @@ const Settings = () => {
                     Logout
             </button>
 
-            <div className="customFooter">
+            <footer>
                 <p>© {actualYear} Badia Silvano</p>
                 {(window.innerWidth > 767) && "\xa0\xa0|\xa0\xa0"}
-                <p>Last build: {buildDateTime}</p>
-            </div>
+                <p>Latest build: {buildDateTime}</p>
+            </footer>
         </div>
     )
 }

@@ -350,11 +350,11 @@ const Edit = () => {
                             </div>
                             <input type="file" id="images" name="images" accept="image/*" multiple
                                 onChange={(e) => {
-                                    let newImages = [...newImages]
+                                    let tempImages = [...newImages]
                                     for (let i = 0; i < e.target.files.length; i++) {
-                                        newImages.push(e.target.files[i])
+                                        tempImages.push(e.target.files[i])
                                     }
-                                    setNewImages(newImages)
+                                    setNewImages(tempImages)
                                 }
                                 } />
                         </div>

@@ -50,7 +50,7 @@ const Settings = () => {
             <footer>
                 <p>© {actualYear} Badia Silvano</p>
                 {(window.innerWidth > 767) && "\xa0\xa0|\xa0\xa0"}
-                <p>Latest build: {buildDateTime}</p>
+                <p>Actual build: {buildDateTime}</p>
             </footer>
         </div>
     )

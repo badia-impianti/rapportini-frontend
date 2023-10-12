@@ -1,11 +1,16 @@
 import React, { useEffect } from "react";
+
 import { useState } from "react";
 import { IoPerson, IoCalendar, IoClipboard, IoBulb, IoPeople, IoCheckmark, IoChevronForward, IoChevronBack, IoResize } from "react-icons/io5";
 import { MdEdit, MdOutlineDeleteForever } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+
+import "./Home.css";
+
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
 import NavBar from "../components/NavBar";
+
 
 const Home = () => {
 
@@ -22,7 +27,7 @@ const Home = () => {
     const [pageCount, setPageCount] = useState(1);
 
     const [reports, setReports] = useState([]);
-
+    const [dailyHours, setDailyHours] = useState([]);
 
     useEffect(() => {
         fetch("https://backend.rapportini.badiasilvano.it/works/count", {
@@ -33,6 +38,23 @@ const Home = () => {
                 if (res.status === 200) {
                     res.json().then((data) => {
                         setPageCount(Math.ceil(data.works / 10));
+                    });
+                }
+            })
+            .catch((err) => {
+                setLoadingError(true);
+            });
+    }, []);
+
+    useEffect(() => {
+        fetch("https://backend.rapportini.badiasilvano.it/users/daily-hours", {
+            method: "GET",
+            credentials: "include",
+        })
+            .then((res) => {
+                if (res.status === 200) {
+                    res.json().then((data) => {
+                        setDailyHours(data.time);
                     });
                 }
             })
@@ -105,11 +127,33 @@ const Home = () => {
         }
     }
 
+    const percentuageCalculator = (hours, minutes) => {
+        const percentuage = Math.round((hours + minutes / 60) / 8 * 100)
+        console.log("Il vezzo ha lavorato per " + hours + " ore e " + minutes +  " totalizzando una percentuale di " + percentuage + "%" )
+        if (percentuage > 100) {
+            return 100
+        }
+        return percentuage
+    }
+
     return (
         (loadingError) ? <LoadingError /> :
         (isLoading) ? <LoadingSpinner /> :
         <div className="mainContainer">
             <NavBar />
+            <div className="dailyHoursContainer">
+                <h3>Riepilogo Giornaliero</h3>
+                {dailyHours.length === 0 && <p >Qua non lavora nessuno</p>}
+                {dailyHours.map((dailyHour) => (
+                    <div className="usersHoursContainer">
+                        <p>{dailyHour.name} {dailyHour.surname}</p>
+                        <div className="loadingContainer">
+                            <div className="loadingBar" style={{ width: `${percentuageCalculator(dailyHour.hours, dailyHour.minutes)}%`}}></div>
+                        </div>
+                        <p>{dailyHour.hours}h e {dailyHour.minutes} min</p>
+                    </div>
+                ))}
+            </div>
             <table hidden={isMobile}>
                 <thead>
                     <tr>

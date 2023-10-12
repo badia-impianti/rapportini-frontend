@@ -125,7 +125,12 @@ const Work = () => {
                     {(imagesUrls.length > 0) &&
                         <div className="photosContainer">
                             {imagesUrls.map((image) => (
-                                <img src={image.url} alt="Nessuna Immagine" className="images" />
+                                <img
+                                    src={image.url}
+                                    alt="Immagine relativa al lavoro"
+                                    className="images"
+                                    onClick={() => window.open(image.url, "_blank")}
+                                />
                                 ))}
                         </div>}
                 </div>

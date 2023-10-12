@@ -1,0 +1,43 @@
+.dailyHoursContainer {
+  margin: 50px auto 50px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  background-color: #f5f5f5;
+  border-radius: 50px;
+}
+
+.dailyHoursContainer p {
+  flex: 1;
+  font-weight: 600;
+  padding: 10px;
+}
+
+.usersHoursContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.loadingContainer {
+  flex: 2;
+  width: 40%;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 2px;
+}
+
+.loadingBar {
+  height: 20px;
+  background-color: #257CFFFF;
+  border-radius: 10px
+}
+
+@media (max-width: 767px) {
+  .dailyHoursContainer {
+    width: 95%;
+  }
+}

@@ -22,6 +22,7 @@ const Home = () => {
     //Page state
     const [isLoading, setIsLoading] = useState(true);
     const [loadingError, setLoadingError] = useState(false);
+    const [errorType, setErrorType] = useState("")
 
     const [pageNumber, setPageNumber] = useState(0);
     const [pageCount, setPageCount] = useState(1);
@@ -143,7 +144,7 @@ const Home = () => {
             <NavBar />
             <div className="dailyHoursContainer">
                 <h3>Riepilogo Giornaliero</h3>
-                {dailyHours.length === 0 && <p >Qua non lavora nessuno</p>}
+                {dailyHours.length === 0 && <p >Nella giornata odierna non sono ancora stati effettuati lavori</p>}
                 {dailyHours.map((dailyHour) => (
                     <div className="usersHoursContainer">
                         <p>{dailyHour.name} {dailyHour.surname}</p>

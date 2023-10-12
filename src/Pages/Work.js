@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import {IoPerson, IoTime, IoBookmark, IoMoon} from "react-icons/io5";
+import {IoPerson, IoTime, IoBookmark, IoMoon, IoTrashBin, IoPrint} from "react-icons/io5";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
 
 
 import "./Work.css"
 import NavBar from "../components/NavBar";
+import {BiUnderline} from "react-icons/bi";
 
 const Work = () => {
 
@@ -231,7 +232,18 @@ const Work = () => {
                         </tbody>
                     </table>
                 </div>
-                <button className="deleteButton" style={{marginTop: "100px"}} onClick={deleteWork}>Elimina</button>
+                <div className="buttonContainer">
+                    <button className="deleteButton" onClick={deleteWork}>
+                        <IoTrashBin size={24}/>
+                        &nbsp;
+                        Elimina
+                    </button>
+                    <button className="button" onClick={() => window.print()}>
+                        <IoPrint size={24}/>
+                        &nbsp;
+                        Stampa
+                    </button>
+                </div>
             </div>
     );
 }

@@ -46,6 +46,11 @@ h1 {
   text-decoration: none;
   min-width: 150px;
   background-image: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+
+  /* Show element centred inside */
+  display: flex;
+  justify-content: center; /* horizontal alignment */
+  align-items: center; /* vertical alignment */
 }
 
 .deleteButton {

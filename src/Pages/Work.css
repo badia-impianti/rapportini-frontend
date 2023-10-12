@@ -36,9 +36,21 @@
     flex-direction: column;
 }
 
+.buttonContainer {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
 
 @media (max-width: 767px) {
     .infoAndPhotosContainer {
+        flex-direction: column;
+    }
+    .buttonContainer {
         flex-direction: column;
     }
 }

@@ -43,6 +43,7 @@ const Home = () => {
                 }
             })
             .catch((err) => {
+                setErrorType("Network error");
                 setLoadingError(true);
             });
     }, []);
@@ -60,6 +61,7 @@ const Home = () => {
                 }
             })
             .catch((err) => {
+                setErrorType("Network error");
                 setLoadingError(true);
             });
     }, []);
@@ -101,6 +103,7 @@ const Home = () => {
                 }
             })
             .catch((err) => {
+                setErrorType("Network error");
                 setLoadingError(true);
             }
             );
@@ -138,7 +141,7 @@ const Home = () => {
     }
 
     return (
-        (loadingError) ? <LoadingError /> :
+        (loadingError) ? <LoadingError errorDescription={errorType}/> :
         (isLoading) ? <LoadingSpinner /> :
         <div className="mainContainer">
             <NavBar />

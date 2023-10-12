@@ -10,3 +10,9 @@
 
     color: #ebeefd;
 }
+
+@media (max-width: 767px) {
+    .errorMessageContainer {
+        width: 60%;
+    }
+}

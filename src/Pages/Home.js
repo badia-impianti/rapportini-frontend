@@ -122,7 +122,7 @@ const Home = () => {
                         });
                     }
                     else if (res.status === 401) {
-                        window.alert("Non sei atorizzato ad eliminare questo rapportino; Sono necessari i privilegi di amministratore")
+                        window.alert("Non sei autorizzato ad eliminare questo rapportino; Sono necessari i privilegi di amministratore")
                     }
                 })
                 .catch((err) => {

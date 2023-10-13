@@ -36,6 +36,34 @@
   border-radius: 10px
 }
 
+
+.datePickerContainer {
+
+  /* Position of the element */
+  margin: 50px auto 50px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding-bottom: 20px;  /* The 20px up are defined in input class */
+
+  /* Color of the element */
+  color: white;
+  background-color: #257CFFFF;
+  border-radius: 20px;
+  max-width: 300px;
+  font-weight: bold;
+}
+
+.datePickerContainer input{
+    width: 50%;
+    height: 30px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin: 5px;
+}
+
 @media (max-width: 767px) {
   .dailyHoursContainer {
     width: 95%;

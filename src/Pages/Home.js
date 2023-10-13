@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { useState } from "react";
-import { IoPerson, IoCalendar, IoClipboard, IoBulb, IoPeople, IoCheckmark, IoChevronForward, IoChevronBack, IoResize } from "react-icons/io5";
+import { IoPerson, IoCalendar, IoClipboard, IoBulb, IoPeople, IoCheckmark, IoResize } from "react-icons/io5";
 import { MdEdit, MdOutlineDeleteForever } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
@@ -24,29 +24,9 @@ const Home = () => {
     const [loadingError, setLoadingError] = useState(false);
     const [errorType, setErrorType] = useState("")
 
-    const [pageNumber, setPageNumber] = useState(0);
-    const [pageCount, setPageCount] = useState(1);
-
+    const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
     const [reports, setReports] = useState([]);
     const [dailyHours, setDailyHours] = useState([]);
-
-    useEffect(() => {
-        fetch("https://backend.rapportini.badiasilvano.it/works/count", {
-            method: "GET",
-            credentials: "include",
-        })
-            .then((res) => {
-                if (res.status === 200) {
-                    res.json().then((data) => {
-                        setPageCount(Math.ceil(data.works / 10));
-                    });
-                }
-            })
-            .catch((err) => {
-                setErrorType("Network error");
-                setLoadingError(true);
-            });
-    }, []);
 
     useEffect(() => {
         fetch("https://backend.rapportini.badiasilvano.it/users/daily-hours", {
@@ -65,10 +45,6 @@ const Home = () => {
                 setLoadingError(true);
             });
     }, []);
-
-    useEffect(() => {
-        loadReports();
-    }, [pageNumber]);
 
     const userRetriver = (labour) => {
         let users = []
@@ -90,7 +66,7 @@ const Home = () => {
 
     const loadReports = () => {
         setIsLoading(true);
-        fetch("https://backend.rapportini.badiasilvano.it/works/" + pageNumber, {
+        fetch("https://backend.rapportini.badiasilvano.it/works/" + date, {
             method: "GET",
             credentials: "include",
         })
@@ -108,6 +84,10 @@ const Home = () => {
             }
             );
     }
+
+    useEffect(() => {
+        loadReports()
+    }, [date]);
 
     const deleteReport = (report) => {
         if (window.confirm("Sei sicuro di voler eliminare il rapportino?")) {
@@ -158,6 +138,18 @@ const Home = () => {
                     </div>
                 ))}
             </div>
+
+            <div className="datePickerContainer">
+                <p>Seleziona la giornata</p>
+                <input
+                    type="date"
+                    className="form__field"
+                    style={{color: "white"}}
+                    value={date}
+                    onChange={(e) => {setDate(e.target.value)}}
+                />
+            </div>
+
             <table hidden={isMobile}>
                 <thead>
                     <tr>
@@ -249,19 +241,6 @@ const Home = () => {
                     ))}
                 </tbody>
             </table>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-                <button className="button" style={pageNumber <= 0 ?
-                    { marginInline: 15, marginTop: 5, marginBottom: 10, width: 100, minWidth: 0, opacity: 0.5 }
-                    :
-                    { marginInline: 15, marginTop: 5, marginBottom: 10, width: 100, minWidth: 0 }}
-                    onClick={() => setPageNumber(pageNumber - 1)} disabled={pageNumber <= 0 ? true : false}><IoChevronBack size={24} /></button>
-                <p style={{ fontWeight: "bold" }}>{pageNumber + 1}/{pageCount}</p>
-                <button className="button" style={pageNumber >= pageCount - 1 ?
-                    { marginInline: 15, marginTop: 5, marginBottom: 10, width: 100, minWidth: 0, opacity: 0.5 }
-                    :
-                    { marginInline: 15, marginTop: 5, marginBottom: 10, width: 100, minWidth: 0 }}
-                    onClick={() => setPageNumber(pageNumber + 1)} disabled={pageNumber >= pageCount - 1 ? true : false} ><IoChevronForward size={24} /></button>
-            </div>
         </div>
     );
 }

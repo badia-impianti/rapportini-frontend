@@ -33,7 +33,7 @@ const Settings = () => {
             })
     }
 
-    const buildDateTime = preval`module.exports = new Date().toLocaleString();`
+    const buildDateTime = preval`module.exports = new Date().toISOString();`
     const actualYear = new Date().getFullYear();
 
     return (

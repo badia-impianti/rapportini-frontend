@@ -28,7 +28,7 @@ const Home = () => {
     const [reports, setReports] = useState([]);
     const [dailyHours, setDailyHours] = useState([]);
 
-    useEffect(() => {
+    const dailyHoursRetriever = () => {
         fetch("https://backend.rapportini.badiasilvano.it/users/daily-hours", {
             method: "GET",
             credentials: "include",
@@ -44,7 +44,7 @@ const Home = () => {
                 setErrorType("Network error");
                 setLoadingError(true);
             });
-    }, []);
+    }
 
     const userRetriver = (labour) => {
         let users = []
@@ -87,7 +87,16 @@ const Home = () => {
 
     useEffect(() => {
         loadReports()
+        dailyHoursRetriever()
     }, [date]);
+
+    //Keep the prev date even if the user refreshes the page
+    useEffect(() => {
+        if (localStorage.getItem("date")) {
+            setDate(localStorage.getItem("date"))
+        }
+    },[])
+
 
     const deleteReport = (report) => {
         if (window.confirm("Sei sicuro di voler eliminare il rapportino?")) {
@@ -146,7 +155,10 @@ const Home = () => {
                     className="form__field"
                     style={{color: "white"}}
                     value={date}
-                    onChange={(e) => {setDate(e.target.value)}}
+                    onChange={(e) => {
+                        setDate(e.target.value)
+                        localStorage.setItem("date", e.target.value)
+                    }}
                 />
             </div>
 

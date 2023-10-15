@@ -10,6 +10,7 @@ import "./Home.css";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
 import NavBar from "../components/NavBar";
+import DailyHours from "../components/Home/DailyHours";
 
 
 const Home = () => {
@@ -29,7 +30,7 @@ const Home = () => {
     const [dailyHours, setDailyHours] = useState([]);
 
     const dailyHoursRetriever = () => {
-        fetch("https://backend.rapportini.badiasilvano.it/users/daily-hours", {
+        fetch("https://backend.rapportini.badiasilvano.it/users/daily-hours/" + date, {
             method: "GET",
             credentials: "include",
         })
@@ -120,33 +121,11 @@ const Home = () => {
         }
     }
 
-    const percentuageCalculator = (hours, minutes) => {
-        const percentuage = Math.round((hours + minutes / 60) / 8 * 100)
-        console.log("Il vezzo ha lavorato per " + hours + " ore e " + minutes +  " totalizzando una percentuale di " + percentuage + "%" )
-        if (percentuage > 100) {
-            return 100
-        }
-        return percentuage
-    }
-
     return (
         (loadingError) ? <LoadingError errorDescription={errorType}/> :
         (isLoading) ? <LoadingSpinner /> :
         <div className="mainContainer">
             <NavBar />
-            <div className="dailyHoursContainer">
-                <h3>Riepilogo Giornaliero</h3>
-                {dailyHours.length === 0 && <p >Nella giornata odierna non sono ancora stati effettuati lavori</p>}
-                {dailyHours.map((dailyHour) => (
-                    <div className="usersHoursContainer">
-                        <p>{dailyHour.name} {dailyHour.surname}</p>
-                        <div className="loadingContainer">
-                            <div className="loadingBar" style={{ width: `${percentuageCalculator(dailyHour.hours, dailyHour.minutes)}%`}}></div>
-                        </div>
-                        <p>{dailyHour.hours}h e {dailyHour.minutes} min</p>
-                    </div>
-                ))}
-            </div>
 
             <div className="datePickerContainer">
                 <p>Seleziona la giornata</p>
@@ -162,6 +141,7 @@ const Home = () => {
                 />
             </div>
 
+            <DailyHours dailyHours={dailyHours} />
             <table hidden={isMobile}>
                 <thead>
                     <tr>

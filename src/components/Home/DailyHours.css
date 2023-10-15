@@ -35,3 +35,9 @@
     background-color: #257CFFFF;
     border-radius: 10px
 }
+
+@media (max-width: 767px) {
+    .dailyHoursContainer {
+        width: 95%;
+    }
+}

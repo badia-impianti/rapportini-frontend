@@ -156,7 +156,7 @@ const Home = () => {
                 </thead>
                 <tbody>
                     {reports.map((report) => (
-                        <tr>
+                        <tr style={ report.processed ? null: { backgroundColor: "#f0f6ff" }}>
                             <td><p className="date">{
                                 // turn sql date into dd/mm/yyyy
                                 report.labour[0] && new Date(report.labour[0].date).toLocaleString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' })
@@ -213,7 +213,7 @@ const Home = () => {
                 {loadingError && <LoadingError />}
                 <tbody>
                     {reports.map((report) => (
-                        <tr>
+                        <tr style={ report.processed ? null: { backgroundColor: "#f0f6ff" }}>
                             <td style={{ paddingInline: 0}}><p className="date">{
                                 // turn sql date into dd/mm/yyyy
                                 report.labour[0] && new Date(report.labour[0].date).toLocaleString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' })

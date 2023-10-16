@@ -15,7 +15,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
 }
 
 
@@ -24,9 +24,6 @@ h1 {
   font-size: 30px;
   font-weight: 700;
   color: var(--color-text);
-  margin-bottom: 20px;
-  margin: auto;
-  left: 10;
 }
 
 
@@ -78,9 +75,7 @@ h1 {
 table {
   border-collapse: collapse;
   width: 100%;
-  margin: auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin: 20px auto;
   border-radius: 10px;
   overflow: hidden;
 }
@@ -100,11 +95,9 @@ tbody {
 
 td {
   text-align: center;
-  padding: 8px;
   padding-inline: 20px;
   border-bottom: 1px solid #ddd;
-  padding-bottom: 20px;
-  padding-top: 20px;
+  padding: 20px 8px;
   /* wrap text */
   max-width: 250px;
 }
@@ -118,8 +111,7 @@ th {
 .card {
   background-color: #fdfdfd;
   border-radius: 20px;
-  margin: auto;
-  margin-top: 180px;
+  margin: 180px auto auto;
   position: relative;
   box-shadow: 0 5px 5px rgba(0,0,0,0.15);
   transition: all 0.3s ease-in-out;
@@ -134,7 +126,6 @@ th {
 .table_elements {
   padding: 5px;
   border-radius: 5px;
-  margin: 5px;
   background-color: #ebf1fd;
   font-weight: 600;
   margin: 10px;

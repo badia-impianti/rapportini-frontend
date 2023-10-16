@@ -6,6 +6,32 @@
     gap: 50px;
 }
 
+.statusContainer {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.statusIndicator {
+    font-size: 15px;
+    font-weight: 700;
+    padding: 10px;
+    border-radius: 5px;
+    width: 30%;
+    min-width: 100px;
+    text-align: center;
+}
+
+.statusIndicator.green {
+    background-color: #d4f4cd;
+    color: #133213;
+}
+
+.statusIndicator.red {
+    background-color: #f4d4d4;
+    color: #331313;
+}
+
 .infoContainer{
     flex: 2;
     text-align: justify;
@@ -51,6 +77,9 @@
         flex-direction: column;
     }
     .buttonContainer {
+        flex-direction: column;
+    }
+    .statusContainer {
         flex-direction: column;
     }
 }

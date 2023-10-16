@@ -7,7 +7,6 @@ export default function DailyHours(props) {
 
     const percentuageCalculator = (hours, minutes) => {
         const percentuage = Math.round((hours + minutes / 60) / 8 * 100)
-        console.log("Il vezzo ha lavorato per " + hours + " ore e " + minutes +  " totalizzando una percentuale di " + percentuage + "%" )
         if (percentuage > 100) {
             return 100
         }

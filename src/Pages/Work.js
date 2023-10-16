@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import {IoPerson, IoTime, IoBookmark, IoMoon, IoTrashBin, IoPrint} from "react-icons/io5";
+import {IoPerson, IoTime, IoBookmark, IoMoon, IoTrashBin, IoPrint, IoArchive} from "react-icons/io5";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
 
 
 import "./Work.css"
 import NavBar from "../components/NavBar";
-import {BiUnderline} from "react-icons/bi";
 
 const Work = () => {
 
@@ -105,6 +104,28 @@ const Work = () => {
             });
     }
 
+    const changeProcessed = () => {
+        setIsLoading(true)
+        fetch("https://backend.rapportini.badiasilvano.it/works/" + id + "/processed", {
+            method: "PUT",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ processed: (work.processed) ? 0 : 1 }),
+        }).then((res) => {
+            if (res.status === 200) {
+                navigate("/")
+            } else {
+                setIsLoading(false)
+                window.alert("Non disponi dei privilegi per compiere questa azione")
+            }
+        }).catch((err) => {
+            setErrorType("Network error")
+            setLoadingError(true)
+        })
+    }
+
     return (
         loadingError ? <LoadingError errorDescription={errorType} /> :
         isLoading ? <LoadingSpinner /> :
@@ -113,9 +134,22 @@ const Work = () => {
                 <h1>Riepilogo per il lavoro n°{work.id}</h1>
                 <div className="infoAndPhotosContainer">
                     <div className="infoContainer">
-                        {work.completed ? <div className="date" style={{ backgroundColor: "#d4f4cd", color: "#133213", maxWidth: "100px", textAlign: "center" }}>Completato</div>
-                            :
-                            <div className="date" style={{ backgroundColor: "#f4d4d4", color: "#331313" }}>In lavorazione</div>}
+                        <div className="statusContainer">
+
+                            {work.completed ?
+                                <div className="statusIndicator green" >Completato</div>
+                                :
+                                <div className="statusIndicator red" >In lavorazione</div>
+                            }
+
+                            {work.processed ?
+                                <div className="statusIndicator green" >Processato</div>
+                                :
+                                <div className="statusIndicator red" >Non processato</div>
+                            }
+
+                        </div>
+
                         <p><IoPerson /> <b>{work.customer} </b></p>
                         <p><IoTime /> <b>Iniziato:</b> {work.labour[0] && new Date(work.labour[0].date).toLocaleDateString()} -
                             &nbsp;<IoTime /> <b>Terminato:</b> {work.labour[0] && new Date(work.labour[work.labour.length - 1].date).toLocaleDateString()}</p>
@@ -132,7 +166,7 @@ const Work = () => {
                                     className="images"
                                     onClick={() => window.open(image.url, "_blank")}
                                 />
-                                ))}
+                            ))}
                         </div>}
                 </div>
 
@@ -243,8 +277,14 @@ const Work = () => {
                         &nbsp;
                         Stampa
                     </button>
+                    <button className="button" onClick={changeProcessed}>
+                        <IoArchive size={24}/>
+                        &nbsp;
+                        Elaborato
+                    </button>
                 </div>
             </div>
+
     );
 }
 

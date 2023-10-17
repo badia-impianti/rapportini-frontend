@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { useState } from "react";
-import { IoPerson, IoCalendar, IoClipboard, IoPeople, IoCheckmark, IoResize, IoTime } from "react-icons/io5";
+import {IoPerson, IoCalendar, IoClipboard, IoPeople, IoCheckmark, IoResize, IoTime, IoMoon} from "react-icons/io5";
 import { MdEdit, MdOutlineDeleteForever } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
@@ -45,24 +45,6 @@ const Home = () => {
                 setErrorType("Network error");
                 setLoadingError(true);
             });
-    }
-
-    const userRetriver = (labour) => {
-        let users = []
-
-        labour.forEach((labour) => {
-            labour.users.forEach((user) => {
-                if (!users.some(e => e.name === user.name && e.surname === user.surname)) {
-                    users.push({name: user.name, surname: user.surname})
-                }
-            })
-        })
-        if (users.length > 3) {
-            const returnUsers = users.splice(0, 3)
-            returnUsers.push({name: "...", surname: ""})
-            return returnUsers
-        }
-        return users
     }
 
     const loadReports = () => {
@@ -145,11 +127,11 @@ const Home = () => {
             <table hidden={isMobile}>
                 <thead>
                     <tr>
-                        <th><IoCalendar size={20} style={{ verticalAlign: "bottom", marginRight: "4px" }} /> Data</th>
                         <th><IoPerson size={20} style={{ verticalAlign: "bottom", marginRight: "4px" }} /> Cliente</th>
                         <th><IoClipboard size={20} style={{ verticalAlign: "bottom", marginRight: "4px" }} /> Descrizione</th>
                         <th><IoPeople size={20} style={{ verticalAlign: "bottom", marginRight: "4px" }} /> Operatori</th>
                         <th><IoTime size={20} style={{ verticalAlign: "bottom", marginRight: "4px" }} /> Ore </th>
+                        <th><IoMoon size={20} style={{ verticalAlign: "bottom", marginRight: "4px" }} />Rep </th>
                         <th><IoCheckmark size={20} style={{ verticalAlign: "bottom", marginRight: "4px" }} /> Stato</th>
                         <th />
                     </tr>
@@ -157,10 +139,6 @@ const Home = () => {
                 <tbody>
                     {reports.map((report) => (
                         <tr style={ report.processed ? null: { backgroundColor: "#f0f6ff" }}>
-                            <td><p className="date">{
-                                // turn sql date into dd/mm/yyyy
-                                report.labour[0] && new Date(report.labour[0].date).toLocaleString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' })
-                            }</p></td>
                             <td>{report.customer}</td>
                             <td >{
                                 //if description is too long, show only the first 150 characters and then a "..."
@@ -193,6 +171,11 @@ const Home = () => {
                                     }
                                 })}
                             </td>
+
+                            <td>
+                                <p className="table_elements">{report.oncall ? "Si" : "No"}</p>
+                            </td>
+
                             <td>
                                 {report.completed ? <div className="date" style={{ backgroundColor: "#d4f4cd", color: "#133213" }}>Completato</div>
                                     :

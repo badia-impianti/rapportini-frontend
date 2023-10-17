@@ -17,7 +17,7 @@
     font-weight: 700;
     padding: 10px;
     border-radius: 5px;
-    width: 30%;
+    width: 25%;
     min-width: 100px;
     text-align: center;
 }
@@ -79,8 +79,8 @@
     .buttonContainer {
         flex-direction: column;
     }
-    .statusContainer {
-        flex-direction: column;
+    .statusIndicator {
+        width: 50%;
     }
 }
 

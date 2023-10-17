@@ -223,7 +223,8 @@ const Home = () => {
                 <tbody>
                     {reports.map((report) => (
                         <tr style={ report.processed ? null: { backgroundColor: "#f0f6ff" }}>
-                            <td style={{ paddingInline: 0}}><p className="date">{
+                            <td style={{paddingInline: 3}}>
+                                <p className="date">{
                                 // turn sql date into dd/mm/yyyy
                                 report.labour[0] && new Date(report.labour[0].date).toLocaleString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' })
                             }</p></td>

@@ -138,7 +138,7 @@ const Home = () => {
                 </thead>
                 <tbody>
                     {reports.map((report) => (
-                        <tr style={ report.processed ? null: { backgroundColor: "#f0f6ff" }}>
+                        <tr style={ report.processed ? { backgroundColor: "#f0f6ff" } : null}>
                             <td>{report.customer}</td>
                             <td >{
                                 //if description is too long, show only the first 150 characters and then a "..."
@@ -205,7 +205,7 @@ const Home = () => {
                 {loadingError && <LoadingError />}
                 <tbody>
                     {reports.map((report) => (
-                        <tr style={ report.processed ? null: { backgroundColor: "#f0f6ff" }}>
+                        <tr style={ report.processed ? { backgroundColor: "#f0f6ff" } : null}>
                             <td style={{paddingInline: 3}}>
                                 <p className="date">{
                                 // turn sql date into dd/mm/yyyy

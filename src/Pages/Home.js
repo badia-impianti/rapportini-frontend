@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { useState } from "react";
-import { IoPerson, IoCalendar, IoClipboard, IoBulb, IoPeople, IoCheckmark, IoResize } from "react-icons/io5";
+import { IoPerson, IoCalendar, IoClipboard, IoPeople, IoCheckmark, IoResize, IoTime } from "react-icons/io5";
 import { MdEdit, MdOutlineDeleteForever } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
@@ -149,7 +149,7 @@ const Home = () => {
                         <th><IoPerson size={20} style={{ verticalAlign: "bottom", marginRight: "4px" }} /> Cliente</th>
                         <th><IoClipboard size={20} style={{ verticalAlign: "bottom", marginRight: "4px" }} /> Descrizione</th>
                         <th><IoPeople size={20} style={{ verticalAlign: "bottom", marginRight: "4px" }} /> Operatori</th>
-                        <th><IoBulb size={20} style={{ verticalAlign: "bottom", marginRight: "4px" }} /> Materiali</th>
+                        <th><IoTime size={20} style={{ verticalAlign: "bottom", marginRight: "4px" }} /> Ore </th>
                         <th><IoCheckmark size={20} style={{ verticalAlign: "bottom", marginRight: "4px" }} /> Stato</th>
                         <th />
                     </tr>
@@ -163,24 +163,33 @@ const Home = () => {
                             }</p></td>
                             <td>{report.customer}</td>
                             <td >{
-                                
                                 //if description is too long, show only the first 150 characters and then a "..."
                                 report.description.length > 150 ? <p>{report.description.substring(0, 150)}...</p> : <p>{report.description}</p>
                             }</td>
-                            <td>{
-                                // if there are more than 3 users, show only the first 3 and then a "..."
-                                userRetriver(report.labour).map((user) => {
-                                    return <p className="table_elements">{user.name} {user.surname}</p>
-                                })
-                            }
+                            <td>
+                                {report.labour.map((labour) => {
+                                        let labourDate = new Date(labour.date)
+                                        const offset = labourDate.getTimezoneOffset()
+                                        labourDate = new Date(labourDate.getTime() - (offset*60*1000))
+                                        if (labourDate.toISOString().split('T')[0] === date) {
+                                            return labour.users.map((user) => {
+                                                return <p className="table_elements">{user.name} {user.surname}</p>
+                                            })
+                                        }
+                                    })
+                                }
                             </td>
-                            <td>{report.materials.map
-                                ((material) => {
-                                    // if there are more than 3 materials, show only the first 3 and then a "..."
-                                    if (report.materials.indexOf(material) < 3) {
-                                        return <p className="table_elements">{material.quantity} {material.unit === "n" ? "x" : material.unit} {material.name}</p>
-                                    } else if (report.materials.indexOf(material) === 3) {
-                                        return <p className="table_elements">...</p>
+                            <td>
+                                {report.labour.map((labour) => {
+
+                                    //Tutta sta sbrodolata per rendere compatibili i due valori delle date
+                                    let labourDate = new Date(labour.date)
+                                    const offset = labourDate.getTimezoneOffset()
+                                    labourDate = new Date(labourDate.getTime() - (offset*60*1000))
+                                    if (labourDate.toISOString().split('T')[0] === date) {
+                                        return labour.users.map((user) => {
+                                            return <p className="table_elements">{user.hours}:{user.minutes}{user.minutes < 10 ? 0 : null}</p>
+                                        })
                                     }
                                 })}
                             </td>

@@ -25,3 +25,7 @@
     padding: 5px;
     margin: 5px;
 }
+
+.processed {
+    background-color: #f0f6ff;
+}

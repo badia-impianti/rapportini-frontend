@@ -104,7 +104,7 @@ const Work = () => {
             });
     }
 
-    const changeProcessed = () => {
+    const setAsProcessed = () => {
         setIsLoading(true)
         fetch("https://backend.rapportini.badiasilvano.it/works/" + id + "/processed", {
             method: "PUT",
@@ -112,7 +112,7 @@ const Work = () => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ processed: (work.processed) ? 0 : 1 }),
+            body: JSON.stringify({ processed: 1 }),
         }).then((res) => {
             if (res.status === 200) {
                 navigate("/")
@@ -143,9 +143,9 @@ const Work = () => {
                             }
 
                             {work.processed ?
-                                <div className="statusIndicator green" >Processato</div>
+                                <div className="statusIndicator green" >Contabilizzato</div>
                                 :
-                                <div className="statusIndicator red" >Non processato</div>
+                                <div className="statusIndicator red" >Da contabilizzare</div>
                             }
 
                         </div>
@@ -277,7 +277,7 @@ const Work = () => {
                         &nbsp;
                         Stampa
                     </button>
-                    <button className="button" onClick={changeProcessed}>
+                    <button className="button" onClick={setAsProcessed}>
                         <IoArchive size={24}/>
                         &nbsp;
                         Elaborato

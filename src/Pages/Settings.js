@@ -34,7 +34,7 @@ const Settings = () => {
     }
 
     //convert to ISO string to italy build time
-    const buildDateTime = preval`module.exports = new Date(buildDateTime).toLocaleString("it-IT", { timeZone: "Europe/Rome" }).toISOString();`;
+    const buildDateTime = preval`module.exports = new Date(buildDateTime).toLocaleString("it-IT", { timeZone: "Europe/Rome" });`;
     const actualYear = new Date().getFullYear();
 
     return (

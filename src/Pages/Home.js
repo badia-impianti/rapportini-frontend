@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { useState } from "react";
-import {IoPerson, IoCalendar, IoClipboard, IoPeople, IoCheckmark, IoResize, IoTime, IoMoon} from "react-icons/io5";
+import {IoPerson, IoClipboard, IoPeople, IoCheckmark, IoResize, IoTime, IoMoon} from "react-icons/io5";
 import { FaHashtag } from "react-icons/fa";
 import { MdEdit, MdOutlineDeleteForever } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
@@ -50,7 +50,6 @@ const Home = () => {
     }
 
     const loadReports = () => {
-        setIsLoading(true);
         fetch("https://backend.rapportini.badiasilvano.it/works/" + date, {
             method: "GET",
             credentials: "include",

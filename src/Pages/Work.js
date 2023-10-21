@@ -1,8 +1,21 @@
 import React, { useEffect, useState } from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import {IoPerson, IoTime, IoBookmark, IoMoon, IoTrashBin, IoPrint, IoArchive} from "react-icons/io5";
+import {
+    IoPerson,
+    IoTime,
+    IoBookmark,
+    IoMoon,
+    IoTrashBin,
+    IoPrint,
+    IoArchive,
+    IoCloudDownloadOutline
+} from "react-icons/io5";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
+
+import JSZip from 'jszip';
+import saveAs from 'file-saver';
+
 
 
 import "./Work.css"
@@ -124,6 +137,27 @@ const Work = () => {
             setErrorType("Network error")
             setLoadingError(true)
         })
+    }
+
+    const downloadImagesZip = async () => {
+
+        setIsLoading(true)
+        const zip = new JSZip();
+
+        for (let i = 0; i < imagesUrls.length; i++) {
+            const response = await fetch(imagesUrls[i].url, {
+                method: "GET",
+                credentials: "include",
+            });
+            const blob = await response.blob();
+
+            //Add file to zip
+            await zip.file(work.id + "-" + i +".jpeg", blob);
+        }
+
+        const archive = await zip.generateAsync({type:"blob"})
+        saveAs (archive, "Immagini del lavoro " + work.id + ".zip")
+        setIsLoading(false)
     }
 
     return (
@@ -280,8 +314,17 @@ const Work = () => {
                     <button className="button" onClick={setAsProcessed}>
                         <IoArchive size={24}/>
                         &nbsp;
-                        Elaborato
+                        Contabilizza
                     </button>
+                    {(imagesUrls.length > 0) &&
+                        <button className={"button"}
+                                onClick={downloadImagesZip}>
+                            <IoCloudDownloadOutline size={24}/>
+                            &nbsp;
+                            Immagini
+                        </button>
+                    }
+
                 </div>
             </div>
 

@@ -14,8 +14,8 @@ const Search = () => {
 
     // Search values
     const [client, setClient] = useState("")
-    const [start, setStart] = useState(new Date().toLocaleDateString('en-CA'))
-    const [end, setEnd] = useState(new Date().toLocaleDateString('en-CA'))
+    const [start, setStart] = useState(new Date().toISOString().split('T')[0])
+    const [end, setEnd] = useState(new Date().toISOString().split('T')[0])
     const [processed, setProcessed] = useState(false)
 
     const searchValues = {client, start, end, processed}

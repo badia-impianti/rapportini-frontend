@@ -61,8 +61,8 @@ export default function SearchBox({values, setValues}) {
                 <p></p>
                 <button className="clearSearchButton" onClick={() => {
                     setValues.setClient("")
-                    setValues.setStart(new Date().toLocaleDateString('en-CA'))
-                    setValues.setEnd(new Date().toLocaleDateString('en-CA'))
+                    setValues.setStart(new Date().toISOString().split('T')[0])
+                    setValues.setEnd(new Date().toISOString().split('T')[0])
                     setValues.setProcessed(false)
 
                     localStorage.setItem("client", "")

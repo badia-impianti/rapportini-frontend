@@ -10,6 +10,7 @@ import Work from './Pages/Work';
 import Settings from './Pages/Settings';
 import SetName from './Pages/SetName';
 import Edit from './Pages/Edit';
+import Search from './Pages/Search';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/edit/:id" element={<Edit />} />
             <Route path="/work/:id" element={<Work />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/search" element={<Search />} />
           </Route>
         </Routes>
       </AuthProvider>

@@ -1,0 +1,60 @@
+.searchBoxContainer {
+
+    /* Position of the element */
+    margin: 50px auto 50px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0 20px 0;  /* The 20px up are defined in input class */
+    gap: 50px;
+
+    /* Color of the element */
+    color: white;
+    background-color: #257CFFFF;
+    border-radius: 40px;
+    width: 95%;
+    font-weight: bold;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.searchBoxContainer .elementFilter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.searchBoxContainer input{
+    height: 30px;
+    border-radius: 10px;
+    border: 1px solid #ffffff;
+    padding: 5px;
+    margin: 5px;
+    background-color: transparent;
+    color: white;
+    font-family: "JetBrains Mono", serif;
+}
+
+.searchBoxContainer input:focus {
+    outline: 2px solid #ffffff;
+    transition: outline 0.1s ease-in-out;
+}
+
+.searchBoxContainer .clearSearchButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;  /* Transparent background */
+    border: transparent;    /* Remove borders */
+    outline: none;   /* Remove the border when the button is clicked */
+    color: white;
+    font-size: 30px;
+    cursor: pointer
+}
+
+@media (max-width: 767px) {
+    .searchBoxContainer {
+        flex-direction: column;
+        gap: 5px;
+    }
+}

@@ -120,7 +120,7 @@ th {
   width: fit-content;
   height: fit-content;
   padding: 20px;
-  
+
 }
 
 .table_elements {
@@ -187,7 +187,6 @@ th {
   font-weight: normal;
   border-width: 3px;
   border-image: linear-gradient(to right, var(--color-primary), var(--color-secondary));
-  border-image-slice: 1;
 }
 
 .form__field:focus ~ .form__label {

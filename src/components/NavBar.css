@@ -13,16 +13,22 @@
 
 .navbarLinks {
     display: flex;
+    flex: 1;
+    margin: 30px 30px 30px 30px;
     justify-content: space-between;
     align-items: center;
-    width: 30%;
-    margin-right: 50px;
+    width: 30%
 }
 
 .navbarLogo {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex: 1;
+    text-align: left;
     width: 30%;
     margin-left: 50px;
+}
+
+@media (max-width: 767px) {
+    .navbarLogo{
+        display: none;
+    }
 }

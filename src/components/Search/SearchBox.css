@@ -5,14 +5,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0 0 20px 0;  /* The 20px up are defined in input class */
+    padding: 0 20px 20px 20px;  /* The 20px up are defined in input class */
     gap: 50px;
 
     /* Color of the element */
     color: white;
     background-color: #257CFFFF;
     border-radius: 40px;
-    width: 95%;
+    width: 100%;
     font-weight: bold;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
@@ -55,6 +55,7 @@
 @media (max-width: 767px) {
     .searchBoxContainer {
         flex-direction: column;
-        gap: 5px;
+        gap: 0;
+        width: 75%;
     }
 }

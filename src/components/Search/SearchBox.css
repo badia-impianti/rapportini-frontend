@@ -26,13 +26,13 @@
 
 .searchBoxContainer input{
     height: 30px;
+    width: 100%;
     border-radius: 10px;
     border: 1px solid #ffffff;
     padding: 5px;
     margin: 5px;
     background-color: transparent;
     color: white;
-    font-family: "JetBrains Mono", serif;
 }
 
 .searchBoxContainer input:focus {
@@ -56,6 +56,6 @@
     .searchBoxContainer {
         flex-direction: column;
         gap: 0;
-        width: 75%;
+        width: 80%;
     }
 }

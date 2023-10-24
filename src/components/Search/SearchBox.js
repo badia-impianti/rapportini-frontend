@@ -50,6 +50,7 @@ export default function SearchBox({values, setValues}) {
                 <input
                     type="checkbox"
                     checked={values.processed}
+                    style={{outline: "none"}}
                     onChange={(e) => {
                         setValues.setProcessed(!values.processed)
                         localStorage.setItem("processed", e.target.value)

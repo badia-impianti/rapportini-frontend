@@ -25,11 +25,10 @@ const Search = () => {
     const [reports, setReports] = useState()
 
     const loadReports = () => {
+
+        setIsLoading(true)
         let url = "https://backend.rapportini.badiasilvano.it/works/search?customer=" + client + "&start=" + start + "&end=" + end + "&processed="
         url += (processed) ? "1" : "0"
-
-        console.log(url)
-
 
         fetch(url, {
             method: "GET",
@@ -58,12 +57,11 @@ const Search = () => {
 
     return (
         loadingError ? <LoadingError errorDescription={errorType} /> :
-        isLoading ? <LoadingSpinner /> :
-
         <div className="mainContainer">
             <NavBar />
             <SearchBox values={searchValues} setValues={setSearchValues} />
-            <WorksTable reports={reports} />
+            {isLoading ? <LoadingSpinner /> :
+            <WorksTable reports={reports} />}
         </div>
     )
 }

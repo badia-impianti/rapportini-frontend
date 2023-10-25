@@ -53,6 +53,14 @@ const Search = () => {
         loadReports();
     }, [client, start, end, processed])
 
+    //Load the saved values from localStorage
+    useEffect(() => {
+        if (localStorage.getItem("client") !== null) setClient(localStorage.getItem("client"))
+        if (localStorage.getItem("start") !== null) setStart(localStorage.getItem("start"))
+        if (localStorage.getItem("end") !== null) setEnd(localStorage.getItem("end"))
+        if (localStorage.getItem("processed") !== null) setProcessed(localStorage.getItem("processed"))
+    }, [])
+
 
 
     return (

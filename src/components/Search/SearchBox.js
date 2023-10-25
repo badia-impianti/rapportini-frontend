@@ -49,8 +49,8 @@ export default function SearchBox({values, setValues}) {
                 <p>Contabilizzato</p>
                 <input
                     type="checkbox"
+                    style={{width: "20px", height: "20px", outline: "none"}}
                     checked={values.processed}
-                    style={{outline: "none"}}
                     onChange={(e) => {
                         setValues.setProcessed(!values.processed)
                         localStorage.setItem("processed", e.target.value)

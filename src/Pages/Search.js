@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import WorksTable from "../components/Search/WorksTable";
 import LoadingError from "../components/LoadingError";
 import LoadingSpinner from "../components/LoadingSpinner";
+import {IoWarning} from "react-icons/io5";
 
 const Search = () => {
 
@@ -60,6 +61,9 @@ const Search = () => {
         if (localStorage.getItem("start") !== null) setStart(localStorage.getItem("start"))
         if (localStorage.getItem("end") !== null) setEnd(localStorage.getItem("end"))
         if (localStorage.getItem("processed") !== null) setProcessed((localStorage.getItem("processed") === "0"))
+
+        loadReports()
+
     }, [])
 
 
@@ -68,6 +72,7 @@ const Search = () => {
         loadingError ? <LoadingError errorDescription={errorType} /> :
         <div className="mainContainer">
             <NavBar />
+            <IoWarning size={24} /><p>Lo sviluppo della pagina non è ancora ultimato; Sono presenti alcune piccole imprecisioni</p>
             <SearchBox values={searchValues} setValues={setSearchValues} />
             {isLoading ? <LoadingSpinner /> :
             <WorksTable reports={reports} />}

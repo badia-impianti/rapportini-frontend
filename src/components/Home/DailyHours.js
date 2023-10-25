@@ -18,8 +18,8 @@ export default function DailyHours(props) {
         <div className="dailyHoursContainer">
             <h3>Riepilogo Giornaliero</h3>
             {dailyHours.length === 0 && <p >Nella giornata odierna non sono ancora stati effettuati lavori</p>}
-            {dailyHours.map((dailyHour) => (
-                <div className="usersHoursContainer">
+            {dailyHours.map((dailyHour, index) => (
+                <div key={index} className="usersHoursContainer">
                     <p>{dailyHour.name} {dailyHour.surname}</p>
                     <div className="loadingContainer">
                         <div className="loadingBar" style={{ width: `${percentuageCalculator(dailyHour.hours, dailyHour.minutes)}%`}}></div>

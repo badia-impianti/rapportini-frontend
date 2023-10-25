@@ -45,7 +45,7 @@ export default function WorksTable({reports}) {
                 </thead>
                 <tbody>
                 {reports.map((report) => (
-                    <tr>
+                    <tr key={report.id}>
 
                         <td><p className="table_elements">{report.id}</p></td>
 
@@ -91,7 +91,7 @@ export default function WorksTable({reports}) {
 
                 <tbody>
                 {reports.map((report) => (
-                    <tr style={ report.processed ? { backgroundColor: "#ffffff" } : null}>
+                    <tr key={report.id}>
                         <td><p className="table_elements">{report.id}</p></td>
                         <td style={{ paddingInline: 3}}>{report.customer}</td>
                         <td style={{ paddingInline: 0}}>

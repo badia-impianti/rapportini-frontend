@@ -14,7 +14,7 @@ const Search = () => {
 
     // Search values
     const [client, setClient] = useState("")
-    const [start, setStart] = useState(new Date().toISOString().split('T')[0])
+    const [start, setStart] = useState(new Date("2023-10-01").toISOString().split('T')[0])
     const [end, setEnd] = useState(new Date().toISOString().split('T')[0])
     const [processed, setProcessed] = useState(false)
 
@@ -55,10 +55,11 @@ const Search = () => {
 
     //Load the saved values from localStorage
     useEffect(() => {
+        console.log(localStorage.getItem("processed"))
         if (localStorage.getItem("client") !== null) setClient(localStorage.getItem("client"))
         if (localStorage.getItem("start") !== null) setStart(localStorage.getItem("start"))
         if (localStorage.getItem("end") !== null) setEnd(localStorage.getItem("end"))
-        if (localStorage.getItem("processed") !== null) setProcessed(localStorage.getItem("processed"))
+        if (localStorage.getItem("processed") !== null) setProcessed((localStorage.getItem("processed") === "0"))
     }, [])
 
 

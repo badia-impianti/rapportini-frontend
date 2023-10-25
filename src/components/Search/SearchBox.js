@@ -53,7 +53,9 @@ export default function SearchBox({values, setValues}) {
                     checked={values.processed}
                     onChange={(e) => {
                         setValues.setProcessed(!values.processed)
-                        localStorage.setItem("processed", e.target.value)
+                        console.log("checkbox value: " + values.processed)
+                        localStorage.setItem("processed", (values.processed) ? "1" : "0")
+                        console.log("checkbox value: " + localStorage.getItem("processed"))
                     }}
                 />
             </div>
@@ -62,14 +64,14 @@ export default function SearchBox({values, setValues}) {
                 <p></p>
                 <button className="clearSearchButton" onClick={() => {
                     setValues.setClient("")
-                    setValues.setStart(new Date().toISOString().split('T')[0])
+                    setValues.setStart(new Date().toISOString("2023-10-01").split('T')[0])
                     setValues.setEnd(new Date().toISOString().split('T')[0])
-                    setValues.setProcessed(false)
+                    setValues.setProcessed("0")
 
-                    localStorage.setItem("client", "")
-                    localStorage.setItem("start", "")
-                    localStorage.setItem("end", "")
-                    localStorage.setItem("processed", false)
+                    localStorage.removeItem("client")
+                    localStorage.removeItem("start")
+                    localStorage.removeItem("end")
+                    localStorage.removeItem("processed")
 
                 }}><IoCloseCircleOutline color="#ffffff"/> </button>
             </div>

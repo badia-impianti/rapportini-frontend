@@ -141,7 +141,7 @@ const Home = () => {
                 </thead>
                 <tbody>
                     {reports.map((report) => (
-                        <tr style={ report.processed ? { backgroundColor: "#ffffff" } : null}>
+                        <tr key={report.id}>
 
                             <td><p className="table_elements">{report.id}</p></td>
 
@@ -157,7 +157,7 @@ const Home = () => {
                                         labourDate = new Date(labourDate.getTime() - (offset*60*1000))
                                         if (labourDate.toISOString().split('T')[0] === date) {
                                             return labour.users.map((user) => {
-                                                return <p className="table_elements">{user.name} {user.surname}</p>
+                                                return <p key={user.id} className="table_elements">{user.name} {user.surname}</p>
                                             })
                                         }
                                     })
@@ -172,7 +172,7 @@ const Home = () => {
                                     labourDate = new Date(labourDate.getTime() - (offset*60*1000))
                                     if (labourDate.toISOString().split('T')[0] === date) {
                                         return labour.users.map((user) => {
-                                            return <p className="table_elements">{user.hours}:{user.minutes}{user.minutes < 10 ? 0 : null}</p>
+                                            return <p key={user.id} className="table_elements">{user.hours}:{user.minutes}{user.minutes < 10 ? 0 : null}</p>
                                         })
                                     }
                                 })}
@@ -218,7 +218,7 @@ const Home = () => {
                 {loadingError && <LoadingError />}
                 <tbody>
                     {reports.map((report) => (
-                        <tr style={ report.processed ? { backgroundColor: "#ffffff" } : null}>
+                        <tr key={report.id}>
                             <td><p className="table_elements">{report.id}</p></td>
                             <td style={{ paddingInline: 3}}>{report.customer}</td>
                             <td style={{ paddingInline: 0}}>

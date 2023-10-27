@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { IoClose, IoAdd } from "react-icons/io5";
+import { IoClose } from "react-icons/io5";
 import NavBar from "../components/NavBar";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
@@ -17,6 +17,7 @@ const Edit = () => {
 
     //Page state
     const [loadingError, setLoadingError] = React.useState(false);
+    const [loadingMessage, setLoadingMessage] = useState("");
     const [errorType, setErrorType] = React.useState("");
     const [isLoading, setIsLoading] = React.useState(true);
     //Page data
@@ -200,8 +201,9 @@ const Edit = () => {
             materials: newMaterials,
             labour: newLabour
         }
-        console.log(JSON.stringify(data))
-        console.log(data)
+
+        setIsLoading(true);
+
         fetch("https://backend.rapportini.badiasilvano.it/works/" + id, {
             method: "PUT",
             credentials: "include",
@@ -211,14 +213,11 @@ const Edit = () => {
             body: JSON.stringify(data),
         })
             .then((response) => {
-                response.json().then((data) => {
+                response.json().then(async (data) => {
                     if (response.status === 200) {
-                            console.log(data);
-                            uploadImages(id);
-                            window.alert("Rapporto salvato con successo");
-                            navigate("/home");
-                    }
-                    else {
+                        await uploadImages(id);
+                        if (!loadingError) navigate("/home");
+                    } else {
                         setErrorType(data.message)
                         setLoadingError(true)
                     }
@@ -231,28 +230,31 @@ const Edit = () => {
             });
     }
 
-    const uploadImages = (id) => {
-        newImages.forEach((image) => {
-            let formData = new FormData();
-            formData.append("photo", image);
-            fetch("https://backend.rapportini.badiasilvano.it/works/" + id + "/images", {
-                method: "POST",
-                credentials: "include",
-                body: formData
-            })
-                .then((response) => {
-                    if (response.status !== 200) {
-                        setErrorType("Errore nel caricamento di una immagine")
-                        setLoadingError(true)
-                    }
+    const uploadImages = async (workId) => {
 
+        try {
+
+            for (const image of newImages) {
+
+                setLoadingMessage("Caricamento immagine " + (newImages.indexOf(image) + 1) + " di " + newImages.length)
+
+                let formData = new FormData();
+                formData.append("photo", image);
+                const response = await fetch("https://backend.rapportini.badiasilvano.it/works/" + workId + "/images", {
+                    method: "POST",
+                    credentials: "include",
+                    body: formData
                 })
-                .catch((err) => {
-                    setErrorType("Errore nel caricamento di una immagine. Nel dettaglio " + err.message)
+                if (response.status !== 200) {
+                    setErrorType("Errore nel caricamento di una immagine. Nel dettaglio " + response.message)
                     setLoadingError(true)
-                });
+                }
 
-        });
+            }
+        } catch (err) {
+            setErrorType("Errore di connessione; Nel dettaglio " + err.message)
+            setLoadingError(true)
+        }
     }
 
     const deleteImage = (image) => {
@@ -282,7 +284,7 @@ const Edit = () => {
 
     return (
         loadingError ? <LoadingError errorDescription={errorType} /> :
-            isLoading ? <LoadingSpinner /> :
+            isLoading ? <LoadingSpinner message={loadingMessage}/> :
                 <div className="mainContainer">
                     <NavBar />
                     <h1>Rapporto N° {id}</h1>

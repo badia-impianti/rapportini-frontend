@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { IoClose, IoAdd } from "react-icons/io5";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -14,6 +14,7 @@ const Add = () => {
     const [loadingError, setLoadingError] = React.useState(false);
     const [errorType, setErrorType] = React.useState("");
     const [isLoading, setIsLoading] = React.useState(true);
+    const [loadingMessage, setLoadingMessage] = useState()
     //Page data
     const [customer, setCustomer] = React.useState("");
     const [description, setDescription] = React.useState("");
@@ -38,7 +39,6 @@ const Add = () => {
                 if (response.status === 200) {
                     response.json().then((data) => {
                         setUsers(data.users);
-                        setIsLoading(false);
                     });
                 }
                 else {
@@ -108,28 +108,34 @@ const Add = () => {
     //End of adding new empty material/worker/vehicle
 
 
-    const uploadImages = (id) => {
-        images.forEach((image) => {
-            let formData = new FormData();
-            formData.append("photo", image);
-            fetch("https://backend.rapportini.badiasilvano.it/works/" + id + "/images", {
-                method: "POST",
-                credentials: "include",
-                body: formData
-            })
-                .then((response) => {
-                    if (response.status === 200) {
-                        response.json().then((data) => {
-                            console.log(data);
-                        });
-                    }
+    const uploadImages = async (workId) => {
 
+        try {
+
+            for (const image of images) {
+
+                setLoadingMessage("Caricamento immagine " + (images.indexOf(image) + 1) + " di " + images.length)
+
+                let formData = new FormData();
+                formData.append("photo", image);
+
+                const response = await fetch("https://backend.rapportini.badiasilvano.it/works/" + workId + "/images", {
+                    method: "POST",
+                    credentials: "include",
+                    body: formData
                 })
-                .catch((err) => {
-                    console.log("Error: ", err);
-                });
 
-        });
+                if (response.status !== 200) {
+                    setErrorType("Il server non ha accettato tale richiesta; ecco il messaggio nel dettaglio: " + response.message)
+                    setLoadingError(true)
+                    return
+                }
+
+            }
+        } catch (error) {
+            setErrorType("Errore di rete nel caricamento di un'immagine: verifica la tua connessione e riprova")
+            setLoadingError(true)
+        }
     }
 
 
@@ -204,6 +210,8 @@ const Add = () => {
             materials: newMaterials,
             labour: newLabour
         }
+
+        setIsLoading(true)
         fetch("https://backend.rapportini.badiasilvano.it/works", {
             method: "POST",
             credentials: "include",
@@ -213,12 +221,13 @@ const Add = () => {
             body: JSON.stringify(data),
         })
             .then((response) => {
-                response.json().then((data) => {
+                response.json().then(async (data) => {
                     if (response.status === 200) {
-                        uploadImages(data.workId);
-                        navigate("/home");
-                    }
-                    else {
+                        await uploadImages(data.workId);
+                        if (!loadingError) {
+                            navigate("/home");
+                        }
+                    } else {
                         setErrorType(data.message)
                         setLoadingError(true)
                     }
@@ -232,7 +241,7 @@ const Add = () => {
 
     return (
         loadingError ? <LoadingError errorDescription={errorType}/> :
-            isLoading ? <LoadingSpinner /> :
+            isLoading ? <LoadingSpinner message={loadingMessage} /> :
                 <div className="mainContainer">
                     <NavBar />
                     <h1>Nuovo Rapporto</h1>

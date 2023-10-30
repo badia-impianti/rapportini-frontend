@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
-import { IoClose, IoAdd } from "react-icons/io5";
+import { IoClose } from "react-icons/io5";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
 import NavBar from "../components/NavBar";
@@ -245,7 +245,7 @@ const Add = () => {
                 <div className="mainContainer">
                     <NavBar />
                     <h1>Nuovo Rapporto</h1>
-                    <form style={{ width: "100%" }}>
+                    <form style={{ width: "100%", maxWidth: "600px" }}>
                         <div className="form__group" >
                             <input type="text" className="form__field" id='customer' name="customer" placeholder="Cliente"
                                 onChange={e => setCustomer(e.target.value)}
@@ -303,8 +303,8 @@ const Add = () => {
                                 } />
                         </div>
                     </form>
-                    <h2 style={{ marginTop: "100px" }}>Materiali</h2>
-                    <table style={{ width: "100%" }}>
+                    <h2 style={{ marginTop: "100px"}}>Materiali</h2>
+                    <table style={{ width: "100%", maxWidth: "600px" }}>
                         <thead>
                             <tr>
                                 <th>Nome</th>
@@ -398,7 +398,7 @@ const Add = () => {
                                             setLabour(newLabour)
                                         }} />
                                     </div>
-                                    <table style={{ width: "100%" }}>
+                                    <table style={{ width: "100%", maxWidth: "600px" }}>
                                         <thead>
                                             <tr>
                                                 <th>Operatore</th>
@@ -493,7 +493,7 @@ const Add = () => {
                                             }
                                         </tbody>
                                     </table>
-                                    <table style={{ width: "100%" }}>
+                                    <table style={{ width: "100%", maxWidth: "600px" }}>
                                         <thead>
                                             <tr>
                                                 <th>Veicolo</th>

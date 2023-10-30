@@ -2,6 +2,7 @@
     margin-top: 80px;
     margin-bottom: 80px;
     display: flex;
+    justify-content: center;
     width: 100%;
     gap: 50px;
 }
@@ -35,6 +36,7 @@
 .infoContainer{
     flex: 2;
     text-align: justify;
+    max-width: 1000px;
 }
 
 .photosContainer{

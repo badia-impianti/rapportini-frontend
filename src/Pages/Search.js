@@ -72,7 +72,10 @@ const Search = () => {
         loadingError ? <LoadingError errorDescription={errorType} /> :
         <div className="mainContainer">
             <NavBar />
-            <IoWarning size={24} /><p>Lo sviluppo della pagina non è ancora ultimato; Sono presenti alcune piccole imprecisioni</p>
+            <div>
+                <IoWarning size={30}/>
+                <p>Lo sviluppo della pagina non è ancora ultimato; Sono presenti alcune piccole imprecisioni</p>
+            </div>
             <SearchBox values={searchValues} setValues={setSearchValues} />
             {isLoading ? <LoadingSpinner /> :
             <WorksTable reports={reports} />}

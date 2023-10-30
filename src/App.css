@@ -7,6 +7,13 @@
 
 .mainContainer {
   margin: 5%;
+  width: 100%;
+  max-width: 1300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 75px;
 }
 
 .App {
@@ -78,6 +85,7 @@ table {
   margin: 20px auto;
   border-radius: 10px;
   overflow: hidden;
+  min-width: 250px;
 }
 
 thead {

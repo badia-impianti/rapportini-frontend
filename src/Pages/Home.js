@@ -114,8 +114,6 @@ const Home = () => {
                 <p>Seleziona la giornata</p>
                 <input
                     type="date"
-                    className="form__field"
-                    style={{color: "white"}}
                     value={date}
                     onChange={(e) => {
                         setDate(e.target.value)

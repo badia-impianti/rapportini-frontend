@@ -303,7 +303,8 @@ const Add = () => {
                                 } />
                         </div>
                     </form>
-                    <h2 style={{ marginTop: "100px"}}>Materiali</h2>
+                    <div style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
+                    <h2>Materiali</h2>
                     <table style={{ width: "100%", maxWidth: "600px" }}>
                         <thead>
                             <tr>
@@ -371,8 +372,11 @@ const Add = () => {
                             }
                         </tbody>
                     </table>
+                    </div>
 
-                    <h2 style={{ marginTop: "100px" }}>Giornate</h2>
+
+                    <div style={{width: "100%"}}>
+                    <h2>Giornate</h2>
                     {
                         labour.map((val, index) => {
                             return (
@@ -380,6 +384,7 @@ const Add = () => {
                                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%", maxWidth: 200 }}>
                                         <input type="date" name="date" data-id={index} id={`date-${index}`} className="form__field" placeholder="Data"
                                             value={val.date}
+                                               style={{ marginBottom: "10px" }}
                                             onChange={(e) => {
                                                 let newLabour = [...labour]
                                                 newLabour[index].date = e.target.value
@@ -594,13 +599,14 @@ const Add = () => {
                             )
                         })
                     }
+                    </div>
                     <button className="button" onClick={() => {
                         setLabour([...labour, { date: "", laborers: [{ id: "", name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ id: "", name: "", plate: "", hours: 0, minutes: 0 }] }])
                     }}>
                         Aggiungi Ulteriore Giornata
                     </button>
                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "100%" }}>
-                        <button className="button" style={{ width: "100%", maxWidth: 200, marginTop: "100px" }} onClick={save}
+                        <button className="button" style={{ width: "100%", maxWidth: 200 }} onClick={save}
                         >Salva</button>
                     </div>
                 </div>

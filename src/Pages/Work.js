@@ -27,6 +27,7 @@ const Work = () => {
 
     //Page state
     const [isLoading, setIsLoading] = useState(true);
+    const [loadingMessage, setLoadingMessage] = useState();
     const [loadingError, setLoadingError] = useState(false)
     const [errorType, setErrorType] = useState("");
     const [imagesUrls, setImagesUrls] = useState([]); //Array of strings [url1, url2, ...
@@ -145,6 +146,7 @@ const Work = () => {
         const zip = new JSZip();
 
         for (let i = 0; i < imagesUrls.length; i++) {
+            setLoadingMessage("Scaricamento immagine " + (i + 1) + " di " + imagesUrls.length)
             const response = await fetch(imagesUrls[i].url, {
                 method: "GET",
                 credentials: "include",
@@ -162,7 +164,7 @@ const Work = () => {
 
     return (
         loadingError ? <LoadingError errorDescription={errorType} /> :
-        isLoading ? <LoadingSpinner /> :
+        isLoading ? <LoadingSpinner message={loadingMessage} /> :
             <div className="mainContainer">
                 <NavBar />
                 <h1>Riepilogo per il lavoro n°{work.id}</h1>

@@ -8,7 +8,7 @@ import {
     IoTrashBin,
     IoPrint,
     IoArchive,
-    IoCloudDownloadOutline
+    IoCloudDownloadOutline, IoCheckmark, IoCloseOutline, IoCheckmarkOutline
 } from "react-icons/io5";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
@@ -32,6 +32,8 @@ const Work = () => {
     const [errorType, setErrorType] = useState("");
     const [imagesUrls, setImagesUrls] = useState([]); //Array of strings [url1, url2, ...
     const navigate = useNavigate();
+
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
     //Page data
     const [work, setWork] = useState({});
@@ -214,6 +216,7 @@ const Work = () => {
                                 <th>Nome</th>
                                 <th>Unità</th>
                                 <th>Quantità</th>
+                                <th hidden={isMobile}>Inserito</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -222,6 +225,7 @@ const Work = () => {
                                     <td>{material.name}</td>
                                     <td>{material.unit}</td>
                                     <td>{material.quantity}</td>
+                                    <td hidden={isMobile}>{material.checked === 1 ? <IoCheckmarkOutline /> : <IoCloseOutline />}</td>
                                 </tr>
                             ))}
                         </tbody>

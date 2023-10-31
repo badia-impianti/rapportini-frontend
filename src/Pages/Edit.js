@@ -14,6 +14,7 @@ const Edit = () => {
 
     //Navigation
     const navigate = useNavigate();
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 767);
 
     //Page state
     const [loadingError, setLoadingError] = React.useState(false);
@@ -161,10 +162,10 @@ const Edit = () => {
     useEffect(() => {
         //if last material is filled, add a new empty material
         if (materials.length === 0) {
-            setMaterials([{ name: "", quantity: "", unit: "n" }]);
+            setMaterials([{ name: "", quantity: "", unit: "n", checked: 0 }]);
         }
         else if (materials[materials.length - 1].name !== "" && materials[materials.length - 1].quantity !== "" && materials[materials.length - 1].unit !== "") {
-            setMaterials([...materials, { name: "", quantity: "", unit: "n" }]);
+            setMaterials([...materials, { name: "", quantity: "", unit: "n", checked: 0 }]);
         }
     }, [materials]);
 
@@ -174,7 +175,7 @@ const Edit = () => {
         newMaterials.pop()
         let newLabour = []
         labour.forEach((val) => {
-            if (val.date == "" || val.date == null) {
+            if (val.date === "" || val.date == null) {
                 window.alert("Inserire una data valida")
                 return
             }
@@ -204,6 +205,7 @@ const Edit = () => {
 
         setIsLoading(true);
 
+        console.log(data)
         fetch("https://backend.rapportini.badiasilvano.it/works/" + id, {
             method: "PUT",
             credentials: "include",
@@ -368,6 +370,7 @@ const Edit = () => {
                                 <th>Nome</th>
                                 <th>Quantità</th>
                                 <th>Unità</th>
+                                <th hidden={isMobile}>Inserito</th>
                                 <th />
                             </tr>
                         </thead>
@@ -409,6 +412,16 @@ const Edit = () => {
                                                     <option value="n">n</option>
                                                     <option value="m">mt</option>
                                                 </select>
+                                            </td>
+                                            <td hidden={isMobile} style={{ paddingInline: "10px" }} >
+                                                <input type="checkbox" name="inserted" data-id={idx} id={`inserted-${idx}`} className="form__field" placeholder="Inserito"
+                                                    checked={materials[idx].checked === 1}
+                                                    onChange={(e) => {
+                                                        let newMaterials = [...materials]
+                                                        newMaterials[idx].checked = (e.target.checked) ? 1 : 0
+                                                        setMaterials(newMaterials)
+                                                    }}
+                                                />
                                             </td>
                                             <td style={{ paddingInline: "0px" }} >
                                                 <IoClose color={"grey"} size={24} style={{ cursor: "pointer" }} onClick={() => {

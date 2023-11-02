@@ -380,7 +380,7 @@ const Add = () => {
                     {
                         labour.map((val, index) => {
                             return (
-                                <div key={index} style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
+                                <div key={index} style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%", gap: "50px", marginBottom: "100px" }}>
                                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%", maxWidth: 200 }}>
                                         <input type="date" name="date" data-id={index} id={`date-${index}`} className="form__field" placeholder="Data"
                                             value={val.date}
@@ -605,10 +605,10 @@ const Add = () => {
                     }}>
                         Aggiungi Ulteriore Giornata
                     </button>
-                    <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "100%" }}>
-                        <button className="button" style={{ width: "100%", maxWidth: 200 }} onClick={save}
-                        >Salva</button>
-                    </div>
+
+                    <button className="button" onClick={save}>
+                        Salva
+                    </button>
                 </div>
     )
 }

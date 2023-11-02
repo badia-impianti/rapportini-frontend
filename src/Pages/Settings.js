@@ -42,7 +42,7 @@ const Settings = () => {
         <div className="mainContainer" style={{ width: "100%" }}>
             <NavBar />
             <h1>Settings</h1>
-            <button className="deleteButton" style={{ marginTop: "100px" }}  onClick={logout}>
+            <button className="delete button" style={{ marginTop: "100px" }}  onClick={logout}>
                     <IoLogOutOutline size={24} />
                     &nbsp;
                     Logout

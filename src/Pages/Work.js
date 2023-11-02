@@ -307,7 +307,7 @@ const Work = () => {
                     </table>
                 </div>
                 <div className="buttonContainer">
-                    <button className="deleteButton" onClick={deleteWork}>
+                    <button className="button delete" onClick={deleteWork}>
                         <IoTrashBin size={24}/>
                         &nbsp;
                         Elimina

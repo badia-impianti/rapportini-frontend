@@ -43,13 +43,12 @@ h1 {
   border: none;
   border-radius: 10px;
   padding: 15px 20px;
-  margin: auto;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
-  box-shadow: 0 5px 5px rgba(0,0,0,0.15);
+  /*transition: all 0.3s ease-in-out; */
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
   text-decoration: none;
   min-width: 150px;
-  background-image: linear-gradient(to right, var(--color-primary), var(--color-secondary));
 
   /* Show element centred inside */
   display: flex;
@@ -57,27 +56,15 @@ h1 {
   align-items: center; /* vertical alignment */
 }
 
-.deleteButton {
-  font-family: 'Roboto', sans-serif;
-  font-size: 17px;
-  font-weight: 700;
-  color: #ffffff;
+.button.delete {
   background-color: #DC143CFF;
-  border: none;
-  border-radius: 10px;
-  padding: 15px 20px;
-  margin: auto;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-  box-shadow: 0 5px 5px rgba(0,0,0,0.15);
-  text-decoration: none;
-  min-width: 150px;
-
-  /* Show element centred inside */
-  display: flex;
-  justify-content: center; /* horizontal alignment */
-  align-items: center; /* vertical alignment */
 }
+
+.button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.15);
+}
+
 
 table {
   border-collapse: collapse;

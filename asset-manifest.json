@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.a2a4ba25.css",
-    "main.js": "/static/js/main.55e0de8f.js",
+    "main.css": "/static/css/main.d008fe0b.css",
+    "main.js": "/static/js/main.de553fe0.js",
     "static/js/787.05dd5848.chunk.js": "/static/js/787.05dd5848.chunk.js",
     "static/media/Electricity.jpg": "/static/media/Electricity.66bed0a00351127aa114.jpg",
     "index.html": "/index.html",
-    "main.a2a4ba25.css.map": "/static/css/main.a2a4ba25.css.map",
-    "main.55e0de8f.js.map": "/static/js/main.55e0de8f.js.map",
+    "main.d008fe0b.css.map": "/static/css/main.d008fe0b.css.map",
+    "main.de553fe0.js.map": "/static/js/main.de553fe0.js.map",
     "787.05dd5848.chunk.js.map": "/static/js/787.05dd5848.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.a2a4ba25.css",
-    "static/js/main.55e0de8f.js"
+    "static/css/main.d008fe0b.css",
+    "static/js/main.de553fe0.js"
   ]
 }

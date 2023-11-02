@@ -290,7 +290,7 @@ const Edit = () => {
                 <div className="mainContainer">
                     <NavBar />
                     <h1>Rapporto N° {id}</h1>
-                    <form style={{ width: "100%" }}>
+                    <form style={{ width: "100%", maxWidth: "600px" }}>
                         <div className="form__group field" >
                             <input type="text" className="form__field" placeholder="Cliente" name="customer" id='customer' required
                                 onChange={e => setCustomer(e.target.value)}
@@ -364,7 +364,7 @@ const Edit = () => {
                         </div>
                     </form>
                     <h2>Materiali</h2>
-                    <table style={{ width: "100%" }}>
+                    <table style={{ width: "100%", maxWidth: "600px" }}>
                         <thead>
                             <tr>
                                 <th>Nome</th>
@@ -447,7 +447,7 @@ const Edit = () => {
                     {
                         labour.map((val, index) => {
                             return (
-                                <div key={index} style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
+                                <div key={index} style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%", maxWidth: "600px", gap: "50px" }}>
                                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "80%", maxWidth: 200 }}>
                                         <input type="date" name="date" data-id={index} id={`date-${index}`} className="form__field" placeholder="Data"
                                             value={labour[index].date}
@@ -677,10 +677,9 @@ const Edit = () => {
                     }} >
                         Aggiungi ulteriore giornata
                     </button>
-                    <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "100%" }}>
-                        <button className="button" style={{ width: "80%", maxWidth: 200, margin: 20 }} onClick={save}
-                        >Salva</button>
-                    </div>
+                    <button className="button" style={{ width: "80%", maxWidth: 200, margin: 20 }} onClick={save}>
+                        Salva
+                    </button>
                 </div>
     )
 

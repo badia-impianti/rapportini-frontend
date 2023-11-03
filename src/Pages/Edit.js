@@ -397,7 +397,7 @@ const Edit = () => {
                                                 />
                                             </td>
                                             <td style={{ paddingInline: "10px" }} >
-                                                <input type="number" name="quantity" data-id={idx} id={quantity} className="form__field" placeholder="Quantità" style={window.innerWidth < 600 ? { maxWidth: 80 } : { maxWidth: 120 }}
+                                                <input type="number" name="quantity" inputMode="decimal" pattern="[0-9]*([,.][0-9]+)?" data-id={idx} id={quantity} className="form__field" placeholder="Quantità" style={window.innerWidth < 600 ? { maxWidth: 80 } : { maxWidth: 120 }}
                                                     value={materials[idx].quantity}
                                                     onChange={(e) => {
                                                         let newMaterials = [...materials]

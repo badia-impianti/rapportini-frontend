@@ -141,75 +141,88 @@ const Add = () => {
 
     //Upload the work to the backend
     const save = (e) => {
-        e.preventDefault();
-        let newMaterials = [...materials]
-        newMaterials.pop()
 
-        //Check material
-        let errorType = ""
-        newMaterials.forEach((material) => {
-            if (material.quantity === 0 || material.quantity === "") {
-                errorType = "material"
-                alert("Materiale con quiantità pari a 0")
-            }
+        let data
+        try {
+            e.preventDefault();
+            let newMaterials = [...materials]
+            newMaterials.pop()
 
-            if (material.name === "") {
-                errorType = "material"
-                alert("Materiale senza nome")
-            }
-        })
+            //Check material
+            let errorType = ""
+            newMaterials.forEach((material) => {
+                if (material.quantity === 0 || material.quantity === "") {
+                    errorType = "material"
+                    alert("Materiale con quiantità pari a 0")
+                }
 
-        let newLabour = []
-        labour.forEach((val) => {
+                if (material.name === "") {
+                    errorType = "material"
+                    alert("Materiale senza nome")
+                }
+            })
 
-            if (val.date === "" || val.date === null) {
-                errorType = "date"
-                alert("Inserire una data valida")
-                return
-            }
+            let newLabour = []
+            labour.forEach((val) => {
 
-            let newUsers = []
-            val.laborers.forEach((laborer) => {
+                if (val.date === "" || val.date === null) {
+                    errorType = "date"
+                    alert("Inserire una data valida")
+                    return
+                }
 
-                //Tali if sono necessari a seguito del fatto che la "onchange" viene chiamato solo al cambio di valore, e se si vuole inserire
-                //per esempio 30 minuti al server arriva stringa vuota nelle ore
+                let newUsers = []
+                val.laborers.forEach((laborer) => {
 
-                if ((laborer.hours === 0 || laborer.hours === null || laborer.hours === "") && (laborer.minutes === 0 || laborer.minutes === null || laborer.minutes === "")) {
+                    //Tali if sono necessari a seguito del fatto che la "onchange" viene chiamato solo al cambio di valore, e se si vuole inserire
+                    //per esempio 30 minuti al server arriva stringa vuota nelle ore
+
+                    if ((laborer.hours === 0 || laborer.hours === null || laborer.hours === "") && (laborer.minutes === 0 || laborer.minutes === null || laborer.minutes === "")) {
                         if (laborer.id !== "") {
-                        errorType = "hours"
-                        alert("Inserire un orario per i lavoratori valido")
-                        return
+                            errorType = "hours"
+                            alert("Inserire un orario per i lavoratori valido")
+                            return
+                        }
                     }
-                }
 
-                if (laborer.id !== "") {
-                    newUsers.push(laborer)
-                }
+                    if (laborer.id !== "") {
+                        newUsers.push(laborer)
+                    }
+                })
+                let newVehicles = []
+                val.vehicles.forEach((vehicle) => {
+                    if (vehicle.id !== "") {
+                        newVehicles.push(vehicle)
+                    }
+                })
+
+                //check that the date is unique
+                newLabour.forEach((val) => {
+                    if (val.date === val.date) {
+                        alert("Presenti giornate con la stessa data")
+                        throw new Error("Presenti giornate con la stessa data")
+                    }
+                })
+
+                //Check that the date is not null, or the work cannot be accepte
+                newLabour.push({date: val.date, users: newUsers, vehicles: newVehicles})
             })
-            let newVehicles = []
-            val.vehicles.forEach((vehicle) => {
-                if (vehicle.id !== "") {
-                    newVehicles.push(vehicle)
-                }
-            })
 
-            //Check that the date is not null, or the work cannot be accepte
-            newLabour.push({ date: val.date, users: newUsers, vehicles: newVehicles })
-        })
+            data = {
+                customer: customer,
+                description: description,
+                notes: notes,
+                completed: completed ? 1 : 0,
+                oncall: onCall ? 1 : 0,
+                materials: newMaterials,
+                labour: newLabour
+            }
 
-        if (errorType !== "" || labour.length === 0 ) {
+        } catch (error) {
+            //Non fare niente --> già mostrato l'alert
             return
         }
 
-        const data = {
-            customer: customer,
-            description: description,
-            notes: notes,
-            completed: completed ? 1 : 0,
-            oncall: onCall ? 1 : 0,
-            materials: newMaterials,
-            labour: newLabour
-        }
 
         setIsLoading(true)
         fetch("https://backend.rapportini.badiasilvano.it/works", {
@@ -331,7 +344,7 @@ const Add = () => {
                                                 />
                                             </td>
                                             <td style={{ paddingInline: "10px" }} >
-                                                <input type="number" name="quantity" data-id={idx} inputMode="numeric" id={quantity} className="form__field" placeholder="Quantità" style={window.innerWidth < 600 ? { maxWidth: 80 } : { maxWidth: 120 }}
+                                                <input type="number" name="quantity" data-id={idx} inputMode="decimal" pattern="[0-9]*([,.][0-9]+)?" id={quantity} className="form__field" placeholder="Quantità" style={window.innerWidth < 600 ? { maxWidth: 80 } : { maxWidth: 120 }}
                                                     value={materials[idx].quantity}
                                                     onChange={(e) => {
                                                         let newMaterials = [...materials]

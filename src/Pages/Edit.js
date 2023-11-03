@@ -296,7 +296,7 @@ const Edit = () => {
                                 onChange={e => setCustomer(e.target.value)}
                                 value={customer}
                             />
-                            <label for="customer" className="form__label">Cliente</label>
+                            <label className="form__label">Cliente</label>
                         </div>
                         <div className="form__group field" >
                             <textarea className="form__field" placeholder="Descrizione" name="description" id='description' required
@@ -327,7 +327,7 @@ const Edit = () => {
                                     loadedImages.map((image, idx) => {
                                         return (
                                             <div key={idx} style={{ display: "flex", flexDirection: "column", alignItems: "center", margin: 10 }}>
-                                                <img src={image.url} style={{ maxWidth: 200, maxHeight: 200 }} />
+                                                <img src={image.icon} style={{ maxWidth: 200, maxHeight: 200 }} />
                                                 <IoClose color={"grey"} size={24} style={{ cursor: "pointer" }} onClick={() => { deleteImage(image) }} />
                                             </div>
                                         )

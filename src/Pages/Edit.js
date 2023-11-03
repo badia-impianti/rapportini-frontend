@@ -191,6 +191,13 @@ const Edit = () => {
                     newVehicles.push(vehicle)
                 }
             })
+
+            //Check the date is unique
+            if (newLabour.filter((val) => val.date === val.date).length > 0) {
+                window.alert("Le date devono essere univoche")
+                return
+            }
+
             newLabour.push({ date: val.date, users: newUsers, vehicles: newVehicles })
         })
         const data = {
@@ -205,7 +212,6 @@ const Edit = () => {
 
         setIsLoading(true);
 
-        console.log(data)
         fetch("https://backend.rapportini.badiasilvano.it/works/" + id, {
             method: "PUT",
             credentials: "include",

@@ -74,7 +74,7 @@ const Search = () => {
             <NavBar />
             <div>
                 <IoWarning size={30}/>
-                <p>Lo sviluppo della pagina non è ancora ultimato; Sono presenti alcune piccole imprecisioni</p>
+                <p>Lo sviluppo della pagina non è ancora ultimato; Al momento la ricerca eroga un numero di risultati al massimo pari a 20</p>
             </div>
             <SearchBox values={searchValues} setValues={setSearchValues} />
             {isLoading ? <LoadingSpinner /> :

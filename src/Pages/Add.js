@@ -208,6 +208,14 @@ const Add = () => {
                 newLabour.push({date: val.date, users: newUsers, vehicles: newVehicles})
             })
 
+            //Check that the date value in newlabour is unique in the array
+            newLabour.every((val, idx) => {
+                if (newLabour.filter((labor) => labor.date === val.date).length > 1) {
+                    window.alert("La data " + val.date + " è duplicata")
+                    throw new Error("Data duplicata")
+                }
+            })
+
             data = {
                 customer: customer,
                 description: description,

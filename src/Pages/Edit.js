@@ -5,6 +5,7 @@ import { IoClose } from "react-icons/io5";
 import NavBar from "../components/NavBar";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
+import "./Edit.css"
 
 
 
@@ -46,7 +47,7 @@ const Edit = () => {
                         setCustomer(data.customer);
                         setDescription(data.description);
                         setNotes(data.note);
-                        setCompleted(data.completed === 1 ? true : false);
+                        setCompleted(data.completed === 1);
                         setMaterials(data.materials);
                         //make labour dates readable
                         data.labour.forEach((val) => {
@@ -75,7 +76,6 @@ const Edit = () => {
                 if (response.status === 200) {
                     response.json().then((data) => {
                         setUsers(data.users);
-                        setIsLoading(false);
                     });
                 }
             })
@@ -107,7 +107,6 @@ const Edit = () => {
             .then((response) => {
                 if (response.status === 200) {
                     response.json().then((data) => {
-                        console.log(data)
                         setLoadedImages(data.images);
                     });
                 }
@@ -128,7 +127,7 @@ const Edit = () => {
     useEffect(() => {
         //if labour is empty, add a new empty labour
         if (labour.length === 0) {
-            setLabour([{ date: "", users: [{ id: "", name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ id: "", name: "", plate: "", hours: 0, minutes: 0 }] }]);
+            setLabour([{ date: "", users: [], vehicles: [] }]);
         }
 
         // if last worker of any labour is filled, add a new empty worker
@@ -171,45 +170,63 @@ const Edit = () => {
 
     const save = (e) => {
         e.preventDefault();
-        let newMaterials = [...materials]
-        newMaterials.pop()
-        let newLabour = []
-        labour.forEach((val) => {
-            if (val.date === "" || val.date == null) {
-                window.alert("Inserire una data valida")
-                return
-            }
-            let newUsers = []
-            val.users.forEach((laborer) => {
-                if (laborer.id !== "") {
-                    newUsers.push(laborer)
+
+        let data
+        try {
+
+            //Drop the last element that is empty
+            let uploadableMaterials = [...materials]
+            uploadableMaterials.pop()
+
+            //Check in labour array
+            let newLabour = []
+            labour.forEach((val) => {
+
+                if (val.date === "" || val.date == null) {
+                    window.alert("Inserire una data valida")
+                    throw new Error("Data non valida")
                 }
-            })
-            let newVehicles = []
-            val.vehicles.forEach((vehicle) => {
-                if (vehicle.id !== "") {
-                    newVehicles.push(vehicle)
-                }
+
+                let newUsers = []
+                val.users.forEach((laborer) => {
+                    if (laborer.id !== "") {
+                        newUsers.push(laborer)
+                    }
+                })
+                let newVehicles = []
+                val.vehicles.forEach((vehicle) => {
+                    if (vehicle.id !== "") {
+                        newVehicles.push(vehicle)
+                    }
+                })
+
+                newLabour.push({date: val.date, users: newUsers, vehicles: newVehicles})
             })
 
-            //Check the date is unique
-            if (newLabour.filter((val) => val.date === val.date).length > 0) {
-                window.alert("Le date devono essere univoche")
-                return
+
+            //Check that the date value in newlabour is unique in the array
+            newLabour.every((val, idx) => {
+                if (newLabour.filter((labor) => labor.date === val.date).length > 1) {
+                    window.alert("La data " + val.date + " è duplicata")
+                    throw new Error("Data duplicata")
+                }
+                return true
+            })
+
+
+            data = {
+                customer: customer,
+                description: description,
+                note: notes,
+                completed: completed ? 1 : 0,
+                oncall: onCall ? 1 : 0,
+                materials: uploadableMaterials,
+                labour: newLabour
             }
 
-            newLabour.push({ date: val.date, users: newUsers, vehicles: newVehicles })
-        })
-        const data = {
-            customer: customer,
-            description: description,
-            note: notes,
-            completed: completed ? 1 : 0,
-            oncall: onCall ? 1 : 0,
-            materials: newMaterials,
-            labour: newLabour
+        }  catch (err) {
+            return
         }
-
         setIsLoading(true);
 
         fetch("https://backend.rapportini.badiasilvano.it/works/" + id, {
@@ -297,43 +314,46 @@ const Edit = () => {
                     <NavBar />
                     <h1>Rapporto N° {id}</h1>
                     <form style={{ width: "100%", maxWidth: "600px" }}>
-                        <div className="form__group field" >
-                            <input type="text" className="form__field" placeholder="Cliente" name="customer" id='customer' required
+                        <div className="form__group" >
+                            <input type="text" className="form__field" placeholder="Cliente" id="CustomerInput"
                                 onChange={e => setCustomer(e.target.value)}
                                 value={customer}
                             />
-                            <label className="form__label">Cliente</label>
+                            <label htmlFor="customerInput" className="form__label">Cliente</label>
                         </div>
-                        <div className="form__group field" >
+                        <div className="form__group" >
                             <textarea className="form__field" placeholder="Descrizione" name="description" id='description' required
                                 onChange={e => setDescription(e.target.value)}
                                 value={description}
                             />
-                            <label for="description" className="form__label">Descrizione</label>
+                            <label className="form__label">Descrizione</label>
                         </div>
-                        <div className="form__group field">
+                        <div className="form__group">
                             <textarea className="form__field" placeholder="Note" name="notes" id='notes' required
                                 onChange={e => setNotes(e.target.value)}
                                 value={notes}
                             />
-                            <label for="notes" className="form__label">Note</label>
+                            <label className="form__label">Note</label>
                         </div>
-                        <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "100%" }} >
+                        <div style={{ margin: "30px" }} >
                             <input type="checkbox" id="onCall" name="onCall" onChange={e => setOnCall(e.target.checked)} value={onCall} checked={onCall} />
-                            <label for="onCall">Reperibilità</label>
+                            <label>Reperibilità</label>
                         </div>
-                        <div className="form__group field" style={{ display: "flex", flexDirection: "row", justifyContent: "center", width: "100%" }}>
-                            <input type="checkbox" id="completed" name="completed" onChange={e => setCompleted(e.target.checked)} value={completed} checked={completed} />
-                            <label for="completed">Lavoro completato</label>
+                        <div style={{ margin: "30px" }}>
+                            <input type="checkbox" onChange={e => setCompleted(e.target.checked)} checked={completed} />
+                            <label>Completato</label>
                         </div>
+
+                        <button className="completedButton">Completato</button>
+
                         <div>
                             <h2>Immagini</h2>
-                            <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center" }}>
+                            <div className="imageContainer">
                                 {
-                                    loadedImages.map((image, idx) => {
+                                    loadedImages.map((image) => {
                                         return (
-                                            <div key={idx} style={{ display: "flex", flexDirection: "column", alignItems: "center", margin: 10 }}>
-                                                <img src={image.icon} style={{ maxWidth: 200, maxHeight: 200 }} />
+                                            <div key={image.icon} style={{ display: "flex", flexDirection: "column", alignItems: "center", margin: 10 }}>
+                                                <img src={image.icon} className="image"  alt="Scatto del lavoro"/>
                                                 <IoClose color={"grey"} size={24} style={{ cursor: "pointer" }} onClick={() => { deleteImage(image) }} />
                                             </div>
                                         )
@@ -342,13 +362,12 @@ const Edit = () => {
                                 {
                                     newImages.map((image, idx) => {
                                         return (
-                                            <div key={idx} style={{ display: "flex", flexDirection: "column", alignItems: "center", margin: 10 }}>
-                                                <img src={URL.createObjectURL(image)} style={{ maxWidth: 200, maxHeight: 200 }} />
+                                            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", margin: 10 }}>
+                                                <img src={URL.createObjectURL(image)} className="image"  alt="Immagine del lavoro da caricare" />
                                                 <IoClose color={"grey"} size={24} style={{ cursor: "pointer" }} onClick={() => {
                                                     let newImages = [...newImages]
                                                     // remove current row
                                                     newImages.splice(idx, 1)
-                                                    console.log(newImages)
                                                     setNewImages(newImages)
                                                 }} />
                                             </div>
@@ -387,9 +406,9 @@ const Edit = () => {
                                     return (
                                         <tr key={val.index}>
                                             <td style={{ paddingInline: "10px" }} >
-                                                <textarea type="text" name="name" data-id={idx} id={materialName} className="form__field" placeholder="Nome"
-                                                    value={materials[idx].name}
-                                                    onChange={(e) => {
+                                                <textarea name="name" data-id={idx} id={materialName} className="form__field" placeholder="Nome"
+                                                          value={materials[idx].name}
+                                                          onChange={(e) => {
                                                         let newMaterials = [...materials]
                                                         newMaterials[idx].name = e.target.value
                                                         setMaterials(newMaterials)

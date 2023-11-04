@@ -10,6 +10,7 @@ import Work from './Pages/Work';
 import Settings from './Pages/Settings';
 import SetName from './Pages/SetName';
 import Edit from './Pages/Edit';
+import NewEdit from "./Pages/NewEdit";
 import Search from './Pages/Search';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/add" element={<Add />} />
             <Route path="/edit/:id" element={<Edit />} />
+            <Route path="/newedit/:id" element={<NewEdit />} />
             <Route path="/work/:id" element={<Work />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/search" element={<Search />} />

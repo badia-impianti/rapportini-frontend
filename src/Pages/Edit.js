@@ -6,6 +6,7 @@ import NavBar from "../components/NavBar";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
 import "./Edit.css"
+import inputFieldChecker from "../functions/inputFieldChecker";
 
 
 
@@ -15,7 +16,7 @@ const Edit = () => {
 
     //Navigation
     const navigate = useNavigate();
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 767);
+    const [isMobile] = useState(window.innerWidth < 767);
 
     //Page state
     const [loadingError, setLoadingError] = React.useState(false);
@@ -48,11 +49,11 @@ const Edit = () => {
                         setDescription(data.description);
                         setNotes(data.note);
                         setCompleted(data.completed === 1);
+                        setOnCall(data.oncall === 1);
                         setMaterials(data.materials);
                         //make labour dates readable
                         data.labour.forEach((val) => {
                             val.date = new Date(val.date).toISOString().split('T')[0]
-                            console.log(val.date)
                         })
                         setLabour(data.labour);
                     });
@@ -168,91 +169,59 @@ const Edit = () => {
         }
     }, [materials]);
 
-    const save = (e) => {
+    const save = async (e) => {
+
+
+        // meaning that the default action that belongs to the event will not occur.
+        // In this case do not send as a normal www-form-urlencoded form, but as a json with fetch
         e.preventDefault();
 
-        let data
+        const inputField = {
+            customer: customer,
+            description: description,
+            notes: notes,
+            completed: completed,
+            oncall: onCall,
+            materials: materials,
+            labour: labour,
+            vehicles: vehicles,
+        }
+
+        let validatedInput
+
         try {
-
-            //Drop the last element that is empty
-            let uploadableMaterials = [...materials]
-            uploadableMaterials.pop()
-
-            //Check in labour array
-            let newLabour = []
-            labour.forEach((val) => {
-
-                if (val.date === "" || val.date == null) {
-                    window.alert("Inserire una data valida")
-                    throw new Error("Data non valida")
-                }
-
-                let newUsers = []
-                val.users.forEach((laborer) => {
-                    if (laborer.id !== "") {
-                        newUsers.push(laborer)
-                    }
-                })
-                let newVehicles = []
-                val.vehicles.forEach((vehicle) => {
-                    if (vehicle.id !== "") {
-                        newVehicles.push(vehicle)
-                    }
-                })
-
-                newLabour.push({date: val.date, users: newUsers, vehicles: newVehicles})
-            })
-
-
-            //Check that the date value in newlabour is unique in the array
-            newLabour.every((val, idx) => {
-                if (newLabour.filter((labor) => labor.date === val.date).length > 1) {
-                    window.alert("La data " + val.date + " è duplicata")
-                    throw new Error("Data duplicata")
-                }
-                return true
-            })
-
-
-            data = {
-                customer: customer,
-                description: description,
-                note: notes,
-                completed: completed ? 1 : 0,
-                oncall: onCall ? 1 : 0,
-                materials: uploadableMaterials,
-                labour: newLabour
-            }
-
-        }  catch (err) {
+            validatedInput = inputFieldChecker(inputField)
+        } catch (error) {
+            alert("Errore nel salvataggio del rapportino: nel dettaglio " + error.message)
             return
         }
-        setIsLoading(true);
 
-        fetch("https://backend.rapportini.badiasilvano.it/works/" + id, {
-            method: "PUT",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        })
-            .then((response) => {
-                response.json().then(async (data) => {
-                    if (response.status === 200) {
-                        await uploadImages(id);
-                        if (!loadingError) navigate("/home");
-                    } else {
-                        setErrorType(data.message)
-                        setLoadingError(true)
-                    }
-                })
+        console.log(validatedInput)
 
+        setIsLoading(true)
+
+
+        try {
+            const response = await fetch("https://backend.rapportini.badiasilvano.it/works/" + id, {
+                method: "PUT",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(validatedInput),
             })
-            .catch((err) => {
-                setErrorType("Network error")
+
+            if (response.status === 200) {
+                await uploadImages(id);
+                if (!loadingError) navigate("/home");
+            } else {
+                setErrorType("Errore nel salvataggio del rapportino. Nel dettaglio " + response.message)
                 setLoadingError(true)
-            });
+            }
+        } catch (err) {
+            setErrorType("Errore di connessione; Nel dettaglio " + err.message)
+            setLoadingError(true)
+        }
     }
 
     const uploadImages = async (workId) => {
@@ -292,11 +261,9 @@ const Edit = () => {
             .then((response) => {
                 if (response.status === 200) {
                     response.json().then((data) => {
-                        console.log(data);
                         let newImages = [...loadedImages]
                         // Remove current row
                         newImages.splice(newImages.indexOf(image), 1)
-                        console.log(newImages)
                         setLoadedImages(newImages)
                     });
                 }
@@ -336,7 +303,7 @@ const Edit = () => {
                             <label className="form__label">Note</label>
                         </div>
                         <div style={{ margin: "30px" }} >
-                            <input type="checkbox" id="onCall" name="onCall" onChange={e => setOnCall(e.target.checked)} value={onCall} checked={onCall} />
+                            <input type="checkbox" onChange={e => setOnCall(e.target.checked)} checked={onCall} />
                             <label>Reperibilità</label>
                         </div>
                         <div style={{ margin: "30px" }}>
@@ -457,7 +424,6 @@ const Edit = () => {
                                                     let newMaterials = [...materials]
                                                     // remove current row
                                                     newMaterials.splice(idx, 1)
-                                                    console.log(newMaterials)
                                                     setMaterials(newMaterials)
                                                 }} />
                                             </td>
@@ -490,7 +456,6 @@ const Edit = () => {
                                             let newLabour = [...labour]
                                             // remove current row
                                             newLabour.splice(index, 1)
-                                            console.log(newLabour)
                                             setLabour(newLabour)
                                         }} />
                                     </div>
@@ -534,7 +499,7 @@ const Edit = () => {
                                                                 </select>
                                                             </td>
                                                             <td style={{ paddingInline: "10px" }} >
-                                                                <select type="number" name="hours" data-id={idx} id={`hours-${idx}`} className="form__field" placeholder="Ore" style={window.innerWidth < 600 ? { maxWidth: 80, minWidth: 60 } : { maxWidth: 120 }}
+                                                                <select name="hours" data-id={idx} id={`hours-${idx}`} className="form__field" placeholder="Ore" style={window.innerWidth < 600 ? { maxWidth: 80, minWidth: 60 } : { maxWidth: 120 }}
                                                                     value={laborer.hours}
                                                                     onChange={(e) => {
                                                                         let newLabour = [...labour]
@@ -558,7 +523,7 @@ const Edit = () => {
                                                                 </select>
                                                             </td>
                                                             <td style={{ paddingInline: "10px" }} >
-                                                                <select type="number" name="minutes" data-id={idx} id={`minutes-${idx}`} className="form__field" placeholder="Minuti" style={window.innerWidth < 600 ? { maxWidth: 80 } : { maxWidth: 120 }}
+                                                                <select name="minutes" data-id={idx} id={`minutes-${idx}`} className="form__field" placeholder="Minuti" style={window.innerWidth < 600 ? { maxWidth: 80 } : { maxWidth: 120 }}
                                                                     value={laborer.minutes}
                                                                     onChange={(e) => {
                                                                         let newLabour = [...labour]
@@ -581,7 +546,6 @@ const Edit = () => {
                                                                     let newLabour = [...labour]
                                                                     // remove current row
                                                                     newLabour[index].users.splice(idx, 1)
-                                                                    console.log(newLabour)
                                                                     setLabour(newLabour)
                                                                 }} />
                                                             </td>
@@ -634,7 +598,7 @@ const Edit = () => {
                                                                 </select>
                                                             </td>
                                                             <td style={{ paddingInline: "10px" }} >
-                                                                <select type="number" name="hours" data-id={idx} id={`hours-${idx}`} className="form__field" placeholder="Ore" style={window.innerWidth < 600 ? { maxWidth: 80, minWidth: 60 } : { maxWidth: 120 }}
+                                                                <select name="hours" data-id={idx} id={`hours-${idx}`} className="form__field" placeholder="Ore" style={window.innerWidth < 600 ? { maxWidth: 80, minWidth: 60 } : { maxWidth: 120 }}
                                                                     value={vehicle.hours}
                                                                     onChange={(e) => {
                                                                         let newLabour = [...labour]
@@ -658,7 +622,7 @@ const Edit = () => {
                                                                 </select>
                                                             </td>
                                                             <td style={{ paddingInline: "10px" }} >
-                                                                <select type="number" name="minutes" data-id={idx} id={`minutes-${idx}`} className="form__field" placeholder="Minuti" style={window.innerWidth < 600 ? { maxWidth: 80 } : { maxWidth: 120 }}
+                                                                <select name="minutes" data-id={idx} id={`minutes-${idx}`} className="form__field" placeholder="Minuti" style={window.innerWidth < 600 ? { maxWidth: 80 } : { maxWidth: 120 }}
                                                                     value={vehicle.minutes}
                                                                     onChange={(e) => {
                                                                         let newLabour = [...labour]
@@ -681,7 +645,6 @@ const Edit = () => {
                                                                     let newLabour = [...labour]
                                                                     // remove current row
                                                                     newLabour[index].vehicles.splice(idx, 1)
-                                                                    console.log(newLabour)
                                                                     setLabour(newLabour)
                                                                 }} />
                                                             </td>

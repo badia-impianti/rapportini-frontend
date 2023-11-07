@@ -4,6 +4,7 @@ import { IoClose } from "react-icons/io5";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
 import NavBar from "../components/NavBar";
+import inputFieldChecker from "../functions/inputFieldChecker";
 
 const Add = () => {
 
@@ -26,11 +27,12 @@ const Add = () => {
     const [users, setUsers] = React.useState([]);
     const [vehicles, setVehicles] = React.useState([]);
     const [materials, setMaterials] = React.useState([{ name: "", quantity: "", unit: "n" }]);
-    const [labour, setLabour] = React.useState([{ date: "", laborers: [{ id: "", name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ id: "", name: "", plate: "", hours: 0, minutes: 0 }] }]);
+    const [labour, setLabour] = React.useState([{ date: new Date().toLocaleDateString('it-IT'), users: [{ id: "", name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ id: "", name: "", plate: "", hours: 0, minutes: 0 }] }]);
 
 
     //Loading needed data
     useEffect(() => {
+
         fetch("https://backend.rapportini.badiasilvano.it/users", {
             method: "GET",
             credentials: "include",
@@ -45,7 +47,8 @@ const Add = () => {
                     setLoadingError(true);
                 }
             })
-            .catch((err) => {
+            .catch(() => {
+                setErrorType("Errore di rete nel caricamento dei dati: verifica la tua connessione e riprova")
                 setLoadingError(true);
             });
 
@@ -63,7 +66,8 @@ const Add = () => {
                     setLoadingError(true);
                 }
             })
-            .catch((err) => {
+            .catch(() => {
+                setErrorType("Errore di rete nel caricamento dei dati: verifica la tua connessione e riprova")
                 setLoadingError(true);
             });
     }, []);
@@ -79,7 +83,7 @@ const Add = () => {
     //Add a new empty line to the materials/worker/vehicle table
     useEffect(() => {
         //if last material is filled, add a new empty material
-        if (materials[materials.length - 1].name !== "" && materials[materials.length - 1].quantity !== "" && materials[materials.length - 1].unit !== "") {
+        if (materials[materials.length-1].name !== "" || materials[materials.length - 1].quantity !== "" || materials[materials.length - 1].unit !== "n") {
             setMaterials([...materials, { name: "", quantity: "", unit: "n" }]);
         }
     }, [materials]);
@@ -87,9 +91,9 @@ const Add = () => {
     useEffect(() => {
         // if last worker of any labour is filled, add a new empty worker
         labour.forEach((val, idx) => {
-            if (val.laborers[val.laborers.length - 1].id !== "" && val.laborers[val.laborers.length - 1].hours !== "" && val.laborers[val.laborers.length - 1].minutes !== "") {
+            if (val.users[val.users.length - 1].id !== "" && val.users[val.users.length - 1].hours !== "" && val.users[val.users.length - 1].minutes !== "") {
                 let newLabour = [...labour]
-                newLabour[idx].laborers.push({ id: "", name: "", surname: "", hours: 0, minutes: 0 })
+                newLabour[idx].users.push({ id: "", name: "", surname: "", hours: 0, minutes: 0 })
                 setLabour(newLabour)
             }
         })
@@ -140,124 +144,61 @@ const Add = () => {
 
 
     //Upload the work to the backend
-    const save = (e) => {
+    const save = async (e) => {
 
-        let data
+
+        // meaning that the default action that belongs to the event will not occur.
+        // In this case do not send as a normal www-form-urlencoded form, but as a json with fetch
+        e.preventDefault();
+
+        const inputField = {
+            customer: customer,
+            description: description,
+            notes: notes,
+            completed: completed,
+            oncall: onCall,
+            materials: materials,
+            labour: labour,
+            vehicles: vehicles,
+        }
+
+        let validatedInput
+
         try {
-            e.preventDefault();
-            let newMaterials = [...materials]
-            newMaterials.pop()
-
-            //Check material
-            let errorType = ""
-            newMaterials.forEach((material) => {
-                if (material.quantity === 0 || material.quantity === "") {
-                    errorType = "material"
-                    alert("Materiale con quiantità pari a 0")
-                }
-
-                if (material.name === "") {
-                    errorType = "material"
-                    alert("Materiale senza nome")
-                }
-            })
-
-            let newLabour = []
-            labour.forEach((val) => {
-
-                if (val.date === "" || val.date === null) {
-                    errorType = "date"
-                    alert("Inserire una data valida")
-                    return
-                }
-
-                let newUsers = []
-                val.laborers.forEach((laborer) => {
-
-                    //Tali if sono necessari a seguito del fatto che la "onchange" viene chiamato solo al cambio di valore, e se si vuole inserire
-                    //per esempio 30 minuti al server arriva stringa vuota nelle ore
-
-                    if ((laborer.hours === 0 || laborer.hours === null || laborer.hours === "") && (laborer.minutes === 0 || laborer.minutes === null || laborer.minutes === "")) {
-                        if (laborer.id !== "") {
-                            errorType = "hours"
-                            alert("Inserire un orario per i lavoratori valido")
-                            return
-                        }
-                    }
-
-                    if (laborer.id !== "") {
-                        newUsers.push(laborer)
-                    }
-                })
-                let newVehicles = []
-                val.vehicles.forEach((vehicle) => {
-                    if (vehicle.id !== "") {
-                        newVehicles.push(vehicle)
-                    }
-                })
-
-                //check that the date is unique
-                newLabour.forEach((val) => {
-                    if (val.date === val.date) {
-                        alert("Presenti giornate con la stessa data")
-                        throw new Error("Presenti giornate con la stessa data")
-                    }
-                })
-
-                //Check that the date is not null, or the work cannot be accepte
-                newLabour.push({date: val.date, users: newUsers, vehicles: newVehicles})
-            })
-
-            //Check that the date value in newlabour is unique in the array
-            newLabour.every((val, idx) => {
-                if (newLabour.filter((labor) => labor.date === val.date).length > 1) {
-                    window.alert("La data " + val.date + " è duplicata")
-                    throw new Error("Data duplicata")
-                }
-            })
-
-            data = {
-                customer: customer,
-                description: description,
-                notes: notes,
-                completed: completed ? 1 : 0,
-                oncall: onCall ? 1 : 0,
-                materials: newMaterials,
-                labour: newLabour
-            }
-
+            validatedInput = inputFieldChecker(inputField)
         } catch (error) {
-            //Non fare niente --> già mostrato l'alert
+            alert("Errore nel salvataggio del rapportino: nel dettaglio " + error.message)
             return
         }
 
-
         setIsLoading(true)
-        fetch("https://backend.rapportini.badiasilvano.it/works", {
-            method: "POST",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        })
-            .then((response) => {
-                response.json().then(async (data) => {
-                    if (response.status === 200) {
-                        await uploadImages(data.workId);
-                        if (!loadingError) {
-                            navigate("/home");
-                        }
-                    } else {
-                        setErrorType(data.message)
-                        setLoadingError(true)
-                    }
-                })
-            })
-            .catch((err) => {
-                setErrorType("Network error")
-                setLoadingError(true);
-            });
+
+
+        try {
+
+            const response = (await fetch("https://backend.rapportini.badiasilvano.it/works", {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(validatedInput),
+            }))
+
+            if (response.status === 200) {
+                await uploadImages(validatedInput.workId);
+                if (!loadingError) navigate("/home")
+            } else {
+                const responseJson = await response.json()
+                setErrorType("Il server non ha accettato tale richiesta; ecco il messaggio nel dettaglio: " + responseJson.message)
+                setLoadingError(true)
+            }
+
+        } catch (error) {
+            setErrorType("Errore di rete nel caricamento del rapportino: verifica la tua connessione e riprova")
+            setLoadingError(true)
+        }
+
     }
 
     return (
@@ -271,27 +212,27 @@ const Add = () => {
                             <input type="text" className="form__field" id='customer' name="customer" placeholder="Cliente"
                                 onChange={e => setCustomer(e.target.value)}
                             />
-                            <label for="customer" className="form__label">Cliente</label>
+                            <label className="form__label">Cliente</label>
                         </div>
                         <div className="form__group" >
                             <textarea className="form__field" id="description" placeholder="Descrizione"
                                 onChange={e => setDescription(e.target.value)}
                             />
-                            <label for="description" className="form__label">Descrizione</label>
+                            <label className="form__label">Descrizione</label>
                         </div>
                         <div className="form__group">
                             <textarea className="form__field" id='notes' placeholder="Note"
                                 onChange={e => setNotes(e.target.value)}
                             />
-                            <label for="notes" className="form__label">Note</label>
+                            <label className="form__label">Note</label>
                         </div>
                         <div className="form__group" style={{ display: "flex", flexDirection: "row", justifyContent: "center" }} >
                             <input type="checkbox" id="onCall" onChange={e => setOnCall(e.target.checked)} checked={onCall} />
-                            &nbsp;<label for="onCall">Reperibilità</label>
+                            &nbsp;<label>Reperibilità</label>
                         </div>
                         <div className="form__group" style={{ display: "flex", flexDirection: "row", justifyContent: "center", padding: 20 }}>
                             <input type="checkbox" id="completed" name="completed" onChange={e => setCompleted(e.target.checked)} checked={completed} />
-                            &nbsp;<label for="completed">Lavoro completato</label>
+                            &nbsp;<label>Lavoro completato</label>
                         </div>
                         <div>
                             <h2>Immagini</h2>
@@ -301,7 +242,7 @@ const Add = () => {
                                     images.map((image) => {
                                         return (
                                             <div>
-                                                <img src={URL.createObjectURL(image)} style={{ width: 100, height: 100 }} />
+                                                <img src={URL.createObjectURL(image)} style={{ width: 100, height: 100 }} alt="Work Image"/>
                                                 <IoClose color={"grey"} size={24} style={{ cursor: "pointer" }} onClick={() => {
                                                     let newImages = [...images]
                                                     // remove current row
@@ -342,7 +283,7 @@ const Add = () => {
                                     return (
                                         <tr key={val.index}>
                                             <td style={{ paddingInline: "10px" }} >
-                                                <textarea type="text" name="name" data-id={idx} id={materialName} className="form__field" placeholder="Nome"
+                                                <textarea name="name" data-id={idx} id={materialName} className="form__field" placeholder="Nome"
                                                     value={materials[idx].name}
                                                     onChange={(e) => {
                                                         let newMaterials = [...materials]
@@ -383,7 +324,6 @@ const Add = () => {
                                                     let newMaterials = [...materials]
                                                     // remove current row
                                                     newMaterials.splice(idx, 1)
-                                                    console.log(newMaterials)
                                                     setMaterials(newMaterials)
                                                 }} />
                                             </td>
@@ -420,7 +360,6 @@ const Add = () => {
                                             let newLabour = [...labour]
                                             // remove current row
                                             newLabour.splice(index, 1)
-                                            console.log(newLabour)
                                             setLabour(newLabour)
                                         }} />
                                     </div>
@@ -435,7 +374,7 @@ const Add = () => {
                                         </thead>
                                         <tbody>
                                             {
-                                                val.laborers.map((laborer, idx) => {
+                                                val.users.map((laborer, idx) => {
                                                     return (
                                                         <tr key={idx} >
                                                             <td style={{ paddingInline: "10px" }} >
@@ -443,7 +382,7 @@ const Add = () => {
                                                                     value={laborer.id}
                                                                     onChange={(e) => {
                                                                         let newLabour = [...labour]
-                                                                        newLabour[index].laborers[idx].id = e.target.value
+                                                                        newLabour[index].users[idx].id = e.target.value
                                                                         setLabour(newLabour)
                                                                     }}
                                                                 >
@@ -454,7 +393,7 @@ const Add = () => {
                                                                                 <option 
                                                                                 hidden={
                                                                                     // if the user is already selected, hide it from the options
-                                                                                    val.laborers.filter((val) => parseInt(val.id) === parseInt(user.id)).length > 0
+                                                                                    val.users.filter((val) => parseInt(val.id) === parseInt(user.id)).length > 0
                                                                                 }
                                                                                 value={user.id}>{user.name} {user.surname}</option>
                                                                             )
@@ -467,7 +406,7 @@ const Add = () => {
                                                                     className="form__field"
                                                                     onChange={(e) => {
                                                                         let newLabour = [...labour]
-                                                                        newLabour[index].laborers[idx].hours = e.target.value
+                                                                        newLabour[index].users[idx].hours = e.target.value
                                                                         setLabour(newLabour)
                                                                     }}>
                                                                     <option value={0}>0</option>
@@ -490,7 +429,7 @@ const Add = () => {
                                                                 <select className="form__field"
                                                                     onChange={(e) => {
                                                                         let newLabour = [...labour]
-                                                                        newLabour[index].laborers[idx].minutes = e.target.value
+                                                                        newLabour[index].users[idx].minutes = e.target.value
                                                                         setLabour(newLabour)
                                                                     }}>
                                                                     <option value={0}>0</option>
@@ -499,15 +438,15 @@ const Add = () => {
                                                             </td>
                                                             <td style={{ paddingInline: "0px" }} >
                                                                 <IoClose color={"grey"} size={24} style={{ cursor: "pointer" }} onClick={() => {
-                                                                    if (val.laborers.length === 1) {
+                                                                    if (val.users.length === 1) {
                                                                         let newLabour = [...labour]
-                                                                        newLabour[index].laborers = [{ name: "", surname: "", hours: 0, minutes: 0 }]
+                                                                        newLabour[index].users = [{ name: "", surname: "", hours: 0, minutes: 0 }]
                                                                         setLabour(newLabour)
                                                                         return
                                                                     }
                                                                     let newLabour = [...labour]
                                                                     // remove current row
-                                                                    newLabour[index].laborers.splice(idx, 1)
+                                                                    newLabour[index].users.splice(idx, 1)
                                                                     setLabour(newLabour)
                                                                 }} />
                                                             </td>
@@ -604,7 +543,6 @@ const Add = () => {
                                                                     let newLabour = [...labour]
                                                                     // remove current row
                                                                     newLabour[index].vehicles.splice(idx, 1)
-                                                                    console.log(newLabour)
                                                                     setLabour(newLabour)
                                                                 }} />
                                                             </td>
@@ -622,7 +560,7 @@ const Add = () => {
                     }
                     </div>
                     <button className="button" onClick={() => {
-                        setLabour([...labour, { date: "", laborers: [{ id: "", name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ id: "", name: "", plate: "", hours: 0, minutes: 0 }] }])
+                        setLabour([...labour, { date: "", users: [{ id: "", name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ id: "", name: "", plate: "", hours: 0, minutes: 0 }] }])
                     }}>
                         Aggiungi Ulteriore Giornata
                     </button>

@@ -27,7 +27,7 @@ const Add = () => {
     const [users, setUsers] = React.useState([]);
     const [vehicles, setVehicles] = React.useState([]);
     const [materials, setMaterials] = React.useState([{ name: "", quantity: "", unit: "n" }]);
-    const [labour, setLabour] = React.useState([{ date: new Date().toLocaleDateString('it-IT'), users: [{ id: "", name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ id: "", name: "", plate: "", hours: 0, minutes: 0 }] }]);
+    const [labour, setLabour] = React.useState([{ date: new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000).toISOString().split('T')[0], users: [{ id: "", name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ id: "", name: "", plate: "", hours: 0, minutes: 0 }] }]);
 
 
     //Loading needed data
@@ -102,7 +102,7 @@ const Add = () => {
     useEffect(() => {
         // if last vehicle of any labour is filled, add a new empty vehicle
         labour.forEach((val, idx) => {
-            if (val.vehicles[val.vehicles.length - 1].id !== "") {
+            if (val.vehicles[val.vehicles.length - 1].id !== "" || val.vehicles[val.vehicles.length - 1].hours !== 0 || val.vehicles[val.vehicles.length - 1].minutes !== 0) {
                 let newLabour = [...labour]
                 newLabour[idx].vehicles.push({ id: "", name: "", plate: "", hours: 0, minutes: 0 })
                 setLabour(newLabour)

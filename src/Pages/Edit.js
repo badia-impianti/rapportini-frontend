@@ -33,8 +33,8 @@ const Edit = () => {
     const [newImages, setNewImages] = React.useState([]);
     const [users, setUsers] = React.useState([]);
     const [vehicles, setVehicles] = React.useState([]);
-    const [materials, setMaterials] = React.useState([{ name: "", quantity: "", unit: "n" }]);
-    const [labour, setLabour] = React.useState([{ date: "", users: [{ id: "", name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ id: "", name: "", plate: "" }] }]);
+    const [materials, setMaterials] = React.useState([]); //Already initialized in useEffect
+    const [labour, setLabour] = React.useState([{ date: "", users: [], vehicles: [] }]); //users and vehicles are initialized in useEffect (impossible to remove all)
 
 
     useEffect(() => {
@@ -126,10 +126,6 @@ const Edit = () => {
     }, [users, vehicles]);
 
     useEffect(() => {
-        //if labour is empty, add a new empty labour
-        if (labour.length === 0) {
-            setLabour([{ date: "", users: [], vehicles: [] }]);
-        }
 
         // if last worker of any labour is filled, add a new empty worker
         labour.forEach((val, idx) => {
@@ -138,7 +134,7 @@ const Edit = () => {
                 newLabour[idx].users.push({ id: "", name: "", surname: "", hours: 0, minutes: 0 })
                 setLabour(newLabour)
             }
-            else if (val.users[val.users.length - 1].id !== "" && val.users[val.users.length - 1].hours !== "" && val.users[val.users.length - 1].minutes !== "") {
+            else if (val.users[val.users.length - 1].id !== "" || val.users[val.users.length - 1].hours !== 0 || val.users[val.users.length - 1].minutes !== 0) {
                 let newLabour = [...labour]
                 newLabour[idx].users.push({ id: "", name: "", surname: "", hours: 0, minutes: 0 })
                 setLabour(newLabour)
@@ -151,7 +147,7 @@ const Edit = () => {
                 newLabour[idx].vehicles.push({ id: "", name: "", plate: "", hours: 0, minutes: 0 })
                 setLabour(newLabour)
             }
-            else if (val.vehicles[val.vehicles.length - 1].id !== "") {
+            else if (val.vehicles[val.vehicles.length - 1].id !== "" || val.vehicles[val.vehicles.length - 1].hours !== 0 || val.vehicles[val.vehicles.length - 1].minutes !== 0) {
                 let newLabour = [...labour]
                 newLabour[idx].vehicles.push({ id: "", name: "", plate: "", hours: 0, minutes: 0 })
                 setLabour(newLabour)
@@ -164,7 +160,7 @@ const Edit = () => {
         if (materials.length === 0) {
             setMaterials([{ name: "", quantity: "", unit: "n", checked: 0 }]);
         }
-        else if (materials[materials.length - 1].name !== "" && materials[materials.length - 1].quantity !== "" && materials[materials.length - 1].unit !== "") {
+        else if (materials[materials.length - 1].name !== "" || materials[materials.length - 1].quantity !== "" || materials[materials.length - 1].unit !== "n") {
             setMaterials([...materials, { name: "", quantity: "", unit: "n", checked: 0 }]);
         }
     }, [materials]);

@@ -26,10 +26,11 @@ const Home = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [loadingError, setLoadingError] = useState(false);
     const [errorType, setErrorType] = useState("")
-
-    const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
     const [reports, setReports] = useState([]);
     const [dailyHours, setDailyHours] = useState([]);
+    //Tutta sta vandalata per ottenere la data nel formato che vuole l'input col fuso italiano
+    const [date, setDate] = useState(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000).toISOString().split('T')[0]);
+
 
     const dailyHoursRetriever = () => {
         fetch("https://backend.rapportini.badiasilvano.it/users/daily-hours/" + date, {

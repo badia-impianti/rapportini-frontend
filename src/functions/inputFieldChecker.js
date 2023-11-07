@@ -32,10 +32,16 @@ const inputFieldChecker = (inputs) => {
             throw new Error("data non valida")
         }
 
+        //Users check
         let validatedUsers = [...val.users]
         validatedUsers.pop()
 
         validatedUsers.forEach((laborer) => {
+
+            if (laborer.id === "") {
+                throw new Error("lavoratore con orario inserito non selezionato")
+            }
+
             laborer.hours = parseInt(laborer.hours)
             laborer.minutes = parseInt(laborer.minutes)
             if (isNaN(laborer.hours) || (laborer.hours === 0 && laborer.minutes === 0)) {
@@ -43,40 +49,16 @@ const inputFieldChecker = (inputs) => {
             }
         })
 
-
-        /*
-        val.laborers.forEach((laborer) => {
-
-            //Tali if sono necessari a seguito del fatto che la "onchange" viene chiamato solo al cambio di valore, e se si vuole inserire
-            //per esempio 30 minuti al server arriva stringa vuota nelle ore
-
-            // commentato perchè secondo me dovrebbe esser risolto
-            if ((laborer.hours === 0 || laborer.hours === null || laborer.hours === "") && (laborer.minutes === 0 || laborer.minutes === null || laborer.minutes === "")) {
-                if (laborer.id !== "") {
-                    alert("Inserire un orario per i lavoratori valido")
-                    return
-                }
-            }
-
-            if (laborer.id !== "") {
-                validatedUsers.push(laborer)
-            }
-        })
-           */
-
-
-
+        //Vehicles check
         let validatedVehicles = [...val.vehicles]
         validatedVehicles.pop()
 
-
-        /*  Dovrebbe esser sufficiente rimuovere l'ultimo
-        val.vehicles.forEach((vehicle) => {
-            if (vehicle.id !== "") {
-                validatedVehicles.push(vehicle)
+        validatedVehicles.forEach((vehicle) => {
+            if (vehicle.id === "") {
+                throw new Error("veicolo non selezionato")
             }
         })
-         */
+
 
         //Check that the date is not null, or the work cannot be accepte
         validatedLabour.push({date: val.date, users: validatedUsers, vehicles: validatedVehicles})

@@ -37,6 +37,7 @@ const inputFieldChecker = (inputs) => {
 
         validatedUsers.forEach((laborer) => {
             laborer.hours = parseInt(laborer.hours)
+            laborer.minutes = parseInt(laborer.minutes)
             if (isNaN(laborer.hours) || (laborer.hours === 0 && laborer.minutes === 0)) {
                 throw new Error("orario di un lavoratore non valido")
             }

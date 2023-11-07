@@ -307,8 +307,6 @@ const Edit = () => {
                             <label>Completato</label>
                         </div>
 
-                        <button className="completedButton">Completato</button>
-
                         <div>
                             <h2>Immagini</h2>
                             <div className="imageContainer">

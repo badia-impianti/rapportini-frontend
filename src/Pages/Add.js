@@ -27,7 +27,7 @@ const Add = () => {
     const [users, setUsers] = React.useState([]);
     const [vehicles, setVehicles] = React.useState([]);
     const [materials, setMaterials] = React.useState([{ name: "", quantity: "", unit: "n" }]);
-    const [labour, setLabour] = React.useState([{ date: new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000).toISOString().split('T')[0], users: [{ id: "", name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ id: "", name: "", plate: "", hours: 0, minutes: 0 }] }]);
+    const [labour, setLabour] = React.useState([{ date: "", users: [{ id: "", name: "", surname: "", hours: 0, minutes: 0 }], vehicles: [{ id: "", name: "", plate: "", hours: 0, minutes: 0 }] }]);
 
 
     //Loading needed data
@@ -173,7 +173,6 @@ const Add = () => {
 
         setIsLoading(true)
 
-
         try {
 
             const response = (await fetch("https://backend.rapportini.badiasilvano.it/works", {
@@ -186,7 +185,8 @@ const Add = () => {
             }))
 
             if (response.status === 200) {
-                await uploadImages(validatedInput.workId);
+                const responseJson = await response.json()
+                await uploadImages(responseJson.workId);
                 if (!loadingError) navigate("/home")
             } else {
                 const responseJson = await response.json()

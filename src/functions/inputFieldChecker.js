@@ -71,6 +71,13 @@ const inputFieldChecker = (inputs) => {
         }
     })
 
+    //Check that for each element with different data the users and vehicles are not empty
+    validatedLabour.every((val) => {
+        if (val.users.length === 0 && val.vehicles.length === 0) {
+            throw new Error("data senza lavoratori o veicoli")
+        }
+    })
+
     return {
         customer: inputs.customer,
         description: inputs.description,

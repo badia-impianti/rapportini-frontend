@@ -73,7 +73,7 @@ const Login = () => {
         (isLoading) ? <LoadingSpinner /> :
 
         <div className="mainLoginContainer">
-            <img src={Electricity} alt="Immagine decorativa" />
+            <div className="imageContainer"/>
             <div className="loginFormContainer">
                 <form onSubmit={login} >
                     <h1>Rapportini</h1>

@@ -76,7 +76,7 @@ const Login = () => {
             <div className="imageContainer"/>
             <div className="loginFormContainer">
                 <form onSubmit={login} >
-                    <h1>Rapportini</h1>
+                    <h1 className="loginH1">Rapportini</h1>
                     <p>Accedi con @badiasilvano.it</p>
                     <div className="form__group field" >
                         <input

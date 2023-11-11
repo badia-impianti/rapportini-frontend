@@ -1,16 +1,28 @@
 {
   "files": {
-    "main.css": "/static/css/main.711b5f84.css",
-    "main.js": "/static/js/main.b49dfa3f.js",
+    "main.css": "/static/css/main.52a31ddb.css",
+    "main.js": "/static/js/main.f91c7c6b.js",
     "static/js/787.05dd5848.chunk.js": "/static/js/787.05dd5848.chunk.js",
     "static/media/Electricity.jpg": "/static/media/Electricity.66bed0a00351127aa114.jpg",
+    "static/media/jetbrains-mono-latin-400-normal.woff": "/static/media/jetbrains-mono-latin-400-normal.6c1a3008005254946aef.woff",
+    "static/media/jetbrains-mono-latin-400-normal.woff2": "/static/media/jetbrains-mono-latin-400-normal.4163112e566ed7697acf.woff2",
+    "static/media/jetbrains-mono-latin-ext-400-normal.woff": "/static/media/jetbrains-mono-latin-ext-400-normal.f76468bfaf7d6e028b15.woff",
+    "static/media/jetbrains-mono-cyrillic-400-normal.woff": "/static/media/jetbrains-mono-cyrillic-400-normal.e2bbac5ba4a6a947269b.woff",
+    "static/media/jetbrains-mono-latin-ext-400-normal.woff2": "/static/media/jetbrains-mono-latin-ext-400-normal.a7b2213a8b710149af01.woff2",
+    "static/media/jetbrains-mono-greek-400-normal.woff": "/static/media/jetbrains-mono-greek-400-normal.bfddc5b520da679cdcfb.woff",
+    "static/media/jetbrains-mono-cyrillic-400-normal.woff2": "/static/media/jetbrains-mono-cyrillic-400-normal.ca5a5aa599cda836890b.woff2",
+    "static/media/jetbrains-mono-vietnamese-400-normal.woff": "/static/media/jetbrains-mono-vietnamese-400-normal.fe6f4655fecf2c402699.woff",
+    "static/media/jetbrains-mono-greek-400-normal.woff2": "/static/media/jetbrains-mono-greek-400-normal.6e39ad95bc37a080358e.woff2",
+    "static/media/jetbrains-mono-vietnamese-400-normal.woff2": "/static/media/jetbrains-mono-vietnamese-400-normal.cabd61b169d456e75f62.woff2",
+    "static/media/jetbrains-mono-cyrillic-ext-400-normal.woff": "/static/media/jetbrains-mono-cyrillic-ext-400-normal.cd8b8fbbaf96659b9e3b.woff",
+    "static/media/jetbrains-mono-cyrillic-ext-400-normal.woff2": "/static/media/jetbrains-mono-cyrillic-ext-400-normal.116395f5d16bf9918fd9.woff2",
     "index.html": "/index.html",
-    "main.711b5f84.css.map": "/static/css/main.711b5f84.css.map",
-    "main.b49dfa3f.js.map": "/static/js/main.b49dfa3f.js.map",
+    "main.52a31ddb.css.map": "/static/css/main.52a31ddb.css.map",
+    "main.f91c7c6b.js.map": "/static/js/main.f91c7c6b.js.map",
     "787.05dd5848.chunk.js.map": "/static/js/787.05dd5848.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.711b5f84.css",
-    "static/js/main.b49dfa3f.js"
+    "static/css/main.52a31ddb.css",
+    "static/js/main.f91c7c6b.js"
   ]
 }

@@ -8,7 +8,7 @@ import {
     IoTrashBin,
     IoPrint,
     IoArchive,
-    IoCloudDownloadOutline, IoCheckmark, IoCloseOutline, IoCheckmarkOutline
+    IoCloudDownloadOutline, IoCloseOutline, IoCheckmarkOutline
 } from "react-icons/io5";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
@@ -307,21 +307,26 @@ const Work = () => {
                     </table>
                 </div>
                 <div className="buttonContainer">
-                    <button className="button delete" onClick={deleteWork}>
-                        <IoTrashBin size={24}/>
-                        &nbsp;
-                        Elimina
+                    { !work.processed &&
+                        <button className="button delete" onClick={deleteWork}>
+                            <IoTrashBin size={24}/>
+                            &nbsp;
+                            Elimina
                     </button>
+                    }
                     <button className="button" onClick={() => window.print()}>
                         <IoPrint size={24}/>
                         &nbsp;
                         Stampa
                     </button>
-                    <button className="button" onClick={setAsProcessed}>
-                        <IoArchive size={24}/>
-                        &nbsp;
-                        Contabilizza
-                    </button>
+
+                    { !work.processed &&
+                        <button className="button" onClick={setAsProcessed}>
+                            <IoArchive size={24}/>
+                            &nbsp;
+                            Contabilizza
+                        </button>
+                    }
                     {(imagesUrls.length > 0) &&
                         <button className={"button"}
                                 onClick={downloadImagesZip}>

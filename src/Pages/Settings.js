@@ -1,5 +1,5 @@
 import NavBar from "../components/NavBar";
-import { IoLogOutOutline } from "react-icons/io5";
+import { IoLogOutOutline, IoRefresh } from "react-icons/io5";
 import {useNavigate} from "react-router-dom";
 import preval from 'preval.macro'
 import LoadingError from "../components/LoadingError";
@@ -42,6 +42,11 @@ const Settings = () => {
         <div className="mainContainer" style={{ width: "100%" }}>
             <NavBar />
             <h1>Settings</h1>
+            <button className="button" onClick={() => window.location.reload()}>
+                <IoRefresh size={24} />
+                &nbsp;
+                Aggiorna
+            </button>
             <button className="delete button" style={{ marginTop: "100px" }}  onClick={logout}>
                     <IoLogOutOutline size={24} />
                     &nbsp;

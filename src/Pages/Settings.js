@@ -5,6 +5,8 @@ import preval from 'preval.macro'
 import LoadingError from "../components/LoadingError";
 import {useState} from "react";
 
+import "./Settings.css";
+
 const Settings = () => {
 
     const navigate = useNavigate();
@@ -42,16 +44,19 @@ const Settings = () => {
         <div className="mainContainer" style={{ width: "100%" }}>
             <NavBar />
             <h1>Settings</h1>
-            <button className="button" onClick={() => window.location.reload()}>
-                <IoRefresh size={24} />
-                &nbsp;
-                Aggiorna
-            </button>
-            <button className="delete button" style={{ marginTop: "100px" }}  onClick={logout}>
-                    <IoLogOutOutline size={24} />
+
+            <div className="listContainer">
+                <button className="button" onClick={() => window.location.reload()}>
+                    <IoRefresh size={24} />
                     &nbsp;
-                    Logout
-            </button>
+                    Aggiorna
+                </button>
+                <button className="delete button" onClick={logout}>
+                        <IoLogOutOutline size={24} />
+                        &nbsp;
+                        Logout
+                </button>
+            </div>
 
             <footer>
                 <p>© {actualYear} Badia Silvano</p>

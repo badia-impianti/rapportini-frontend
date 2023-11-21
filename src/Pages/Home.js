@@ -198,10 +198,11 @@ const Home = () => {
                             </td>
 
                             <td>
+                                <div style={{display: "flex", flexDirection: "column", gap: "10px"}}>
                                 <IoEye color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer" }} onClick={() => { navigate("/work/" + report.id) }} />
                                 { !report.processed ? <MdEdit color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer" }} onClick={() => { navigate("/edit/" + report.id) }} /> : null }
                                 { !report.processed ? <MdOutlineDeleteForever color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer" }} onClick={() => { deleteReport(report) }} />: null }
-
+                                </div>
                             </td>
                         </tr>
                     ))}

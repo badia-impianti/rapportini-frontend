@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { useState } from "react";
-import {IoPerson, IoClipboard, IoPeople, IoCheckmark, IoResize, IoTime, IoMoon} from "react-icons/io5";
+import {IoPerson, IoClipboard, IoPeople, IoCheckmark, IoResize, IoTime, IoMoon, IoEye} from "react-icons/io5";
 import { FaHashtag } from "react-icons/fa";
 import { MdEdit, MdOutlineDeleteForever } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
@@ -31,6 +31,7 @@ const Home = () => {
     //Tutta sta vandalata per ottenere la data nel formato che vuole l'input col fuso italiano
     const [date, setDate] = useState(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000).toISOString().split('T')[0]);
 
+    const [showDetail, setShowDetail] = useState([]);
 
     const dailyHoursRetriever = () => {
         fetch("https://backend.rapportini.badiasilvano.it/users/daily-hours/" + date, {
@@ -59,6 +60,9 @@ const Home = () => {
                 if (res.status === 200) {
                     res.json().then((data) => {
                         setReports(data);
+                        reports.map(() => {
+                            setShowDetail([...showDetail, false])
+                        })
                         setIsLoading(false);
                     });
                 }
@@ -194,7 +198,7 @@ const Home = () => {
                             </td>
 
                             <td>
-                                <IoResize color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer" }} onClick={() => { navigate("/work/" + report.id) }} />
+                                <IoEye color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer" }} onClick={() => { navigate("/work/" + report.id) }} />
                                 { !report.processed ? <MdEdit color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer" }} onClick={() => { navigate("/edit/" + report.id) }} /> : null }
                                 { !report.processed ? <MdOutlineDeleteForever color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer" }} onClick={() => { deleteReport(report) }} />: null }
 
@@ -215,24 +219,57 @@ const Home = () => {
 
                 {isLoading && <LoadingSpinner />}
                 {loadingError && <LoadingError />}
-                <tbody>
-                    {reports.map((report) => (
-                        <tr key={report.id}>
-                            <td><p className="table_elements">{report.id}</p></td>
-                            <td style={{ paddingInline: 3}}>{report.customer}</td>
-                            <td style={{ paddingInline: 0}}>
-                                {report.completed ? <div className="date" style={{ backgroundColor: "#d4f4cd", color: "#133213" }}>Completato</div>
-                                    :
-                                    <div className="date" style={{ backgroundColor: "#f4d4d4", color: "#331313" }}>In lavorazione</div>}
-                            </td>
-                            <td style={{ paddingInline: 0, paddingRight: 5}}>
-                                <IoResize color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer", margin: 5 }} onClick={() => { navigate("/work/" + report.id) }} />
-                                { !report.processed ? <MdEdit color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer", margin: 5 }} onClick={() => { navigate("/edit/" + report.id) }} /> : null }
-                                { !report.processed ? <MdOutlineDeleteForever color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer", margin: 5 }} onClick={() => { deleteReport(report) }} /> : null }
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
+                {reports.map((report, index) => (
+                    <tbody>
+                    <tr key={report.id}>
+                        <td style={{ borderBottom: showDetail[index] ? "none": "1px solid #ddd" }}><p className="table_elements">{report.id}</p></td>
+                        <td style={{ paddingInline: 3, borderBottom: showDetail[index] ? "none": "1px solid #ddd"}}>{report.customer}</td>
+                        <td style={{ paddingInline: 0, borderBottom: showDetail[index] ? "none": "1px solid #ddd"}}>
+                            {report.completed ? <div className="date" style={{ backgroundColor: "#d4f4cd", color: "#133213" }}>Completato</div>
+                                :
+                                <div className="date" style={{ backgroundColor: "#f4d4d4", color: "#331313" }}>In lavorazione</div>}
+                        </td>
+                        <td style={{ paddingInline: 0, paddingRight: 5, borderBottom: showDetail[index] ? "none": "1px solid #ddd"}}>
+                            <IoEye color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer", margin: 5 }} onClick={() => { navigate("/work/" + report.id) }} />
+                            <IoResize color={"grey"} size={24} style={{ marginLeft: 10, cursor: "pointer", margin: 5 }} onClick={() => {
+                                setShowDetail([...showDetail.slice(0, index), !showDetail[index], ...showDetail.slice(index + 1)])
+                            }}/>
+                            { !report.processed ? <MdEdit color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer", margin: 5 }} onClick={() => { navigate("/edit/" + report.id) }} /> : null }
+                            { !report.processed ? <MdOutlineDeleteForever color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer", margin: 5 }} onClick={() => { deleteReport(report) }} /> : null }
+                        </td>
+                    </tr>
+                    <tr hidden={!showDetail[index]}>
+                        <td colSpan={2}>
+                            {report.labour.map((labour) => {
+                                let labourDate = new Date(labour.date)
+                                const offset = labourDate.getTimezoneOffset()
+                                labourDate = new Date(labourDate.getTime() - (offset*60*1000))
+                                if (labourDate.toISOString().split('T')[0] === date) {
+                                    return labour.users.map((user) => {
+                                        return <p key={user.id} className="table_elements">{user.name} {user.surname}</p>
+                                    })
+                                }
+                            })
+                            }
+                        </td>
+
+                        <td colSpan={2}>
+                            {report.labour.map((labour) => {
+
+                                //Tutta sta sbrodolata per rendere compatibili i due valori delle date
+                                let labourDate = new Date(labour.date)
+                                const offset = labourDate.getTimezoneOffset()
+                                labourDate = new Date(labourDate.getTime() - (offset*60*1000))
+                                if (labourDate.toISOString().split('T')[0] === date) {
+                                    return labour.users.map((user) => {
+                                        return <p key={user.id} className="table_elements">{user.hours}:{user.minutes}{user.minutes < 10 ? 0 : null}</p>
+                                    })
+                                }
+                            })}
+                        </td>
+                    </tr>
+                    </tbody>
+                ))}
             </table>
         </div>
     );

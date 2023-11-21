@@ -13,6 +13,7 @@ import SetName from './Pages/SetName';
 import Edit from './Pages/Edit';
 import NewEdit from "./Pages/NewEdit";
 import Search from './Pages/Search';
+import OnCallCalendar from "./Pages/OnCallCalendar";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route path="/work/:id" element={<Work />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/oncallcalendar" element={<OnCallCalendar />} />
           </Route>
         </Routes>
       </AuthProvider>

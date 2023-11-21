@@ -1,0 +1,4 @@
+.onCallCalendar .infoContainer{
+    display: flex;
+    gap: 50px;
+}

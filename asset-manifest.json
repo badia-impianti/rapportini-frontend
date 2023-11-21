@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/static/css/main.f0cec0ec.css",
-    "main.js": "/static/js/main.d318eb1f.js",
-    "static/js/787.05dd5848.chunk.js": "/static/js/787.05dd5848.chunk.js",
+    "main.css": "/static/css/main.43cdea2b.css",
+    "main.js": "/static/js/main.5adc7df3.js",
+    "static/js/787.6112f16c.chunk.js": "/static/js/787.6112f16c.chunk.js",
     "static/media/Electricity.jpg": "/static/media/Electricity.66bed0a00351127aa114.jpg",
     "static/media/jetbrains-mono-latin-400-normal.woff": "/static/media/jetbrains-mono-latin-400-normal.6c1a3008005254946aef.woff",
     "static/media/jetbrains-mono-latin-400-normal.woff2": "/static/media/jetbrains-mono-latin-400-normal.4163112e566ed7697acf.woff2",
@@ -17,12 +17,12 @@
     "static/media/jetbrains-mono-cyrillic-ext-400-normal.woff": "/static/media/jetbrains-mono-cyrillic-ext-400-normal.cd8b8fbbaf96659b9e3b.woff",
     "static/media/jetbrains-mono-cyrillic-ext-400-normal.woff2": "/static/media/jetbrains-mono-cyrillic-ext-400-normal.116395f5d16bf9918fd9.woff2",
     "index.html": "/index.html",
-    "main.f0cec0ec.css.map": "/static/css/main.f0cec0ec.css.map",
-    "main.d318eb1f.js.map": "/static/js/main.d318eb1f.js.map",
-    "787.05dd5848.chunk.js.map": "/static/js/787.05dd5848.chunk.js.map"
+    "main.43cdea2b.css.map": "/static/css/main.43cdea2b.css.map",
+    "main.5adc7df3.js.map": "/static/js/main.5adc7df3.js.map",
+    "787.6112f16c.chunk.js.map": "/static/js/787.6112f16c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f0cec0ec.css",
-    "static/js/main.d318eb1f.js"
+    "static/css/main.43cdea2b.css",
+    "static/js/main.5adc7df3.js"
   ]
 }

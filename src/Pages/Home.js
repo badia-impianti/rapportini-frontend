@@ -232,7 +232,9 @@ const Home = () => {
                         <td style={{ paddingInline: 0, paddingRight: 5, borderBottom: showDetail[index] ? "none": "1px solid #ddd"}}>
                             <IoEye color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer", margin: 5 }} onClick={() => { navigate("/work/" + report.id) }} />
                             <IoResize color={"grey"} size={24} style={{ marginLeft: 10, cursor: "pointer", margin: 5 }} onClick={() => {
-                                setShowDetail(showDetail.map((item, i) => i === index ? !item : item))
+                                let newShowDetail = [...showDetail]
+                                newShowDetail[index] = !newShowDetail[index]
+                                setShowDetail(newShowDetail)
                             }}/>
                             { !report.processed ? <MdEdit color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer", margin: 5 }} onClick={() => { navigate("/edit/" + report.id) }} /> : null }
                             { !report.processed ? <MdOutlineDeleteForever color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer", margin: 5 }} onClick={() => { deleteReport(report) }} /> : null }

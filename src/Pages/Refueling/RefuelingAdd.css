@@ -1,0 +1,8 @@
+.refuelingAdd form {
+    max-width: 600px;
+    gap: 20px;
+}
+
+.refuelingAdd select {
+    min-width: 150px;
+}

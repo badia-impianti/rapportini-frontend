@@ -1,0 +1,10 @@
+.refueling .tableAndTankContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.refueling table {
+    max-width: 700px;
+}

@@ -1,0 +1,66 @@
+.toggle-switch {
+    position: relative;
+    width: 160px;
+    display: inline-block;
+    text-align: left;
+    top: 8px;
+}
+.checkbox {
+    display: none;
+}
+.label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border: 0 solid #bbb;
+    border-radius: 20px;
+}
+.inner {
+    display: block;
+    width: 200%;
+    margin-left: -100%;
+    transition: all 0.3s cubic-bezier(.12,.65,.47,.87) 0s;
+}
+.inner:before,
+.inner:after {
+    float: left;
+    width: 50%;
+    height: 36px;
+    padding: 0;
+    line-height: 36px;
+    color: #fff;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+.inner:before {
+    content: var(--true-value, "Vero"); /*the variable is populated in jsx*/
+    padding-left: 10px;
+    background-color: #297029;
+    color: #ffffff;
+}
+.inner:after {
+    content: var(--false-value, "Falso"); /*the variable is populated in jsx*/
+    padding-right: 10px;
+    background-color: #bbb;
+    color: #fff;
+    text-align: right;
+}
+.switch {
+    display: block;
+    width: 24px;
+    margin: 5px;
+    background: #fff;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 125px;
+    border: 0 solid #bbb;
+    border-radius: 20px;
+    transition: all 0.3s cubic-bezier(.12,.65,.47,.87) 0s;
+}
+.checkbox:checked + .label .inner {
+    margin-left: 0;
+}
+.checkbox:checked + .label .switch {
+    right: 0;
+}

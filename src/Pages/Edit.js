@@ -7,6 +7,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
 import "./Edit.css"
 import inputFieldChecker from "../functions/inputFieldChecker";
+import ToggleSwitch from "../components/ToggleSwitch/ToggleSwitch";
 
 
 
@@ -299,12 +300,20 @@ const Edit = () => {
                             <label className="form__label">Note</label>
                         </div>
                         <div style={{ margin: "30px" }} >
-                            <input type="checkbox" onChange={e => setOnCall(e.target.checked)} checked={onCall} />
-                            <label>Reperibilità</label>
+                            <ToggleSwitch
+                                name="onCallToggle"
+                                trueValue="REPERIBILITÀ"
+                                falseValue="ORDINARIO"
+                                value={[onCall, setOnCall]}
+                            ></ToggleSwitch>
                         </div>
-                        <div style={{ margin: "30px" }}>
-                            <input type="checkbox" onChange={e => setCompleted(e.target.checked)} checked={completed} />
-                            <label>Completato</label>
+                        <div style={{margin: "30px"}}>
+                            <ToggleSwitch
+                                name="completedToggle"
+                                trueValue="COMPLETATO"
+                                falseValue="IN CORSO"
+                                value={[ completed, setCompleted]}
+                            ></ToggleSwitch>
                         </div>
 
                         <div>
@@ -313,7 +322,12 @@ const Edit = () => {
                                 {
                                     loadedImages.map((image) => {
                                         return (
-                                            <div key={image.icon} style={{ display: "flex", flexDirection: "column", alignItems: "center", margin: 10 }}>
+                                            <div key={image.icon} style={{
+                                                display: "flex",
+                                                flexDirection: "column",
+                                                alignItems: "center",
+                                                margin: 10
+                                            }}>
                                                 <img src={image.icon} className="image"  alt="Scatto del lavoro"/>
                                                 <IoClose color={"grey"} size={24} style={{ cursor: "pointer" }} onClick={() => { deleteImage(image) }} />
                                             </div>

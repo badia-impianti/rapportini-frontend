@@ -5,6 +5,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import LoadingError from "../components/LoadingError";
 import NavBar from "../components/NavBar";
 import inputFieldChecker from "../functions/inputFieldChecker";
+import ToggleSwitch from "../components/ToggleSwitch/ToggleSwitch";
 
 const Add = () => {
 
@@ -227,12 +228,20 @@ const Add = () => {
                             <label className="form__label">Note</label>
                         </div>
                         <div className="form__group" style={{ display: "flex", flexDirection: "row", justifyContent: "center" }} >
-                            <input type="checkbox" id="onCall" onChange={e => setOnCall(e.target.checked)} checked={onCall} />
-                            &nbsp;<label>Reperibilità</label>
+                            <ToggleSwitch
+                                name="onCallToggle"
+                                trueValue="REPERIBILITÀ"
+                                falseValue="ORDINARIO"
+                                value={[onCall, setOnCall]}
+                            ></ToggleSwitch>
                         </div>
                         <div className="form__group" style={{ display: "flex", flexDirection: "row", justifyContent: "center", padding: 20 }}>
-                            <input type="checkbox" id="completed" name="completed" onChange={e => setCompleted(e.target.checked)} checked={completed} />
-                            &nbsp;<label>Lavoro completato</label>
+                            <ToggleSwitch
+                                name="completedToggle"
+                                trueValue="COMPLETATO"
+                                falseValue="IN CORSO"
+                                value={[ completed, setCompleted]}
+                            ></ToggleSwitch>
                         </div>
                         <div>
                             <h2>Immagini</h2>

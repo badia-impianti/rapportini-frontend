@@ -4,9 +4,13 @@ import "./Refueling.css"
 import {useEffect, useState} from "react";
 import LoadingError from "../../components/LoadingError";
 import LoadingSpinner from "../../components/LoadingSpinner";
-import {MdEdit, MdOutlineDeleteForever} from "react-icons/md";
+import {IoPencil, IoTrash} from "react-icons/io5";
+import {useNavigate} from "react-router-dom";
+import {BsFuelPump} from "react-icons/bs";
 
 const Refueling = (props) => {
+
+    const navigate = useNavigate()
 
     const [loadingError, setLoadingError] = useState(false)
     const [errorType, setErrorType] = useState()
@@ -48,39 +52,62 @@ const Refueling = (props) => {
     return(
       loadingError ? <LoadingError errorDescription={errorType} /> :
       isLoading ? <LoadingSpinner message={loadingMessage}/> :
-      <div className="mainContainer refueling">
-        <NavBar />
-        <h1>Rifornimenti</h1>
-          <div className="tableAndTankContainer">
-            <table className="table">
-                <thead>
-                    <tr>
-                    <th>Veicolo</th>
-                    <th>Km</th>
-                    <th>Litri</th>
-                    <th>Timestamp</th>
-                    <th></th> {/*Empty th for the delete and edit button*/}
-                    </tr>
-                </thead>
-                <tbody>
-                    {refueling.map((refueling) => (
-                        <tr key={refueling.id}>
-                            <td><p className="table_elements">{refueling.vehicleName}</p></td>
-                            <td><p className="table_elements">{refueling.km}</p></td>
-                            <td><p className="table_elements">{refueling.l}</p></td>
-                            <td><p className="table_elements">{new Date(refueling.timestamp).toLocaleString('IT-it', {timeZone: "Europe/Rome", day: "numeric", month: "long", year: "numeric"})}</p></td>
-                            <td>
-                                <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                                    <MdEdit color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer" }} onClick={}  />
-                                    <MdOutlineDeleteForever color="grey" size={24} style={{ marginLeft: 10, cursor: "pointer" }} onClick={} />
-                                </div>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+          <div className="mainContainer refueling">
+              <NavBar/>
+              <h1>Rifornimenti</h1>
+              <button className="button" onClick={() => navigate("/refueling/add")}><BsFuelPump/>&nbsp;&nbsp;Rifornisci
+              </button>
+              <div className="datePickerContainer">
+                  <h2>Seleziona periodo</h2>
+                  <input type="date"/>
+                  <input type="date"/>
+              </div>
+              <div className="recapContainer">
+                  <div className="recap">
+                      <h2>Totale</h2>
+                      <h3>{refueling.reduce((total, refueling) => total + refueling.l, 0).toFixed(1)}L</h3>
+                  </div>
+                  <div className="recap">
+                      <h2>Media KM/L</h2>
+                      <h3>10kml</h3>
+                  </div>
+              </div>
+              <div className="tableAndTankContainer">
+                  <table className="table">
+                      <thead>
+                      <tr>
+                          <th>Veicolo</th>
+                          <th>Km</th>
+                          <th>Litri</th>
+                          <th>Timestamp</th>
+                          <th></th>
+                          {/*Empty th for the delete and edit button*/}
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {refueling.map((refueling) => (
+                          <tr key={refueling.id}>
+                              <td><p className="table_elements">{refueling.vehicleName}</p></td>
+                              <td><p className="table_elements">{refueling.km}</p></td>
+                              <td><p className="table_elements">{refueling.l}</p></td>
+                              <td><p className="table_elements">{new Date(refueling.timestamp).toLocaleString('IT-it', {
+                                  timeZone: "Europe/Rome",
+                                  day: "numeric",
+                                  month: "long",
+                                  year: "numeric"
+                              })}</p></td>
+                              <td>
+                                  <div style={{display: "flex", flexDirection: "column", gap: "10px"}}>
+                                      <IoPencil color="grey" size={24} style={{marginLeft: 10, cursor: "pointer"}}/>
+                                      <IoTrash color="grey" size={24} style={{marginLeft: 10, cursor: "pointer"}}/>
+                                  </div>
+                              </td>
+                          </tr>
+                      ))}
+                      </tbody>
+                  </table>
+              </div>
           </div>
-      </div>
     )
 }
 

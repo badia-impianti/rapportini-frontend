@@ -200,8 +200,8 @@ const Refueling = (props) => {
                         </tr>
                         </thead>
                         {refueling.map((refueling, index) => (
-                            <tbody>
-                                <tr key={refueling.id}>
+                            <tbody key={refueling.id}>
+                                <tr>
                                     <td style={{ borderBottom: showDetail[index] ? "none": "1px solid #ddd" }}><p className="table_elements">{refueling.vehicleName}</p></td>
                                     <td style={{ borderBottom: showDetail[index] ? "none": "1px solid #ddd" }}><p className="table_elements">{new Date(refueling.timestamp).toLocaleString('IT-it', {
                                         timeZone: "Europe/Rome",

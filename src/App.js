@@ -14,6 +14,8 @@ import Edit from './Pages/Edit';
 import NewEdit from "./Pages/NewEdit";
 import Search from './Pages/Search';
 import OnCallCalendar from "./Pages/Calendar";
+import RefuelingAdd from "./Pages/Refueling/RefuelingAdd";
+import Refueling from "./Pages/Refueling/Refueling";
 
 function App() {
 
@@ -33,6 +35,8 @@ function App() {
             <Route path="/settings" element={<Settings />} />
             <Route path="/search" element={<Search />} />
             <Route path="/calendar" element={<OnCallCalendar />} />
+              <Route path="/refueling" element={<Refueling />} />
+              <Route path="/refueling/add" element={<RefuelingAdd />} />
           </Route>
         </Routes>
       </AuthProvider>

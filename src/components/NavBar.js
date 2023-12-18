@@ -12,6 +12,7 @@ import {
     IoSettingsOutline
 } from "react-icons/io5";
 import { useNavigate, Link } from "react-router-dom"
+import {BsFillFuelPumpFill, BsFuelPump, BsFuelPumpDiesel} from "react-icons/bs";
 
 export default function NavBar() {
 
@@ -35,6 +36,7 @@ export default function NavBar() {
 
             <div className="navbarLinks">
                 <Link to="/home" ><IoHomeOutline size={24} color="#257cff" /></Link>
+                <Link to="/refueling"><BsFuelPumpDiesel size={24} color="#257cff" /></Link>
                 <Link to="/search"><IoSearchOutline size={24} color="#257cff" /></Link>
                 <Link to="/settings"><IoSettingsOutline size={24} color="#257cff" /></Link>
                 <Link to="/add"><IoAddCircle size={30} color="#257cff" /></Link>
@@ -52,6 +54,7 @@ export default function NavBar() {
                 <div className="drawerContainer">
                     <h1>Rapportini</h1>
                     <Link to="/home" className="drawerButton"><IoHomeOutline size={24} color="#257cff" />&nbsp;&nbsp;&nbsp;Home</Link>
+                    <Link to="/refueling" className="drawerButton"><BsFuelPumpDiesel size={24} color="#257cff" />&nbsp;&nbsp;&nbsp;Rifornimenti</Link>
                     <Link to="/search" className="drawerButton"><IoSearchOutline size={24} color="#257cff" />&nbsp;&nbsp;&nbsp;Cerca</Link>
                     <Link to="/settings" className="drawerButton"><IoSettingsOutline size={24} color="#257cff" />&nbsp;&nbsp;&nbsp;Impostazioni</Link>
                     <Link to="/add" className="drawerButton"><IoAddCircle size={24} color="#257cff" />&nbsp;&nbsp;&nbsp;Aggiungi</Link>

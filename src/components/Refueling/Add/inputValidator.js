@@ -1,6 +1,7 @@
 const inputValidator = (refuel) => {
 
-    const { km, l, vehicleId } = refuel
+    let { km, l, vehicleId } = refuel
+    l = l.replace(",", ".")
 
     let validatedRefuel = {}
 

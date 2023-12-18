@@ -103,7 +103,7 @@ const RefuelingAdd = (props) => {
                     })}
                 </select>
                 <div className="form__group" >
-                    <input type="number" className="form__field" placeholder="Kilometri" id="kmInput" required
+                    <input type="number" inputMode="numeric" className="form__field" placeholder="Kilometri" id="kmInput" required
                        onChange={e =>
                             setRefueling({...refueling, km: e.target.value})
                         }

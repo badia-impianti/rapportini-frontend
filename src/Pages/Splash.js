@@ -8,6 +8,8 @@ const Splash = () => {
     const [loadingError, setLoadingError] = useState(false);
     const navigate = useNavigate();
 
+    const userInfo = {isAdmin: false}
+
     fetch('https://backend.rapportini.badiasilvano.it/whoami', {
         method: 'GET',
         credentials: 'include',
@@ -19,6 +21,7 @@ const Splash = () => {
                         navigate("/setname");
                         return;
                     }
+                    userInfo.isAdmin= data.isAdmin;
                     navigate("/home");
                 });}
             else if (res.status === 401) {

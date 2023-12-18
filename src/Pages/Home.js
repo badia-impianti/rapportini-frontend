@@ -221,8 +221,8 @@ const Home = () => {
                 {isLoading && <LoadingSpinner />}
                 {loadingError && <LoadingError />}
                 {reports.map((report, index) => (
-                    <tbody>
-                    <tr key={report.id}>
+                    <tbody key={report.id}>
+                    <tr>
                         <td style={{ borderBottom: showDetail[index] ? "none": "1px solid #ddd" }}><p className="table_elements">{report.id}</p></td>
                         <td style={{ paddingInline: 3, borderBottom: showDetail[index] ? "none": "1px solid #ddd"}}>{report.customer}</td>
                         <td style={{ paddingInline: 0, borderBottom: showDetail[index] ? "none": "1px solid #ddd"}}>

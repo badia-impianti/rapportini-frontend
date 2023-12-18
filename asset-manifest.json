@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.ef2a32b0.css",
-    "main.js": "/static/js/main.487ace8d.js",
+    "main.css": "/static/css/main.5fb66285.css",
+    "main.js": "/static/js/main.7ba956d1.js",
     "static/js/787.6112f16c.chunk.js": "/static/js/787.6112f16c.chunk.js",
     "static/media/Electricity.jpg": "/static/media/Electricity.66bed0a00351127aa114.jpg",
     "static/media/jetbrains-mono-latin-400-normal.woff": "/static/media/jetbrains-mono-latin-400-normal.6c1a3008005254946aef.woff",
@@ -17,12 +17,12 @@
     "static/media/jetbrains-mono-cyrillic-ext-400-normal.woff": "/static/media/jetbrains-mono-cyrillic-ext-400-normal.cd8b8fbbaf96659b9e3b.woff",
     "static/media/jetbrains-mono-cyrillic-ext-400-normal.woff2": "/static/media/jetbrains-mono-cyrillic-ext-400-normal.116395f5d16bf9918fd9.woff2",
     "index.html": "/index.html",
-    "main.ef2a32b0.css.map": "/static/css/main.ef2a32b0.css.map",
-    "main.487ace8d.js.map": "/static/js/main.487ace8d.js.map",
+    "main.5fb66285.css.map": "/static/css/main.5fb66285.css.map",
+    "main.7ba956d1.js.map": "/static/js/main.7ba956d1.js.map",
     "787.6112f16c.chunk.js.map": "/static/js/787.6112f16c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.ef2a32b0.css",
-    "static/js/main.487ace8d.js"
+    "static/css/main.5fb66285.css",
+    "static/js/main.7ba956d1.js"
   ]
 }

@@ -5,6 +5,7 @@ import LoadingError from "../../components/LoadingError";
 
 import "./RefuelingAdd.css"
 import {useNavigate} from "react-router-dom";
+import inputValidator from "../../components/Refueling/Add/inputValidator";
 
 const RefuelingAdd = (props) => {
 
@@ -16,13 +17,21 @@ const RefuelingAdd = (props) => {
     const [isLoading, setIsLoading] = useState(true)
     const [loadingMessage, setLoadingMessage] = useState("")
 
-    let refueling = {}
-
     const [vehicles, setVehicles] = useState()
+    const [refueling, setRefueling] = useState({})
 
 
     const saveRefueling = async (e) => {
+
         e.preventDefault()
+
+        try {
+            setRefueling(inputValidator(refueling))
+        } catch (e) {
+            alert(e.message);
+            return
+        }
+
         try {
             const response = await fetch("https://backend.rapportini.badiasilvano.it/refueling/", {
                 method: "POST",
@@ -33,14 +42,13 @@ const RefuelingAdd = (props) => {
                 body: JSON.stringify(refueling)
             })
 
-            console.log(response)
-
             if (response.status !== 200) {
                 setErrorType("Impossibile salvare il rifornimento")
                 setLoadingError(true)
+                return
             }
 
-            navigate("/home")
+            navigate("/refueling")
 
         } catch (e) {
             setErrorType("Impossibile salvare il rifornimento")
@@ -62,6 +70,10 @@ const RefuelingAdd = (props) => {
 
             const data = await response.json()
             setVehicles(data.vehicles)
+
+            //init the vehicle id
+            setRefueling({...refueling, vehicleId: data.vehicles[0].id})
+
             setIsLoading(false)
         } catch (e) {
             setErrorType("Impossibile scaricare la lista dei veicoli")
@@ -81,10 +93,9 @@ const RefuelingAdd = (props) => {
             <h1>Aggiungi Rifornimento</h1>
             <form>
                 <select name="id"  className="form__field" placeholder="Veicolo" required
-                        defaultValue={""}
                         value={refueling.vehicleId}
                         onChange={(e) => {
-                            refueling.vehicleId = e.target.value
+                            setRefueling({...refueling, vehicleId: e.target.value})
                         }}
                 >
                     {vehicles.map((vehicle) => {
@@ -93,15 +104,19 @@ const RefuelingAdd = (props) => {
                 </select>
                 <div className="form__group" >
                     <input type="number" className="form__field" placeholder="Kilometri" id="kmInput" required
-                           onChange={e => refueling.km = e.target.value}
-                           value={refueling.km}
+                       onChange={e =>
+                            setRefueling({...refueling, km: e.target.value})
+                        }
+                       value={refueling.km}
                     />
                     <label htmlFor="kmInput" className="form__label">Kilometri</label>
                 </div>
                 <div className="form__group" >
                     <input type="number" inputMode="decimal" className="form__field" placeholder="Litri" id="lInput" required
-                           onChange={e => refueling.l = e.target.value}
-                           value={refueling.l}
+                        onChange={e =>
+                            setRefueling({...refueling, l: e.target.value})
+                        }
+                        value={refueling.l}
                     />
                     <label htmlFor="lInput" className="form__label">Litri immessi</label>
                 </div>

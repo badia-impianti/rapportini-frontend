@@ -112,7 +112,7 @@ const Home = () => {
     return (
         (loadingError) ? <LoadingError errorDescription={errorType}/> :
         (isLoading) ? <LoadingSpinner /> :
-        <div className="mainContainer">
+        <div className="home mainContainer">
             <NavBar />
 
             <div className="datePickerContainer">

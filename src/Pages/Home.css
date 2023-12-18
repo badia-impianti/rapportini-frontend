@@ -1,5 +1,5 @@
 
-.datePickerContainer {
+.home .datePickerContainer {
 
   /* Position of the element */
   margin: 0 auto 0 auto;
@@ -19,7 +19,7 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
-.datePickerContainer input{
+.home .datePickerContainer input{
 
     /* Position of the element */
     width: 50%;
@@ -33,8 +33,7 @@
     background-color: #257CFFFF;
     color: white;
     font-size: 17px;
-    outline: 0;
-
+    outline: 0
 
 }
 

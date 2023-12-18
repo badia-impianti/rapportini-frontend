@@ -1,31 +1,71 @@
-.refueling .recapContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 40px;
-    width: 80%;
-}
 
-.refueling .recapContainer .recap {
-    flex: 1;
+
+.refueling .dashboardContainer {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 80%;
-    background: #bbbbbb;
+    justify-content: space-evenly;
+    background-color: #f5f5f5;
+    width: 75%;
     border-radius: 40px;
-    padding: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
-.refueling .tableAndTankContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.refueling .datePickerContainer {
+
+    /* Position of the element */
+    flex: 1;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 20px;  /* The 20px up are defined in input class */
+
+    /* Color of the element */
+    color: white;
+    background-color: #257CFFFF;
+    border-radius: 40px;
+    max-width: 300px;
+    font-weight: bold;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.refueling .datePickerContainer input {
+
+    /* Position of the element */
+    width: 50%;
+    height: 30px;
+
+    /* Color of the element */
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    background-color: #257CFFFF;
+    color: white;
+    font-size: 17px;
+    outline: 0
+
+}
+
+.refueling .totalContainer {
+    flex: 1;
+}
+
+.refueling .avgContainer {
+    flex: 1;
 }
 
 .refueling table {
     max-width: 700px;
+}
+
+@media (max-width: 767px){
+    .refueling .dashboardContainer {
+        width: 95%;
+        flex-direction: column;
+    }
+
+    .refueling .datePickerContainer {
+        margin: 0 auto 20px auto;
+    }
 }

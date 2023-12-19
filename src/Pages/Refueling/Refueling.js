@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom";
 import {BsFuelPump} from "react-icons/bs";
 import toHtmlInputDate from "../../components/functions/toHtmlInputDate";
 import Avgs from "../../components/Refueling/Avgs";
+import {FaCross} from "react-icons/fa6";
 
 const Refueling = (props) => {
 
@@ -127,12 +128,13 @@ const Refueling = (props) => {
       isLoading ? <LoadingSpinner message={loadingMessage}/> :
           <div  className="mainContainer refueling">
 
-              <h1>Funzionalità Rimossa</h1>
-              <p>Si prega di evadere il rifornimento mediante i metodi tradizionali</p>
-              <div hidden={true}>
-              {/*div to hide all temporarily*/}
               <NavBar/>
+              <h1><FaCross size={24} /> Funzionalità Rimossa <FaCross size={24} /> </h1>
+              <p>Si prega di evadere il rifornimento mediante i metodi tradizionali</p>
+              <p>Questa pagina verrà rimossa nei prossimi giorni</p>
 
+              {/*div to hide all temporarily*/}
+              <div hidden={true}>
               <h1>Rifornimenti</h1>
               <button className="button" onClick={() => navigate("/refueling/add")}><BsFuelPump/>&nbsp;&nbsp;Rifornisci
               </button>

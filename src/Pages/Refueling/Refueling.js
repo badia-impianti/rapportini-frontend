@@ -18,7 +18,7 @@ const Refueling = (props) => {
     const [loadingError, setLoadingError] = useState(false)
     const [errorType, setErrorType] = useState()
     const [isLoading, setIsLoading] = useState(true)
-    const [loadingMessage, setLoadingMessage] = useState("")
+    const [loadingMessage, setLoadingMessage] = useState()
     const [refueling, setRefueling] = useState({})
 
     const [endDate, setEndDate] = useState(new Date())
@@ -125,7 +125,12 @@ const Refueling = (props) => {
     return(
       loadingError ? <LoadingError errorDescription={errorType} /> :
       isLoading ? <LoadingSpinner message={loadingMessage}/> :
-          <div className="mainContainer refueling">
+          <div  className="mainContainer refueling">
+
+              <h1>Funzionalità Rimossa</h1>
+              <p>Si prega di evadere il rifornimento mediante i metodi tradizionali</p>
+              <div hidden={true}>
+              {/*div to hide all temporarily*/}
               <NavBar/>
 
               <h1>Rifornimenti</h1>
@@ -234,7 +239,7 @@ const Refueling = (props) => {
                         ))}
                 </table>
               </div>
-
+              </div>
 
           </div>
     )

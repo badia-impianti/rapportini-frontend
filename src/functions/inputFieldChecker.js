@@ -13,8 +13,7 @@ const inputFieldChecker = (inputs) => {
     validatedMaterials.pop()
 
     validatedMaterials.forEach((material) => {
-        material.quantity = material.quantity.replace(",", ".")
-        material.quantity = parseInt(material.quantity)
+        material.quantity = parseFloat(material.quantity)
         if (material.quantity <= 0 || isNaN(material.quantity) ) {
             throw new Error("materiale con quantità non valida")
         }

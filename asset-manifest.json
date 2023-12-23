@@ -1,28 +1,28 @@
 {
   "files": {
-    "main.css": "/static/css/main.5fb66285.css",
-    "main.js": "/static/js/main.8861021a.js",
-    "static/js/787.6112f16c.chunk.js": "/static/js/787.6112f16c.chunk.js",
+    "main.css": "/static/css/main.3188af29.css",
+    "main.js": "/static/js/main.3c0b7513.js",
+    "static/js/496.62eb21d9.chunk.js": "/static/js/496.62eb21d9.chunk.js",
     "static/media/Electricity.jpg": "/static/media/Electricity.66bed0a00351127aa114.jpg",
-    "static/media/jetbrains-mono-latin-400-normal.woff": "/static/media/jetbrains-mono-latin-400-normal.6c1a3008005254946aef.woff",
-    "static/media/jetbrains-mono-latin-400-normal.woff2": "/static/media/jetbrains-mono-latin-400-normal.4163112e566ed7697acf.woff2",
-    "static/media/jetbrains-mono-latin-ext-400-normal.woff": "/static/media/jetbrains-mono-latin-ext-400-normal.f76468bfaf7d6e028b15.woff",
-    "static/media/jetbrains-mono-cyrillic-400-normal.woff": "/static/media/jetbrains-mono-cyrillic-400-normal.e2bbac5ba4a6a947269b.woff",
-    "static/media/jetbrains-mono-latin-ext-400-normal.woff2": "/static/media/jetbrains-mono-latin-ext-400-normal.a7b2213a8b710149af01.woff2",
+    "static/media/jetbrains-mono-latin-400-normal.woff": "/static/media/jetbrains-mono-latin-400-normal.c226d7283d0d52c2d32c.woff",
+    "static/media/jetbrains-mono-latin-400-normal.woff2": "/static/media/jetbrains-mono-latin-400-normal.2fe080a3bf49bdc12fcb.woff2",
+    "static/media/jetbrains-mono-latin-ext-400-normal.woff": "/static/media/jetbrains-mono-latin-ext-400-normal.8cc1c7177f100f37df29.woff",
+    "static/media/jetbrains-mono-latin-ext-400-normal.woff2": "/static/media/jetbrains-mono-latin-ext-400-normal.586b8303fd446271af21.woff2",
+    "static/media/jetbrains-mono-cyrillic-400-normal.woff": "/static/media/jetbrains-mono-cyrillic-400-normal.f40413a1c29129ef1b47.woff",
     "static/media/jetbrains-mono-greek-400-normal.woff": "/static/media/jetbrains-mono-greek-400-normal.bfddc5b520da679cdcfb.woff",
+    "static/media/jetbrains-mono-vietnamese-400-normal.woff": "/static/media/jetbrains-mono-vietnamese-400-normal.b097c95036ba12477e79.woff",
     "static/media/jetbrains-mono-cyrillic-400-normal.woff2": "/static/media/jetbrains-mono-cyrillic-400-normal.ca5a5aa599cda836890b.woff2",
-    "static/media/jetbrains-mono-vietnamese-400-normal.woff": "/static/media/jetbrains-mono-vietnamese-400-normal.fe6f4655fecf2c402699.woff",
     "static/media/jetbrains-mono-greek-400-normal.woff2": "/static/media/jetbrains-mono-greek-400-normal.6e39ad95bc37a080358e.woff2",
-    "static/media/jetbrains-mono-vietnamese-400-normal.woff2": "/static/media/jetbrains-mono-vietnamese-400-normal.cabd61b169d456e75f62.woff2",
+    "static/media/jetbrains-mono-vietnamese-400-normal.woff2": "/static/media/jetbrains-mono-vietnamese-400-normal.e873f81ec1b064629ea4.woff2",
     "static/media/jetbrains-mono-cyrillic-ext-400-normal.woff": "/static/media/jetbrains-mono-cyrillic-ext-400-normal.cd8b8fbbaf96659b9e3b.woff",
     "static/media/jetbrains-mono-cyrillic-ext-400-normal.woff2": "/static/media/jetbrains-mono-cyrillic-ext-400-normal.116395f5d16bf9918fd9.woff2",
     "index.html": "/index.html",
-    "main.5fb66285.css.map": "/static/css/main.5fb66285.css.map",
-    "main.8861021a.js.map": "/static/js/main.8861021a.js.map",
-    "787.6112f16c.chunk.js.map": "/static/js/787.6112f16c.chunk.js.map"
+    "main.3188af29.css.map": "/static/css/main.3188af29.css.map",
+    "main.3c0b7513.js.map": "/static/js/main.3c0b7513.js.map",
+    "496.62eb21d9.chunk.js.map": "/static/js/496.62eb21d9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.5fb66285.css",
-    "static/js/main.8861021a.js"
+    "static/css/main.3188af29.css",
+    "static/js/main.3c0b7513.js"
   ]
 }
